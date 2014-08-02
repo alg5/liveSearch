@@ -1,0 +1,45 @@
+ <!-- IF S_LIVE_SEARCH --> 
+
+<div id='leavesearch' style='padding:5px 0 2 px 0;display:inline-block;''>{L_LIVE_SEARCH_CAPTION}&nbsp; 
+ <!-- IF LIVE_SEARCH_ON_OFF_FORUM --> 
+ {L_LIVE_SEARCH_FORUM}: <input  class="inputbox search tiny" id="forum_live_search" type=search placeholder="{L_LIVE_SEARCH_FORUM_TXT}"  title="{L_LIVE_SEARCH_FORUM_T}" /> &nbsp;&nbsp;
+  <!-- ENDIF  -->
+  <!-- IF LIVE_SEARCH_ON_OFF_TOPIC --> 
+ {L_LIVE_SEARCH_TOPIC}: <input  class="inputbox search tiny" id="topic_live_search" type=search placeholder="{L_LIVE_SEARCH_TXT}"  title="{L_LIVE_SEARCH_T}" /> &nbsp;&nbsp;
+  <!-- ENDIF  -->
+
+  <!-- IF LIVE_SEARCH_ON_OFF_USER --> 
+
+ {L_LIVE_SEARCH_USER}: 
+<input  class="inputbox search tiny" id="user_live_search" type=search placeholder="{L_LIVESEARCH_USER_TXT}"  title="{L_LIVESEARCH_USER_T}" /> 
+   <div id="user_handle" class="dropdown hidden" style="">
+		<div class="pointer"  style="left: auto; right: 10px; ">
+            <div class="pointer-inner">
+        </div>
+    </div>
+    <div class="dropdown-contents contact-icons" style='border-bottom-color: White'>
+		    <a href="javascript:void(0);" title="{L_LIVE_SEARCH_GO_PROFILE}" ><span class="leave_search_contact-icon   icon-profile" style="padding:0;"></span></a>
+            <a href="#" title="{L_SEND_PRIVATE_MESSAGE}" ><span class="leave_search_contact-icon contact-icon pm-icon"></span></a>
+            <a href="#" title="{L_SEND_EMAIL}"><span  class="leave_search_contact-icon contact-icon email-icon"></span></a>
+    </div>
+    <ul class="dropdown-contents" role="menu" style="margin-left: 0px; left: 0px; max-width: 1281px; ">
+        <li ><a id="topics_live_search" href="javascript:void(0);" 
+            title="<!-- IF S_FORUM_ID -->{L_LIVE_SEARCH_TOOLTIP_BY_FORUM} {FORUM_NAME}<!-- ELSE -->{L_LIVE_SEARCH_TOOLTIP_ALL}<!-- ENDIF -->" 
+            role="menuitem">{L_LIVE_SEARCH_TOPICS_BY_USER}
+        </a></li>
+	    <li class="separator"></li>
+		<li><a id="posts_live_search" href="javascript:void(0);"
+         title="<!-- IF S_TOPIC_ID -->{L_LIVE_SEARCH_TOOLTIP_BY_TOPIC} {TOPIC_TITLE}<!-- ELSEIF S_FORUM_ID-->{L_LIVE_SEARCH_TOOLTIP_BY_FORUM} {FORUM_NAME}<!-- ELSE -->{L_LIVE_SEARCH_TOOLTIP_ALL}<!-- ENDIF -->"  
+         role="menuitem">{L_LIVE_SEARCH_POSTS_BY_USER}</a></li>
+	</ul>
+				</div>
+      <!-- ENDIF  -->
+
+
+  
+
+
+</div>
+<br />
+<!-- ENDIF  -->
+

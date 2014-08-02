@@ -1,0 +1,26 @@
+services:
+    alg.liveSearch.listener:
+        class: alg\liveSearch\event\listener
+        arguments:
+            - @config
+            - @dbal.conn
+            - @auth
+            - @template
+            - @user
+            - %core.root_path%
+            - %core.php_ext%
+        tags:
+            - { name: event.listener }
+    alg.liveSearch.live_search_ajax_handler:
+        class: alg\liveSearch\controller\live_search_ajax_handler
+        arguments:
+            - @config
+            - @dbal.conn
+            - @auth
+            - @template
+            - @user
+            - @cache.driver
+            - %core.root_path%
+            - %core.php_ext%
+            - @request
+            - %core.table_prefix%

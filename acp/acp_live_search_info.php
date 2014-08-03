@@ -2,7 +2,7 @@
 /**
 *
 * @author Alg
-* @version $Id: acp_live_search.php,v 1.0.0. Палыч$
+* @version  1.0.0.
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */

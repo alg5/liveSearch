@@ -2,7 +2,7 @@
 /**
 *
 * @author Alg
-* @version $Id: toplist.php,v 135 2012-10-10 10:02:51 Палыч $
+* @version 1.0.0.0
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
@@ -45,7 +45,7 @@ protected $thankers = array();
         {
 	        exit();
         }	 
-		$this->user->add_lang_ext('alg/live_search', 'live_search');
+		$this->user->add_lang_ext('alg/liveSearch', 'live_search');
 
         switch ($action)
         {

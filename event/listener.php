@@ -52,7 +52,7 @@ class listener implements EventSubscriberInterface
     
     public function page_header_after($event)
     {
-        $this->user->add_lang_ext('alg/live_search', 'live_search');
+        $this->user->add_lang_ext('alg/liveSearch', 'live_search');
         $on_off_forum = isset($this->config['live_search_on_off_forum']) ? (bool)$this->config['live_search_on_off_forum'] : false;
         $on_off_topic = isset($this->config['live_search_on_off_topic']) ? (bool)$this->config['live_search_on_off_topic'] : false;
         $on_off_user = isset($this->config['live_search_on_off_user']) ? (bool)$this->config['live_search_on_off_user'] : false;

@@ -80,7 +80,10 @@
         var f = item.data[0];
         if (f) {
             $("#forum_live_search").val('');
-            window.open(U_FORUM_REDIRECT + '?f=' + f, '_blank');
+            if (LIVE_SEARCH_SHOW_IN_NEW_WINDOW)
+                window.open(U_FORUM_REDIRECT + '?f=' + f, '_blank');
+            else
+                window.open(U_FORUM_REDIRECT + '?f=' + f);
         }
         return false;
     }
@@ -90,7 +93,11 @@
         var f = item.data[1];
         if (t) {
             $("#live_search").val('');
-            window.open(U_TOPIC_REDIRECT + '?f=' + f + '&t=' + t, '_blank');
+            if (LIVE_SEARCH_SHOW_IN_NEW_WINDOW)
+                window.open(U_TOPIC_REDIRECT + '?f=' + f + '&t=' + t, '_blank');
+            else
+                window.open(U_TOPIC_REDIRECT + '?f=' + f + '&t=' + t);
+
         }
         return false;
     }

@@ -51,4 +51,5 @@ $lang = array_merge($lang, array(
    
     'LIVE_SEARCH_TOPIC_ON'				=> 'Включить быстрый поиск по темам ',
     'LIVE_SEARCH_USER_ON'				=> 'Включить быстрый поиск по пользователям ',
+    'LIVE_SEARCH_SHOW_IN_NEW_WINDOW'				=> 'Отображать результаты в новом окне ',
 ));

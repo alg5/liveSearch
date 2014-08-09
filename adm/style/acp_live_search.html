@@ -17,7 +17,7 @@
 <form id="acp_live_search" method="post" action="{U_ACTION}">
     
     <input type="checkbox" id= "live_search_on_off_forum" name="live_search_on_off_forum"  class="radio" {CHECKED_FORUM}  />{L_LIVE_SEARCH_FORUM_ON}
-    <div id='setting_f' class='enabled'>
+    <div id='setting_f'>
         <fieldset >
 	        <legend>{L_ACP_LIVE_SEARCH_SETTINGS_FORUMS}</legend>
             <dl>
@@ -34,7 +34,6 @@
 	        </dl>        
         </fieldset>
     </div>
-    <br />
 
    <input type="checkbox" id= "live_search_on_off_topic" name="live_search_on_off_topic"  class="radio" {CHECKED_TOPIC}  />{L_LIVE_SEARCH_TOPIC_ON}
     <div id='setting_t'>
@@ -55,7 +54,6 @@
         </fieldset>
     </div>
 
-    <br />
 
    <input type="checkbox" id= "live_search_on_off_user" name="live_search_on_off_user"  class="radio" {CHECKED_USER}  />{L_LIVE_SEARCH_USER_ON}
     <div id='setting_u'>
@@ -75,7 +73,13 @@
 	        </dl>        
         </fieldset>
     </div>   
-
+    <fieldset>
+        <legend></legend>
+        <dl>
+			<dt><label for="live_search_show_in_new_window">{L_LIVE_SEARCH_SHOW_IN_NEW_WINDOW}:</label></dt>
+			<dd><label><input type="radio" name="live_search_show_in_new_window" value="1" <!-- IF LIVE_SEARCH_SHOW_IN_NEW_WINDOW -->checked<!-- ENDIF --> class="radio"> {L_YES}</label><label><input type="radio" name="live_search_show_in_new_window" value="0" <!-- IF !LIVE_SEARCH_SHOW_IN_NEW_WINDOW -->checked<!-- ENDIF --> class="radio"> {L_NO}</label></dd>
+		</dl>
+    </fieldset>
 	<p class="submit-buttons">
 		<input class="button1" type="submit" id="submit" name="submit" value="{L_SUBMIT}" />&nbsp;
 		<input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />

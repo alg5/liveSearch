@@ -2,7 +2,7 @@
 /**
 *
 * @author Alg
-* @version 1.0.0.0
+* @version $Id: toplist.php,v 135 2012-10-10 10:02:51 Палыч $
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
@@ -69,24 +69,29 @@ protected $thankers = array();
     
     private function live_search_forum($action, $forum_id, $q)
     {
-    
+        global $phpbb_container;
+        $phpbb_content_visibility = $phpbb_container->get('content.visibility');
+        $topic_visibility = $phpbb_content_visibility->get_visibility_sql('topic', $forum_id, 't.');
         $sql = "SELECT  f.forum_id, f.forum_name, pf.forum_name as forum_parent_name  " .
                 " FROM " . FORUMS_TABLE . " f LEFT JOIN " . FORUMS_TABLE . " pf on f.parent_id = pf.forum_id " .
-                " WHERE  UPPER(f.forum_name) " . $this->db->sql_like_expression($this->db->get_any_char()  . $q . $this->db->get_any_char() ) .
+                " WHERE UPPER(f.forum_name) " . $this->db->sql_like_expression($this->db->get_any_char()  . $q . $this->db->get_any_char() ) .
                 " ORDER BY f.forum_name";
         $result = $this->db->sql_query($sql);
         $arr_res = $arr_priority1 = $arr_priority2 = array();
 		while ($row = $this->db->sql_fetchrow($result))
         {
-            $pos = strpos(utf8_strtoupper($row['forum_name']), $q);
-            if ($pos !== false ) 
-			{
-                $row['pos'] = $pos;
-                if($pos == 0)
-                    $arr_priority1[] = $row;
-                else
-                    $arr_priority2[] = $row;
-			}           
+            if ($phpbb_content_visibility->get_visibility_sql('topic', $row['forum_id'], 't.'))
+            {
+                $pos = strpos(utf8_strtoupper($row['forum_name']), $q);
+                if ($pos !== false ) 
+			    {
+                    $row['pos'] = $pos;
+                    if($pos == 0)
+                        $arr_priority1[] = $row;
+                    else
+                        $arr_priority2[] = $row;
+			    }
+            }
         }
 		$this->db->sql_freeresult($result);
         
@@ -107,9 +112,10 @@ protected $thankers = array();
         $sql = "SELECT t.topic_id, t.topic_title, t.topic_status, t.topic_moved_id, t.forum_id, f.forum_name " .
 		" FROM " . TOPICS_TABLE . 
         " t JOIN " . FORUMS_TABLE . " f on t.forum_id = f.forum_id " .
-        " WHERE t.topic_status <> 2 " .
+        " WHERE t.topic_status <> " . ITEM_MOVED . 
+        " AND t.topic_visibility = " . ITEM_APPROVED . 
         "  AND UPPER(t.topic_title) " . $this->db->sql_like_expression($this->db->get_any_char() . $q . $this->db->get_any_char()) .
-        " AND t.topic_approved = 1 ". $this->build_subforums_search($forum_id) . 
+        $this->build_subforums_search($forum_id) . 
 		" ORDER BY topic_title";
         $result = $this->db->sql_query($sql);
 		$topic_list = array();
@@ -118,7 +124,7 @@ protected $thankers = array();
 		while ($row = $this->db->sql_fetchrow($result))
         {
             $pos = strpos(utf8_strtoupper($row['topic_title']), $q);
-            if ($pos !== false && $this->auth->acl_get('f_read', $row['forum_id'])) 
+            if ($pos !== false && $this->auth->acl_get('f_read', $row['forum_id']) ) 
 			{
                 $row['pos'] = $pos;
                 if($pos == 0)

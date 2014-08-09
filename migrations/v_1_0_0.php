@@ -88,6 +88,10 @@ class v_1_0_0 extends \phpbb\db\migration\migration
 				array('config.remove', array('live_search_max_items_to_show_user')),
 			)),
 			array('if', array(
+				(isset($this->config['live_search_show_in_new_window'])),
+				array('config.remove', array('live_search_show_in_new_window')),
+			)),
+			array('if', array(
 				(isset($this->config['live_search'])),
 				array('config.remove', array('live_search')),
 			)),
@@ -101,6 +105,7 @@ class v_1_0_0 extends \phpbb\db\migration\migration
             array('config.add', array('live_search_max_items_to_show_topic', v_1_0_0::MAX_ITEMS_TO_SHOW)),
             array('config.add', array('live_search_min_num_symblols_user', v_1_0_0::MIN_CHARS)),
             array('config.add', array('live_search_max_items_to_show_user', v_1_0_0::MAX_ITEMS_TO_SHOW)),
+            array('config.add', array('live_search_show_in_new_window', v_1_0_0::OFF)),
 			// Current version
 			array('config.add', array('live_search', '1.0.0')),
             
@@ -149,6 +154,7 @@ class v_1_0_0 extends \phpbb\db\migration\migration
             array('config.remove', array('live_search_max_items_to_show_topic')),
             array('config.remove', array('live_search_min_num_symblols_user')),
             array('config.remove', array('live_search_max_items_to_show_user')),
+            array('config.remove', array('live_search_show_in_new_window')),
 			// Current version
 			array('config.remove', array('live_search')),
 

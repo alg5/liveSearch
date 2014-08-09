@@ -69,6 +69,7 @@ class listener implements EventSubscriberInterface
             'MAX_ITEMS_TO_SHOW_FORUM'	=>isset($this->config['live_search_max_items_to_show_forum']) ?$this->config['live_search_max_items_to_show_forum'] : 20,
             'MAX_ITEMS_TO_SHOW_TOPIC'	=>isset($this->config['live_search_max_items_to_show_topic']) ?$this->config['live_search_max_items_to_show_topic'] : 20,
             'MAX_ITEMS_TO_SHOW_USER'	=>isset($this->config['live_search_max_items_to_show_user']) ?$this->config['live_search_max_items_to_show_user'] : 20,
+            'LIVE_SEARCH_SHOW_IN_NEW_WINDOW'	=>isset($this->config['live_search_show_in_new_window']) ?(bool)$this->config['live_search_show_in_new_window'] : false,
 
 		    ));    
     }

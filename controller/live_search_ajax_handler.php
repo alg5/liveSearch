@@ -142,7 +142,7 @@ protected $thankers = array();
             $forum_id = $topic_info['forum_id'];
             $topic_id = ($topic_info['topic_status'] == 2) ? (int)$topic_info['topic_moved_id'] : (int)$topic_info['topic_id'];
             $topic_info['topic_title'] = str_replace('|', ' ', $topic_info['topic_title']);
- 			$key = htmlspecialchars_decode($topic_info['topic_title'] . '(' . $topic_info['forum_name'] . ')'  );
+ 			$key = htmlspecialchars_decode($topic_info['topic_title'] . ' (' . $topic_info['forum_name'] . ')'  );
             $message .= $key . "|$topic_id|$forum_id\n";
         }
         $json_response = new \phpbb\json_response;

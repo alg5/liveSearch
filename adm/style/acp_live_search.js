@@ -1,5 +1,9 @@
 ﻿    (function ($) {    // Avoid conflicts with other libraries
         $().ready(function () {
+            changeEnable($('#live_search_on_off_forum'), 'setting_f');
+            changeEnable($('#live_search_on_off_topic'), 'setting_t');
+            changeEnable($('#live_search_on_off_user'), 'setting_u');
+
             $('#live_search_on_off_forum').on('change', function () {
                 changeEnable(this, 'setting_f');
             });
@@ -15,19 +19,15 @@
                 if ($(el).prop('checked')) {
 
                     $(div).children().prop('disabled', false);
-                    var fieldset = $(div).find('fieldset');
-                    $(fieldset).css('background-color', '');
-                    $(div).css({ 'opacity': '1', 'color': '#536482' });
+                    $(div).find('dl').css('opacity', '1');
                 }
                 else {
                     $(div).children().prop('disabled', true);
-                    var fieldset = $(div).find('fieldset');
-                    $(fieldset).css('background-color', 'Gray');
-                    $(div).css({ 'opacity': '0.2', 'color': 'White' });
+                    $(div).find('dl').css('opacity', '0.3');
                 }
             }
 
 
         });
 
-    })(jQuery);                                              // Avoid conflicts with other libraries
+    })(jQuery);                                               // Avoid conflicts with other libraries

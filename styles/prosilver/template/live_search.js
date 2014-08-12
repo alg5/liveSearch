@@ -2,9 +2,32 @@
 
     $().ready(function () {
 
+        //        $('#leavesearch_btn').on('mouseover', function (e) {
+        //            $(this).hide();
+        //            $('#leavesearch').show();
+        //        });
+        $('#leavesearch_panel').hide();
+        //$('#leavesearch').hide();
+
+        $('#leavesearch_btn').on('click', function (e) {
+//            $('#leavesearch_panel').slideToggle(3000);
+//            $('#leavesearch').slideToggle(3000);
+            $('#leavesearch_btn').fadeOut("slow");
+            $('#leavesearch_panel').fadeIn("slow");
+            $('#leavesearch').fadeIn("slow");
+        });
+
+        $('#leavesearch_btn_close').on('click', function (e) {
+            $('#leavesearch_btn').fadeIn("slow");
+            $('#leavesearch_panel').fadeOut("slow");
+            //$('#leavesearch').fadeIn("slow");
+        });
+
         $(document).click(function (event) {
-            if ($(event.target).closest("#user_handle").length || $(event.target).closest(".acResults").length || $(event.target).closest("#user_live_search").length) return;
+            if ($(event.target).closest("#user_handle").length || $(event.target).closest(".acResults").length || $(event.target).closest("#user_live_search").length || $(event.target).closest("#leavesearch").length) return;
             $("#user_handle").hide("slow");
+            if ($(event.target).closest("#leavesearch_panel").length)
+                $("#leavesearch_panel").fadeOut("slow");
             event.stopPropagation();
         });
 
@@ -80,8 +103,7 @@
         var f = item.data[0];
         if (f) {
             $("#forum_live_search").val('');
-            if (LIVE_SEARCH_SHOW_IN_NEW_WINDOW)
-            var wnd = LIVE_SEARCH_SHOW_IN_NEW_WINDOW ?  '_blank' : '_parent';
+            var wnd = LIVE_SEARCH_SHOW_IN_NEW_WINDOW ? '_blank' : '_parent';
             window.open(U_FORUM_REDIRECT + '?f=' + f, wnd);
         }
         return false;
@@ -92,7 +114,7 @@
         var f = item.data[1];
         if (t) {
             $("#live_search").val('');
-            var wnd = LIVE_SEARCH_SHOW_IN_NEW_WINDOW ?  '_blank' : '_parent';
+            var wnd = LIVE_SEARCH_SHOW_IN_NEW_WINDOW ? '_blank' : '_parent';
             window.open(U_TOPIC_REDIRECT + '?f=' + f + '&t=' + t, wnd);
         }
         return false;
@@ -139,7 +161,7 @@
                     console.log(ui);
                 }
             });
- 
+
 
 
 
@@ -181,6 +203,6 @@
     }
 
 
-})(jQuery);                                                        // Avoid conflicts with other libraries
+})(jQuery);                                                            // Avoid conflicts with other libraries
 
 

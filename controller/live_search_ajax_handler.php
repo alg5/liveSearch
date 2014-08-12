@@ -100,7 +100,7 @@ protected $thankers = array();
         foreach ($arr_res as $forum_info)
         {
             $forum_id = $forum_info['forum_id'];
- 			$key = htmlspecialchars_decode($forum_info['forum_name'] . '(' . $forum_info['forum_parent_name'] . ')'  );
+ 			$key = htmlspecialchars_decode($forum_info['forum_name'] . ' (' . $forum_info['forum_parent_name'] . ')'  );
             $message .=  $key . "|$forum_id\n";
         }     
         $json_response = new \phpbb\json_response;

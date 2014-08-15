@@ -22,7 +22,7 @@
 #leavesearch {
 	line-height: 25px;
 	background-color: white;
-	width: 625px;
+	width: 680px;
 	height: 28px;
 	display:none;
 	padding: 3px 10px;
@@ -43,10 +43,10 @@
 }
 
 #forum_live_search {
-	width: 100px;
+	width: 120px;
 }
 #topic_live_search {
-	width: 100px;
+	width: 115px;
 }
 #user_live_search{
 	width: 140px;

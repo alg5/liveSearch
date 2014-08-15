@@ -128,8 +128,10 @@
         if (this.options.resultsClass) {
             this.dom.$results.addClass(this.options.resultsClass);
         }
+
         this.dom.$results.css({
-            position: 'absolute'
+            position: 'fixed',
+           
         });
         this.dom.$results.width(this.options.width);
         $('body').append(this.dom.$results);
@@ -198,9 +200,11 @@
 
     $.Autocompleter.prototype.position = function () {
         var offset = this.dom.$elem.offset();
+        var pos = this.dom.$elem.position();
+
         this.dom.$results.css({
-            top: offset.top + this.dom.$elem.outerHeight(),
-            left: offset.left
+            top: pos.top + this.dom.$elem.outerHeight(),
+            left: offset.left,
         });
     };
 
@@ -495,10 +499,8 @@
         // Alway recalculate position before showing since window size or
         // input element location may have changed. This fixes #14
         this.position();
-
         this.dom.$results.html($ul).show();
-        extraWidth = this.dom.$results.outerWidth() - this.dom.$results.width();
-        //this.dom.$results.width(this.dom.$elem.outerWidth() - extraWidth);
+       extraWidth = this.dom.$results.outerWidth() - this.dom.$results.width();
         $('li', this.dom.$results).hover(
 			function () { self.focusItem(this); },
 			function () { /* void */ }
@@ -591,8 +593,8 @@
         this.dom.$elem.val(displayValue).focus();
         this.setCaret(displayValue.length);
         this.callHook('onItemSelect', { value: value, data: data });
-        this.callHook('onFinish', { value: value, data: data });
-        this.finish();
+         this.callHook('onFinish', { value: value, data: data });
+       this.finish();
     };
 
     $.Autocompleter.prototype.displayValue = function (value, data) {

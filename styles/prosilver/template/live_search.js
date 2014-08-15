@@ -2,32 +2,24 @@
 
     $().ready(function () {
 
-        //        $('#leavesearch_btn').on('mouseover', function (e) {
-        //            $(this).hide();
-        //            $('#leavesearch').show();
-        //        });
-        $('#leavesearch_panel').hide();
-        //$('#leavesearch').hide();
+       // $('#leavesearch_panel').hide();
 
         $('#leavesearch_btn').on('click', function (e) {
-//            $('#leavesearch_panel').slideToggle(3000);
-//            $('#leavesearch').slideToggle(3000);
             $('#leavesearch_btn').fadeOut("slow");
-            $('#leavesearch_panel').fadeIn("slow");
             $('#leavesearch').fadeIn("slow");
         });
 
         $('#leavesearch_btn_close').on('click', function (e) {
+            $('#forum_live_search').val("");
+            $('#topic_live_search').val("");
+            $('#user_live_search').val("");
             $('#leavesearch_btn').fadeIn("slow");
-            $('#leavesearch_panel').fadeOut("slow");
-            //$('#leavesearch').fadeIn("slow");
+            $('#leavesearch').fadeOut("slow");
         });
 
         $(document).click(function (event) {
-            if ($(event.target).closest("#user_handle").length || $(event.target).closest(".acResults").length || $(event.target).closest("#user_live_search").length || $(event.target).closest("#leavesearch").length) return;
+            if ($(event.target).closest("#user_handle").length || $(event.target).closest(".acResults").length || $(event.target).closest("#user_live_search").length || $(event.target).closest("#leavesearch").length ) return;
             $("#user_handle").hide("slow");
-            if ($(event.target).closest("#leavesearch_panel").length)
-                $("#leavesearch_panel").fadeOut("slow");
             event.stopPropagation();
         });
 
@@ -35,7 +27,7 @@
         $("#user_live_search").on('keyup', function (e) {
             $('#user_handle').hide();
         });
-
+        
         //live search forum
         var topic_path = './app.php/liveSearch/forum/' + S_FORUM_ID + '/0';
         $("#forum_live_search").autocomplete(
@@ -52,7 +44,8 @@
 		        },
 		        onItemSelect: function (item) {
 		            goto_forum(item);
-		        }
+		        },
+	
 		    });
 
         //live search topic
@@ -101,7 +94,8 @@
     }
     function goto_forum(item) {
         var f = item.data[0];
-        if (f) {
+        if (f) 
+        {
             $("#forum_live_search").val('');
             var wnd = LIVE_SEARCH_SHOW_IN_NEW_WINDOW ? '_blank' : '_parent';
             window.open(U_FORUM_REDIRECT + '?f=' + f, wnd);
@@ -151,14 +145,8 @@
 
             $("#username_list").droppable({
                 drop: function (event, ui) {
-                    console.log('11111111111');
-                    console.log(event);
-                    console.log(ui);
                 },
                 stop: function (event, ui) {
-                    console.log('3333333333');
-                    console.log(event);
-                    console.log(ui);
                 }
             });
 
@@ -168,7 +156,9 @@
             var position = $("#user_live_search").position();
             var t = (position.top + 9) + 'px';
             var l = position.left + 'px';
-            $('#user_handle').css({ 'top': t, 'left': l });
+            var w =  $("#user_live_search").width() + 'px'; 
+            //alert(w);
+            $('#user_handle').css({ 'top': t, 'left': l});
             $('#user_handle').show();
 
             var username = item.value;
@@ -202,7 +192,9 @@
         return false;
     }
 
+  
 
-})(jQuery);                                                            // Avoid conflicts with other libraries
+
+})(jQuery);                                                                 // Avoid conflicts with other libraries
 
 

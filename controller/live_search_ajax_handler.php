@@ -115,7 +115,7 @@ protected $thankers = array();
         " WHERE t.topic_status <> " . ITEM_MOVED . 
         " AND t.topic_visibility = " . ITEM_APPROVED . 
         "  AND UPPER(t.topic_title) " . $this->db->sql_like_expression($this->db->get_any_char() . $q . $this->db->get_any_char()) .
-        $this->build_subforums_search($forum_id) . 
+        //$this->build_subforums_search($forum_id) . 
 		" ORDER BY topic_title";
         $result = $this->db->sql_query($sql);
 		$topic_list = array();

@@ -56,13 +56,19 @@ class listener implements EventSubscriberInterface
         $on_off_forum = isset($this->config['live_search_on_off_forum']) ? (bool)$this->config['live_search_on_off_forum'] : false;
         $on_off_topic = isset($this->config['live_search_on_off_topic']) ? (bool)$this->config['live_search_on_off_topic'] : false;
         $on_off_user = isset($this->config['live_search_on_off_user']) ? (bool)$this->config['live_search_on_off_user'] : false;
+        $live_search_show_for_guest = isset($this->config['live_search_show_for_guest']) ? (bool)$this->config['live_search_show_for_guest'] : true;
+        $is_live_search = $on_off_forum || $on_off_topic || $on_off_user;
+        if ($live_search_show_for_guest)
+        {
+            $is_live_search = $is_live_search && $this->user->data['is_registered'];
+        }
         $this->template->assign_vars(array(
 	        'U_FORUM_REDIRECT'		=> append_sid("{$this->phpbb_root_path}viewforum.$this->php_ext", ""),
 	        'U_TOPIC_REDIRECT'		=> append_sid("{$this->phpbb_root_path}viewtopic.$this->php_ext", ""),
             'LIVE_SEARCH_ON_OFF_FORUM'	=>  $on_off_forum,
             'LIVE_SEARCH_ON_OFF_TOPIC'	=>  $on_off_topic,
             'LIVE_SEARCH_ON_OFF_USER'	=> $on_off_user,
-            'S_LIVE_SEARCH'	=> $on_off_forum || $on_off_topic || $on_off_user,
+            'S_LIVE_SEARCH'	=> $is_live_search,
             'MIN_CHARS_FORUM'	=>isset($this->config['live_search_min_num_symblols_forum']) ? $this->config['live_search_min_num_symblols_forum'] : 1,
             'MIN_CHARS_TOPIC'	=>isset($this->config['live_search_min_num_symblols_topic']) ? $this->config['live_search_min_num_symblols_topic'] : 1,
             'MIN_CHARS_USER'	=>isset($this->config['live_search_min_num_symblols_user']) ? $this->config['live_search_min_num_symblols_user'] : 1,

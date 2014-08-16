@@ -2,18 +2,12 @@
 
     $().ready(function () {
 
-       // $('#leavesearch_panel').hide();
-
-//        $('#leavesearch_btn').on('click', function (e) {
-//            $('#leavesearch_btn').fadeOut("slow");
-//            $('#leavesearch').fadeIn("slow");
-//        });
-        $("#leavesearch_btn").hoverIntent( liveSearchOpen );
-        function liveSearchOpen()
+  
+        $("#leavesearch_btn").hoverIntent(function ()
         {
              $('#leavesearch_btn').fadeOut("slow");
             $('#leavesearch').fadeIn("slow");
-       }
+       } );
 
         $('#leavesearch_btn_close').on('click', function (e) {
             $('#forum_live_search').val("");

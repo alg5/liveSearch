@@ -44,14 +44,14 @@ $lang = array_merge($lang, array(
 	'ACP_LIVE_SEARCH_SETTINGS_TOPICS_EXPLAIN'				=>'<strong>Важно: Для корректной работы настроек расширения требуется MySQL версии 4.1 или выше!</strong><br />',
 	'ACP_LIVE_SEARCH_SETTINGS_USERS'				=> 'Быстрый поиск по пользователям',
 
-    'LIVE_SEARCH_FORUM_ON'				=> '<strong> Включить быстрый поиск по форумам</strong>',
-    'LIVE_SEARCH_MIN_NUM_SYMBLOLS'				=> 'Минимальное число символов для поиска',
-    'LIVE_SEARCH_MIN_NUM_SYMBLOLS_EXPLAIN'				=> 'Поиск будет начинаться введённого количества символов',
-    'LIVE_SEARCH_MAX_ITEMS_TO_SHOW'				=> 'Число результатов',
-    'LIVE_SEARCH_MAX_ITEMS_TO_SHOW_EXPLAIN'				=> ' Ограничивает число результатов, которые будут показаны в выпадающем списке.. Рекомендованное значение 20.',
-   
-    'LIVE_SEARCH_TOPIC_ON'				=> '<strong> Включить быстрый поиск по темам</strong>',
-    'LIVE_SEARCH_USER_ON'				=> '<strong> Включить быстрый поиск по пользователям</strong>',
-    'LIVE_SEARCH_SHOW_IN_NEW_WINDOW'				=> 'Отображать результаты в новом окне ',
-    'LIVE_SEARCH_SHOW_FOR_GUEST'				=> 'Показывать для гостей ',
+	'LIVE_SEARCH_FORUM_ON'				=> '<strong> Включить быстрый поиск по форумам</strong>',
+	'LIVE_SEARCH_MIN_NUM_SYMBLOLS'				=> 'Минимальное число символов для поиска',
+	'LIVE_SEARCH_MIN_NUM_SYMBLOLS_EXPLAIN'				=> 'Поиск будет начинаться введённого количества символов',
+	'LIVE_SEARCH_MAX_ITEMS_TO_SHOW'				=> 'Число результатов',
+	 'LIVE_SEARCH_MAX_ITEMS_TO_SHOW_EXPLAIN'				=> ' Ограничивает число результатов, которые будут показаны в выпадающем списке.. Рекомендованное значение 20.',
+	
+	'LIVE_SEARCH_TOPIC_ON'				=> '<strong> Включить быстрый поиск по темам</strong>',
+	'LIVE_SEARCH_USER_ON'				=> '<strong> Включить быстрый поиск по пользователям</strong>',
+	'LIVE_SEARCH_SHOW_IN_NEW_WINDOW'				=> 'Отображать результаты в новом окне ',
+	'LIVE_SEARCH_SHOW_FOR_GUEST'				=> 'Показывать для гостей ',
 ));

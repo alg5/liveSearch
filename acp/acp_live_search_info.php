@@ -1,4 +1,4 @@
-<?php
+h<?php
 /**
 *
 * @author Alg
@@ -12,10 +12,10 @@ namespace alg\liveSearch\acp;
 /**
 * @ignore
 */
-if (!defined('IN_PHPBB'))
+/*if (!defined('IN_PHPBB'))
 {
-   exit;
-}
+	exit;
+}*/
 
 class acp_live_search_info
 {

@@ -27,12 +27,12 @@ class acp_live_search_module
 
 	function main($id, $mode)
 	{
-		global $db, $user, $auth, $template;
+		global $db, $user, $auth, $template, $request;
 		global $config, $phpbb_root_path, $phpbb_admin_path, $phpEx;
 		
 		$this->tpl_name = 'acp_live_search';
 		$this->page_title = 'ACP_LIVE_SEARCH_SETTINGS';
-		$action	= request_var('action', '');
+		$action	= $request->variable('action', '');
 		$submit = (isset($_POST['submit'])) ? true : false;
 
 		$form_key = 'acp_live_search';
@@ -53,40 +53,40 @@ class acp_live_search_module
 
 		if ($submit)
 		{
-			$live_search_on_off_forum = request_var('live_search_on_off_forum', false);
-			$live_search_on_off_topic = request_var('live_search_on_off_topic', false);
-			$live_search_on_off_user = request_var('live_search_on_off_user', false);
-			$live_search_show_in_new_window = request_var('live_search_show_in_new_window', 0);
-			$live_search_show_for_guest = request_var('live_search_show_for_guest', 1);
+			$live_search_on_off_forum = $request->variable('live_search_on_off_forum', false);
+			$live_search_on_off_topic = $request->variable('live_search_on_off_topic', false);
+			$live_search_on_off_user = $request->variable('live_search_on_off_user', false);
+			$live_search_show_in_new_window = $request->variable('live_search_show_in_new_window', 0);
+			$live_search_show_for_guest = $request->variable('live_search_show_for_guest', 1);
 
-			set_config('live_search_on_off_forum', $live_search_on_off_forum);
-			set_config('live_search_on_off_topic', $live_search_on_off_topic);
-			set_config('live_search_on_off_user', $live_search_on_off_user);
-			set_config('live_search_show_in_new_window', $live_search_show_in_new_window);
-			set_config('live_search_show_for_guest', $live_search_show_for_guest);
+			$config->set('live_search_on_off_forum', $live_search_on_off_forum);
+			$config->set('live_search_on_off_topic', $live_search_on_off_topic);
+			$config->set('live_search_on_off_user', $live_search_on_off_user);
+			$config->set('live_search_show_in_new_window', $live_search_show_in_new_window);
+			$config->set('live_search_show_for_guest', $live_search_show_for_guest);
 			
 			add_log('admin', 'LOG_CONFIG_' . strtoupper($mode));
 			
 			if($live_search_on_off_forum)
 			{
-				$live_search_min_num_symblols_forum= request_var('live_search_min_num_symblols_forum', 5);
-				$live_search_max_items_to_show_forum= request_var('live_search_max_items_to_show_forum', 20);
-				set_config('live_search_min_num_symblols_forum', $live_search_min_num_symblols_forum);
-				set_config('live_search_max_items_to_show_forum', $live_search_max_items_to_show_forum);
+				$live_search_min_num_symblols_forum= $request->variable('live_search_min_num_symblols_forum', 5);
+				$live_search_max_items_to_show_forum= $request->variable('live_search_max_items_to_show_forum', 20);
+				$config->set('live_search_min_num_symblols_forum', $live_search_min_num_symblols_forum);
+				$config->set('live_search_max_items_to_show_forum', $live_search_max_items_to_show_forum);
 			}
 			if($live_search_on_off_topic)
 			{
-				$live_search_min_num_symblols_topic= request_var('live_search_min_num_symblols_topic', 5);
-				$live_search_max_items_to_show_topic= request_var('live_search_max_items_to_show_topic', 20);
-				set_config('live_search_min_num_symblols_topic', $live_search_min_num_symblols_topic);
-				set_config('live_search_max_items_to_show_topic', $live_search_max_items_to_show_topic);
+				$live_search_min_num_symblols_topic= $request->variable('live_search_min_num_symblols_topic', 5);
+				$live_search_max_items_to_show_topic= $request->variable('live_search_max_items_to_show_topic', 20);
+				$config->set('live_search_min_num_symblols_topic', $live_search_min_num_symblols_topic);
+				$config->set('live_search_max_items_to_show_topic', $live_search_max_items_to_show_topic);
 			}
 			if($live_search_on_off_user)
 			{
-				$live_search_min_num_symblols_user= request_var('live_search_min_num_symblols_user', 5);
-				$live_search_max_items_to_show_user= request_var('live_search_max_items_to_show_user', 20);
-				set_config('live_search_min_num_symblols_user', $live_search_min_num_symblols_user);
-				set_config('live_search_max_items_to_show_user', $live_search_max_items_to_show_user);
+				$live_search_min_num_symblols_user= $request->variable('live_search_min_num_symblols_user', 5);
+				$live_search_max_items_to_show_user= $request->variable('live_search_max_items_to_show_user', 20);
+				$config->set('live_search_min_num_symblols_user', $live_search_min_num_symblols_user);
+				$config->set('live_search_max_items_to_show_user', $live_search_max_items_to_show_user);
 			}
 			
 			

@@ -9,6 +9,8 @@ services:
             - @user
             - %core.root_path%
             - %core.php_ext%
+            - @request
+            - @service_container
         tags:
             - { name: event.listener }
     alg.liveSearch.live_search_ajax_handler:
@@ -24,3 +26,4 @@ services:
             - %core.php_ext%
             - @request
             - %core.table_prefix%
+            - @service_container

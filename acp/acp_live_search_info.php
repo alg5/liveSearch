@@ -40,4 +40,3 @@ class acp_live_search_info
 	}
 }
 
-?>

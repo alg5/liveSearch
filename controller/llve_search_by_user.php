@@ -8,13 +8,6 @@
 */
 
 namespace alg\liveSearch\controller;
-
-/**
-* @ignore
-*/
-
-if (!defined('IN_PHPBB'))
-{
 	exit;
 }
 
@@ -50,10 +43,9 @@ class live_search_by_user
 			case 'post':
 				//$this->live_search_forum($action, $forum);
 			break;
-		   
+
 			default:
 				$this->error[] = array('error' => $this->user->lang['INCORRECT_SEARCH']);
-			
 
 		}
 		page_header($page_title);
@@ -66,7 +58,7 @@ class live_search_by_user
 		return new Response($this->template->return_display('body'), 200);
 
 	}
-	
+
 	private function live_search_forum($action, $forum_id, $q)
 	{
 		global $phpbb_container;
@@ -83,19 +75,23 @@ class live_search_by_user
 			if ($phpbb_content_visibility->get_visibility_sql('topic', $row['forum_id'], 't.'))
 			{
 				$pos = strpos(utf8_strtoupper($row['forum_name']), $q);
-				if ($pos !== false ) 
+				if ($pos !== false )
 				{
 					$row['pos'] = $pos;
 					if($pos == 0)
+					{
 						$arr_priority1[] = $row;
+					}
 					else
+					{
 						$arr_priority2[] = $row;
+					}
 				}
 			}
 		}
 		$this->db->sql_freeresult($result);
-		
-		$arr_res = array_merge((array)$arr_priority1, (array)$arr_priority2);
+
+		$arr_res = array_merge((array) $arr_priority1, (array) $arr_priority2);
 		$message = '';
 		foreach ($arr_res as $forum_info)
 		{
@@ -106,25 +102,25 @@ class live_search_by_user
 		$json_response = new \phpbb\json_response;
 			$json_response->send($message);
 	}
-	
+
 	private function live_search_topic($action, $forum_id, $q)
 	{
 		$sql = "SELECT t.topic_id, t.topic_title, t.topic_status, t.topic_moved_id, t.forum_id, f.forum_name " .
-		" FROM " . TOPICS_TABLE . 
+		" FROM " . TOPICS_TABLE .
 		" t JOIN " . FORUMS_TABLE . " f on t.forum_id = f.forum_id " .
-		" WHERE t.topic_status <> " . ITEM_MOVED . 
-		" AND t.topic_visibility = " . ITEM_APPROVED . 
+		" WHERE t.topic_status <> " . ITEM_MOVED .
+		" AND t.topic_visibility = " . ITEM_APPROVED .
 		"  AND UPPER(t.topic_title) " . $this->db->sql_like_expression($this->db->get_any_char() . $q . $this->db->get_any_char()) .
-		//$this->build_subforums_search($forum_id) . 
+		//$this->build_subforums_search($forum_id) .
 		" ORDER BY topic_title";
 		$result = $this->db->sql_query($sql);
 		$topic_list = array();
-		
+
 		$arr_res = $arr_priority1 = $arr_priority2 = array();
 		while ($row = $this->db->sql_fetchrow($result))
 		{
 			$pos = strpos(utf8_strtoupper($row['topic_title']), $q);
-			if ($pos !== false && $this->auth->acl_get('f_read', $row['forum_id']) ) 
+			if ($pos !== false && $this->auth->acl_get('f_read', $row['forum_id']) )
 			{
 				$row['pos'] = $pos;
 				if($pos == 0)
@@ -149,7 +145,7 @@ class live_search_by_user
 			$json_response->send($message);
 
 	}
-	
+
 	private function live_search_user($action, $q)
 	{
 		$sql = "SELECT user_id, username, user_email " .
@@ -172,9 +168,9 @@ class live_search_by_user
 		$this->db->sql_freeresult($result);
 		$json_response = new \phpbb\json_response;
 			$json_response->send($message);
-   
+
 	}
-  
+
 	private function build_subforums_search($forum_id)
 	{
 		if ($forum_id == 0) return '';
@@ -184,14 +180,14 @@ class live_search_by_user
 		$result = $this->db->sql_query($sql);
 		$row = $this->db->sql_fetchrow($result);
 		$this->db->sql_freeresult($result);
-	
+
 		 $sql = "SELECT forum_id " .
-				" FROM " . FORUMS_TABLE . 
+				" FROM " . FORUMS_TABLE .
 				" WHERE left_id >= " . $row['left_id'] .
 				" AND right_id <= " .  $row['right_id'] .
 				" ORDER BY  left_id" ;
 		$result = $this->db->sql_query($sql);
-	
+
 		$subforums = 'AND t.forum_id IN (';
 		while ($row = $this->db->sql_fetchrow($result))
 		{

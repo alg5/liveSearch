@@ -10,14 +10,6 @@
 namespace alg\liveSearch\acp;
 
 /**
-* @ignore
-*/
-if (!defined('IN_PHPBB'))
-{
-	exit;
-}
-
-/**
 * @package acp
 */
 class acp_live_search_module
@@ -29,7 +21,7 @@ class acp_live_search_module
 	{
 		global $db, $user, $auth, $template, $request;
 		global $config, $phpbb_root_path, $phpbb_admin_path, $phpEx;
-		
+
 		$this->tpl_name = 'acp_live_search';
 		$this->page_title = 'ACP_LIVE_SEARCH_SETTINGS';
 		$action	= $request->variable('action', '');
@@ -64,9 +56,9 @@ class acp_live_search_module
 			$config->set('live_search_on_off_user', $live_search_on_off_user);
 			$config->set('live_search_show_in_new_window', $live_search_show_in_new_window);
 			$config->set('live_search_show_for_guest', $live_search_show_for_guest);
-			
+
 			add_log('admin', 'LOG_CONFIG_' . strtoupper($mode));
-			
+
 			if($live_search_on_off_forum)
 			{
 				$live_search_min_num_symblols_forum= $request->variable('live_search_min_num_symblols_forum', 5);
@@ -88,8 +80,6 @@ class acp_live_search_module
 				$config->set('live_search_min_num_symblols_user', $live_search_min_num_symblols_user);
 				$config->set('live_search_max_items_to_show_user', $live_search_max_items_to_show_user);
 			}
-			
-			
 
 			trigger_error($user->lang['CONFIG_UPDATED'] . adm_back_link($this->u_action));
 		}

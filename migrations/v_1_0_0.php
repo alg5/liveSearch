@@ -89,7 +89,7 @@ class v_1_0_0 extends \phpbb\db\migration\migration
 				(isset($this->config['live_search'])),
 				array('config.remove', array('live_search')),
 			)),
-			// Add new configs 
+			// Add new configs
 			array('config.add', array('live_search_on_off_forum', v_1_0_0::ON)),
 			array('config.add', array('live_search_on_off_topic',  v_1_0_0::ON)),
 			array('config.add', array('live_search_on_off_user',  v_1_0_0::ON)),
@@ -120,11 +120,11 @@ class v_1_0_0 extends \phpbb\db\migration\migration
 					'module_auth'		=> 'ext_alg/liveSearch && acl_a_board',
 					),
 				)),
-			)),			
-			
+			)),
+
 			// Add ACP modules
 			array('module.add', array('acp', 'ACP_CAT_DOT_MODS', 'ACP_LIVE_SEARCH')),
-			
+
 			array('module.add', array('acp', 'ACP_LIVE_SEARCH', array(
 					'module_basename'	=> '\alg\liveSearch\acp\acp_live_search_module',
 					'module_langname'	=> 'ACP_LIVE_SEARCH_SETTINGS',
@@ -172,7 +172,6 @@ class v_1_0_0 extends \phpbb\db\migration\migration
 			)),
 
 			array('module.remove', array('acp', 'ACP_CAT_DOT_MODS', 'ACP_LIVE_SEARCH')),
-			
 
 		);
 	}

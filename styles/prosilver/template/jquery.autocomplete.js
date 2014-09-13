@@ -129,8 +129,9 @@
             this.dom.$results.addClass(this.options.resultsClass);
         }
 
+        var pos = this.options.fixedPos ? 'fixed' : 'absolute';
         this.dom.$results.css({
-            position: 'fixed',
+            position: pos,
            
         });
         this.dom.$results.width(this.options.width);
@@ -278,6 +279,8 @@
             clearTimeout(this.keyTimeout_);
         }
         this.keyTimeout_ = setTimeout(activateNow, delay);
+        this.callHook('onStart');
+
     };
 
     $.Autocompleter.prototype.activateNow = function () {
@@ -571,6 +574,7 @@
             }
             if ($item) {
                 $item.addClass(this.selectClass_).addClass(this.options.selectClass);
+
             }
         }
     };
@@ -681,7 +685,8 @@
         sortFunction: false,
         onItemSelect: false,
         onFinish: false,
-        onNoMatch: false
+        onNoMatch: false,
+        fixedPos: true
     };
 
 })(jQuery);

@@ -57,6 +57,7 @@ protected $thankers = array();
 				$this->live_search_topic($action, $forum, $q);
 			break;
 			case 'user':
+			case 'userpm':
 				$this->live_search_user($action, $q);
 			break;
 			case 'usertopic':

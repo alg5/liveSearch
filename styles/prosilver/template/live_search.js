@@ -17,6 +17,15 @@
             $('#leavesearch').fadeOut("slow");
         });
 
+//        $('#pmheader-postingbox').find('input[name=add_to]').on('click', function (e) {
+//                e.preventDefault();
+//                if ($('#group_list :selected').length >0)
+//               $('#postform').submit();
+//               alert('3');
+
+//       });
+
+
         $(document).click(function (event) {
             if ($(event.target).closest("#user_handle").length || $(event.target).closest(".acResults").length || $(event.target).closest("#user_live_search").length || $(event.target).closest("#leavesearch").length ) return;
             $("#user_handle").hide("slow");
@@ -81,6 +90,29 @@
             },
             onFinish: function (item) {
                 goto_user(item);
+            }
+        });
+
+        //Leave search user pm
+        var user_path = './app.php/liveSearch/userpm/0/0';
+        $("#user_live_search_pm").autocomplete({
+            url: user_path,
+            selectFirst: true,
+            minChars: minChars_user,
+           // addClassUl: 'drg',
+           fixedPos:false,
+            showResult: function (value, data) {
+
+                return '<div class="draggable">' + hilight(value, $("#user_live_search").val()) + '</div>';
+          },
+//            onStart: function (item) {
+//           var position = $("#user_live_search_pm").position();
+//            var t = (position.top + 9) + 'px';
+//            var l = position.left + 'px';
+//            $('#leavesearch_pm').find('.acResults').css({ 'top': t, 'left': l});
+//            },
+            onItemSelect: function (item) {
+                goto_user_pm(item);
             }
         });
 
@@ -196,7 +228,14 @@
         return false;
     }
 
-  
+    function  goto_user_pm(item) {
+        if (item == null || item.value == null || item.value == undefined) return;
+    console.log(item);
+        	var old_value = $("#username_list").val();
+			var new_value = (old_value)? old_value+'\n'+item.value : item.value;
+			$("#username_list").val(new_value);
+
+    }
 
 
 })(jQuery);                                                                 // Avoid conflicts with other libraries

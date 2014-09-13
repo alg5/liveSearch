@@ -6,6 +6,10 @@
 	height: 16px;
 	width: 16px;
 }
+.ls_search_user_pm
+{
+    position:absolute;
+}
 
 #leavesearch,
 #leavesearch_btn {

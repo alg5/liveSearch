@@ -94,7 +94,7 @@ class live_search_by_user
 		foreach ($arr_res as $forum_info)
 		{
 			$forum_id = $forum_info['forum_id'];
- 			$key = htmlspecialchars_decode($forum_info['forum_name'] . ' (' . $forum_info['forum_parent_name'] . ')'  );
+			$key = htmlspecialchars_decode($forum_info['forum_name'] . ' (' . $forum_info['forum_parent_name'] . ')'  );
 			$message .=  $key . "|$forum_id\n";
 		}
 		$json_response = new \phpbb\json_response;
@@ -122,21 +122,25 @@ class live_search_by_user
 			{
 				$row['pos'] = $pos;
 				if($pos == 0)
+				{
 					$arr_priority1[] = $row;
+				}
 				else
+				{
 					$arr_priority2[] = $row;
+				}
 			}
 		}
 		$this->db->sql_freeresult($result);
-		
-		$arr_res = array_merge((array)$arr_priority1, (array)$arr_priority2);
+
+		$arr_res = array_merge((array) $arr_priority1, (array) $arr_priority2);
 		$message = '';
 		foreach ($arr_res as $topic_info)
 		{
 			$forum_id = $topic_info['forum_id'];
-			$topic_id = ($topic_info['topic_status'] == 2) ? (int)$topic_info['topic_moved_id'] : (int)$topic_info['topic_id'];
+			$topic_id = ($topic_info['topic_status'] == 2) ? (int) $topic_info['topic_moved_id'] : (int) $topic_info['topic_id'];
 			$topic_info['topic_title'] = str_replace('|', ' ', $topic_info['topic_title']);
- 			$key = htmlspecialchars_decode($topic_info['topic_title'] . ' (' . $topic_info['forum_name'] . ')'  );
+			$key = htmlspecialchars_decode($topic_info['topic_title'] . ' (' . $topic_info['forum_name'] . ')'  );
 			$message .= $key . "|$topic_id|$forum_id\n";
 		}
 		$json_response = new \phpbb\json_response;
@@ -147,7 +151,7 @@ class live_search_by_user
 	private function live_search_user($action, $q)
 	{
 		$sql = "SELECT user_id, username, user_email " .
-					" FROM " . USERS_TABLE .  
+					" FROM " . USERS_TABLE .
 					" 	WHERE (user_type = " . USER_NORMAL . " OR user_type = " . USER_FOUNDER . ")" .
 					" AND username_clean " . $this->db->sql_like_expression(utf8_clean_string($q) . $this->db->get_any_char());
 					" ORDER BY username";
@@ -157,7 +161,7 @@ class live_search_by_user
 		$message = '';
 		while ($row = $this->db->sql_fetchrow($result))
 		{
-			$user_id = (int)$row['user_id'];
+			$user_id = (int) $row['user_id'];
 			$user_email = $row['user_email'];
 			{
 				$message .= $row['username'] ."|$user_id|$user_email\n";
@@ -171,15 +175,18 @@ class live_search_by_user
 
 	private function build_subforums_search($forum_id)
 	{
-		if ($forum_id == 0) return '';
+		if ($forum_id == 0) 
+		{
+			return '';
+		}
 		$sql = "SELECT left_id, right_id " .
-				" FROM " . FORUMS_TABLE . 
+				" FROM " . FORUMS_TABLE .
 				" WHERE forum_id = " . $forum_id ;
 		$result = $this->db->sql_query($sql);
 		$row = $this->db->sql_fetchrow($result);
 		$this->db->sql_freeresult($result);
 
-		 $sql = "SELECT forum_id " .
+		$sql = "SELECT forum_id " .
 				" FROM " . FORUMS_TABLE .
 				" WHERE left_id >= " . $row['left_id'] .
 				" AND right_id <= " .  $row['right_id'] .
@@ -191,7 +198,7 @@ class live_search_by_user
 		{
 			$subforums .= ( $row['forum_id'] . ',');
 		}
-		$subforums = substr($subforums, 0, -1) . " )"; 
+		$subforums = substr($subforums, 0, -1) . " )";
 		return $subforums;
 	}
 	

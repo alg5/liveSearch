@@ -36,7 +36,7 @@ class live_search_ajax_handler
 		if(!$q && $action != 'usertopic' )
 		{
 			exit();
-		}	
+		}
 		$this->user->add_lang_ext('alg/liveSearch', 'live_search');
 
 		switch ($action)
@@ -99,7 +99,7 @@ class live_search_ajax_handler
 		foreach ($arr_res as $forum_info)
 		{
 			$forum_id = $forum_info['forum_id'];
- 			$key = htmlspecialchars_decode($forum_info['forum_name'] . ' (' . $forum_info['forum_parent_name'] . ')'  );
+			$key = htmlspecialchars_decode($forum_info['forum_name'] . ' (' . $forum_info['forum_parent_name'] . ')'  );
 			$message .=  $key . "|$forum_id\n";
 		}
 		$json_response = new \phpbb\json_response;
@@ -123,13 +123,17 @@ class live_search_ajax_handler
 		while ($row = $this->db->sql_fetchrow($result))
 		{
 			$pos = strpos(utf8_strtoupper($row['topic_title']), $q);
-			if ($pos !== false && $this->auth->acl_get('f_read', $row['forum_id']) ) 
+			if ($pos !== false && $this->auth->acl_get('f_read', $row['forum_id']) )
 			{
 				$row['pos'] = $pos;
 				if($pos == 0)
+				{
 					$arr_priority1[] = $row;
+				}
 				else
+				{
 					$arr_priority2[] = $row;
+				}
 			}
 		}
 		$this->db->sql_freeresult($result);
@@ -139,9 +143,9 @@ class live_search_ajax_handler
 		foreach ($arr_res as $topic_info)
 		{
 			$forum_id = $topic_info['forum_id'];
-			$topic_id = ($topic_info['topic_status'] == 2) ? (int)$topic_info['topic_moved_id'] : (int) $topic_info['topic_id'];
+			$topic_id = ($topic_info['topic_status'] == 2) ? (int) $topic_info['topic_moved_id'] : (int) $topic_info['topic_id'];
 			$topic_info['topic_title'] = str_replace('|', ' ', $topic_info['topic_title']);
- 			$key = htmlspecialchars_decode($topic_info['topic_title'] . ' (' . $topic_info['forum_name'] . ')'  );
+			$key = htmlspecialchars_decode($topic_info['topic_title'] . ' (' . $topic_info['forum_name'] . ')'  );
 			$message .= $key . "|$topic_id|$forum_id\n";
 		}
 		$json_response = new \phpbb\json_response;
@@ -176,7 +180,7 @@ class live_search_ajax_handler
 
 	private function live_search_usertopic($forum, $user)
 	{
-		include_once($this->phpbb_root_path . 'includes/functions_display.' . $this->php_ext);		  
+		include_once($this->phpbb_root_path . 'includes/functions_display.' . $this->php_ext);
 		$this->user->add_lang(array( 'search'));
 		$forum_id = $forum;
 		$author_id = $user;
@@ -228,14 +232,14 @@ gen_sort_selects($limit_days, $sort_by_text, $sort_days, $sort_key, $sort_dir, $
 		$author_id = $user;
 		//$l_search_title = $this->user->lang['SEARCH_ACTIVE_TOPICS'];
 
-		  $sql = "SELECT count(t.topic_id) as total_count " .
+		$sql = "SELECT count(t.topic_id) as total_count " .
 						" FROM " .TOPICS_TABLE . " t LEFT JOIN " . FORUMS_TABLE . " f ON (f.forum_id = t.forum_id)" .
 						" LEFT JOIN " . TOPICS_TRACK_TABLE . " tt ON (tt.user_id = " . $author_id .
 						" AND t.topic_id = tt.topic_id) " .
 						" LEFT JOIN " . FORUMS_TRACK_TABLE . " ft ON (ft.user_id = " . $author_id .
-						 " AND ft.forum_id = f.forum_id) " .
-						" WHERE t.topic_status <> " . ITEM_MOVED . 
-						" AND t.topic_visibility = " . ITEM_APPROVED . 
+						" AND ft.forum_id = f.forum_id) " .
+						" WHERE t.topic_status <> " . ITEM_MOVED .
+						" AND t.topic_visibility = " . ITEM_APPROVED .
 						" AND t.topic_poster = " . $author_id . $this->build_subforums_search($forum_id);
 		$result = $this->db->sql_query($sql);
 		$total_count = (int) $this->db->sql_fetchfield('total_count');
@@ -252,20 +256,20 @@ gen_sort_selects($limit_days, $sort_by_text, $sort_days, $sort_key, $sort_dir, $
 								" LEFT JOIN " . FORUMS_TRACK_TABLE . " ft ON (ft.user_id = " . $author_id .
 								" AND ft.forum_id = f.forum_id) " .
 								" WHERE t.topic_status <> " . ITEM_MOVED .
-							 " AND t.topic_visibility = " . ITEM_APPROVED .
+								" AND t.topic_visibility = " . ITEM_APPROVED .
 								" AND t.topic_poster = " . $author_id . $this->build_subforums_search($forum_id);
 								" ORDER BY " . $sort_key . " " . $sort_dir;
-						 $result = $this->db->sql_query_limit($sql, $per_page, $start);
+						$result = $this->db->sql_query_limit($sql, $per_page, $start);
 				$row = 0;
 			while ($row = $this->db->sql_fetchrow($result))
 				{
-					 $folder_img = $folder_alt = $topic_type = '';
-					 $l_search_matches =  $this->user->lang('FOUND_SEARCH_MATCHES', $total_count) ;
-				  $phpbb_content_visibility = $this->phpbb_container->get('content.visibility');
-				 $replies = $phpbb_content_visibility->get_count('topic_posts', $row, $forum_id) - 1;
-				 $result_topic_id = $row['topic_id'];
- 				 $view_topic_url_params = "f=$forum_id&amp;t=$result_topic_id" . (($u_hilit) ? "&amp;hilit=$u_hilit" : '');
-				 $view_topic_url = append_sid("{$this->phpbb_root_path}viewtopic.$this->php_ext", $view_topic_url_params);
+					$folder_img = $folder_alt = $topic_type = '';
+					$l_search_matches =  $this->user->lang('FOUND_SEARCH_MATCHES', $total_count) ;
+					$phpbb_content_visibility = $this->phpbb_container->get('content.visibility');
+					$replies = $phpbb_content_visibility->get_count('topic_posts', $row, $forum_id) - 1;
+					$result_topic_id = $row['topic_id'];
+					$view_topic_url_params = "f=$forum_id&amp;t=$result_topic_id" . (($u_hilit) ? "&amp;hilit=$u_hilit" : '');
+					$view_topic_url = append_sid("{$this->phpbb_root_path}viewtopic.$this->php_ext", $view_topic_url_params);
 
  			//	if ($this->user->data['is_registered'] && $this->config['load_db_lastread'])
 				//{
@@ -283,30 +287,30 @@ gen_sort_selects($limit_days, $sort_by_text, $sort_days, $sort_key, $sort_dir, $
 				topic_status($row, $replies, (isset($topic_tracking_info[$forum_id][$row['topic_id']]) && $row['topic_last_post_time'] > $topic_tracking_info[$forum_id][$row['topic_id']]) ? true : false, $folder_img, $folder_alt, $topic_type);
 				$unread_topic = (isset($topic_tracking_info[$forum_id][$row['topic_id']]) && $row['topic_last_post_time'] > $topic_tracking_info[$forum_id][$row['topic_id']]) ? true : false;
 				$topic_unapproved = (($row['topic_visibility'] == ITEM_UNAPPROVED || $row['topic_visibility'] == ITEM_REAPPROVE) && $this->auth->acl_get('m_approve', $forum_id)) ? true : false;
-					$posts_unapproved = ($row['topic_visibility'] == ITEM_APPROVED && $row['topic_posts_unapproved'] && $this->auth->acl_get('m_approve', $forum_id)) ? true : false;
+				$posts_unapproved = ($row['topic_visibility'] == ITEM_APPROVED && $row['topic_posts_unapproved'] && $this->auth->acl_get('m_approve', $forum_id)) ? true : false;
 				$topic_deleted = $row['topic_visibility'] == ITEM_DELETED;
 				$u_mcp_queue = ($topic_unapproved || $posts_unapproved) ? append_sid("{$this->phpbb_root_path}mcp.$this->php_exp", 'i=queue&amp;mode=' . (($topic_unapproved) ? 'approve_details' : 'unapproved_posts') . "&amp;t=$result_topic_id", true, $this->user->session_id) : '';
 				$u_mcp_queue = (!$u_mcp_queue && $topic_deleted) ? append_sid("{$this->phpbb_root_path}mcp.$this->php_exp", "i=queue&amp;mode=deleted_topics&amp;t=$result_topic_id", true, $this->user->session_id) : '';
 
 				$this->template->assign_block_vars('searchresults', array (
 					'TOPIC_TITLE'		=> censor_text($row['topic_title']),
-					 'FORUM_TITLE'		=> $row['forum_name'],
+					'FORUM_TITLE'		=> $row['forum_name'],
 					'TOPIC_AUTHOR_FULL'			=> get_username_string('full', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
 					'FIRST_POST_TIME'			=> $this->user->format_date($row['topic_time']),
 					'S_ROW_COUNT'		=> $row,
-					 'TOPIC_REPLIES'		=> $replies,
- 					 'TOPIC_VIEWS'		=> $row['topic_views'],
+					'TOPIC_REPLIES'		=> $replies,
+ 					'TOPIC_VIEWS'		=> $row['topic_views'],
 					'LAST_POST_AUTHOR_FULL'		=> get_username_string('full', $row['topic_last_poster_id'], $row['topic_last_poster_name'], $row['topic_last_poster_colour']),
 					'LAST_POST_TIME'			=> $this->user->format_date($row['topic_last_post_time']),
 					'ATTACH_ICON_IMG'		=> ($this->auth->acl_get('u_download') && $this->auth->acl_get('f_download', $forum_id) && $row['topic_attachment']) ? $this->user->img('icon_topic_attach', $this->user->lang['TOTAL_ATTACHMENTS']) : '',
 					'S_UNREAD_TOPIC'		=> $unread_topic,
 					'S_TOPIC_UNAPPROVED'	=> $topic_unapproved,
 					'S_POSTS_UNAPPROVED'	=> $posts_unapproved,
-						  'TOPIC_IMG_STYLE'		=> $folder_img,
+					'TOPIC_IMG_STYLE'		=> $folder_img,
 					'TOPIC_FOLDER_IMG'		=> $this->user->img($folder_img, $folder_alt),
 					'TOPIC_FOLDER_IMG_ALT'	=> $this->user->lang[$folder_alt],
 
-						  'TOPIC_ICON_IMG'		=> (!empty($icons[$row['icon_id']])) ? $icons[$row['icon_id']]['img'] : '',
+					'TOPIC_ICON_IMG'		=> (!empty($icons[$row['icon_id']])) ? $icons[$row['icon_id']]['img'] : '',
 					'TOPIC_ICON_IMG_WIDTH'	=> (!empty($icons[$row['icon_id']])) ? $icons[$row['icon_id']]['width'] : '',
 					'TOPIC_ICON_IMG_HEIGHT'	=> (!empty($icons[$row['icon_id']])) ? $icons[$row['icon_id']]['height'] : '',
 					'UNAPPROVED_IMG'		=> ($topic_unapproved || $posts_unapproved) ? $this->user->img('icon_topic_unapproved', ($topic_unapproved) ? 'TOPIC_UNAPPROVED' : 'POSTS_UNAPPROVED') : '',
@@ -316,11 +320,11 @@ gen_sort_selects($limit_days, $sort_by_text, $sort_days, $sort_key, $sort_dir, $
 
 						'NEWEST_POST_IMG'	=> $this->user->img('icon_topic_newest', 'VIEW_NEWEST_POST'),
 					'U_NEWEST_POST'			=> append_sid("{$this->phpbb_root_path}viewtopic.$this->php_ext", $view_topic_url_params . '&amp;view=unread') . '#unread',
-					 'U_VIEW_TOPIC'		=> $view_topic_url,
-					 'U_VIEW_FORUM'		=> append_sid("{$this->phpbb_root_path}viewforum.$this->php_ext", 'f=' . $forum_id),
+					'U_VIEW_TOPIC'		=> $view_topic_url,
+					'U_VIEW_FORUM'		=> append_sid("{$this->phpbb_root_path}viewforum.$this->php_ext", 'f=' . $forum_id),
 					'U_MCP_QUEUE'			=> $u_mcp_queue,
 					'U_LAST_POST'			=> append_sid("{$this->phpbb_root_path}viewtopic.$this->php_ext", $view_topic_url_params . '&amp;p=' . $row['topic_last_post_id']) . '#p' . $row['topic_last_post_id'],
-						  ));
+						));
 				$pagination->generate_template_pagination($view_topic_url, 'searchresults.pagination', 'start', $replies + 1, $this->config['posts_per_page'], 1, true, true);
 					 //if ($topic_id && ($topic_id == $result_topic_id))
 					 //{
@@ -329,7 +333,7 @@ gen_sort_selects($limit_days, $sort_by_text, $sort_days, $sort_key, $sort_dir, $
 					 //		  'L_RETURN_TO_TOPIC'	=> $user->lang('RETURN_TO', $topic_title),
 					 //		  'U_SEARCH_TOPIC'	=> $view_topic_url
 					 //	 ));
-					 //}					 
+					 //}					
 					 $row++;				
 				}
 			//$pagination->generate_template_pagination($view_topic_url, 'pagination', 'start', $total_count + 1, $this->config['posts_per_page'], 1, true, true);
@@ -337,18 +341,18 @@ gen_sort_selects($limit_days, $sort_by_text, $sort_days, $sort_key, $sort_dir, $
 				$pagination->generate_template_pagination($u_search, 'pagination', 'start', $total_count, $per_page, $start);
 
 				}
-			  //print_r($sql);
-	 		$this->template->assign_vars(array(
+			//print_r($sql);
+			$this->template->assign_vars(array(
 			'S_SHOW_TOPICS'		=> 1,
 				//'SEARCH_TITLE'		=> $l_search_title,
-				'SEARCH_MATCHES'	=> $l_search_matches,
-			'PAGE_NUMBER'		=> $pagination->on_page($total_count, $this->config['posts_per_page'], $start),
+			'SEARCH_MATCHES'	=>  $total_count == 0 ? '' : $l_search_matches,
+			'PAGE_NUMBER'		=> $total_count == 0 ?  0 : $pagination->on_page($total_count, $this->config['posts_per_page'], $start),
 			'TOTAL_MATCHES'		=> $total_count,
-			 'REPORTED_IMG'		=> $this->user->img('icon_topic_reported', 'TOPIC_REPORTED'),
-			 'UNAPPROVED_IMG'	=> $this->user->img('icon_topic_unapproved', 'TOPIC_UNAPPROVED'),
-			 'DELETED_IMG'			 => $this->user->img('icon_topic_deleted', 'TOPIC_DELETED'),
-			 'POLL_IMG'				 => $this->user->img('icon_topic_poll', 'TOPIC_POLL'),
-			 'LAST_POST_IMG'		=> $this->user->img('icon_topic_latest', 'VIEW_LATEST_POST'),
+			'REPORTED_IMG'		=> $this->user->img('icon_topic_reported', 'TOPIC_REPORTED'),
+			'UNAPPROVED_IMG'	=> $this->user->img('icon_topic_unapproved', 'TOPIC_UNAPPROVED'),
+			'DELETED_IMG'			 => $this->user->img('icon_topic_deleted', 'TOPIC_DELETED'),
+			'POLL_IMG'				 => $this->user->img('icon_topic_poll', 'TOPIC_POLL'),
+			'LAST_POST_IMG'		=> $this->user->img('icon_topic_latest', 'VIEW_LATEST_POST'),
 
 			));
 
@@ -367,7 +371,7 @@ gen_sort_selects($limit_days, $sort_by_text, $sort_days, $sort_key, $sort_dir, $
 	{
 		if ($forum_id == 0) return '';
 		$sql = "SELECT left_id, right_id " .
-				" FROM " . FORUMS_TABLE . 
+				" FROM " . FORUMS_TABLE .
 				" WHERE forum_id = " . $forum_id ;
 		$result = $this->db->sql_query($sql);
 		$row = $this->db->sql_fetchrow($result);
@@ -385,7 +389,7 @@ gen_sort_selects($limit_days, $sort_by_text, $sort_days, $sort_key, $sort_dir, $
 		{
 			$subforums .= ( $row['forum_id'] . ',');
 		}
-		$subforums = substr($subforums, 0, -1) . " )"; 
+		$subforums = substr($subforums, 0, -1) . " )";
 		return $subforums;
 	}
 }

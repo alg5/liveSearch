@@ -32,7 +32,7 @@ class live_search_ajax_handler
 	public function main($action, $forum, $user)
 	{
 		// Grab data
-		$q = utf8_strtoupper(utf8_normalize_nfc(request_var('q', '',true)));
+		$q = utf8_strtoupper(utf8_normalize_nfc($this->request->variable('q', '',true)));
 		if(!$q && $action != 'usertopic' )
 		{
 			exit();
@@ -194,10 +194,10 @@ $s_limit_days = $s_sort_key = $s_sort_dir = $u_sort_param = '';
 gen_sort_selects($limit_days, $sort_by_text, $sort_days, $sort_key, $sort_dir, $s_limit_days, $s_sort_key, $s_sort_dir, $u_sort_param);
 
 		$show_results	= 'topics';
-		$keywords		= utf8_normalize_nfc(request_var('keywords', '', true));
+		$keywords		= utf8_normalize_nfc($this->request->variable('keywords', '', true));
 		$hilit = phpbb_clean_search_string(str_replace(array('+', '-', '|', '(', ')', '&quot;'), ' ', $keywords));
 		$hilit = str_replace(' ', '|', $hilit);
-		$search_forum	= request_var('fid', array(0));
+		$search_forum	= $this->request->variable('fid', array(0));
 		$result_topic_id = 0;
 		$u_hilit = urlencode(htmlspecialchars_decode(str_replace('|', ' ', $hilit)));
 		$u_show_results = '&amp;sr=' . $show_results;

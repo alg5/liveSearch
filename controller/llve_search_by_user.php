@@ -8,8 +8,6 @@
 */
 
 namespace alg\liveSearch\controller;
-	exit;
-}
 
 class live_search_by_user
 {

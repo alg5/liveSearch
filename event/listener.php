@@ -157,11 +157,11 @@ class listener implements EventSubscriberInterface
 	
 	public function search_get_posts_data($event)
 	{
-		$ls = request_var('ls', 0);
+		$ls = $this->request->variable('ls', 0);
 		if ($ls == 0) return;
 	
-		$forum_id = request_var('forum_id', 0);
-		$topic_id = request_var('topic_id', 0);
+		$forum_id = $this->request->variable('forum_id', 0);
+		$topic_id = $this->request->variable('topic_id', 0);
 		if ($forum_id == 0 && $topic_id == 0) return;
 
 		$sql_array = $event['sql_array'];

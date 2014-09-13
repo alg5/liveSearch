@@ -20,7 +20,7 @@ class acp_live_search_module
 	function main($id, $mode)
 	{
 		global $db, $user, $auth, $template, $request;
-		global $config, $phpbb_root_path, $phpbb_admin_path, $phpEx;
+		global $config, $phpbb_root_path, $phpbb_admin_path, $phpEx, $phpbb_log;
 
 		$this->tpl_name = 'acp_live_search';
 		$this->page_title = 'ACP_LIVE_SEARCH_SETTINGS';
@@ -57,7 +57,8 @@ class acp_live_search_module
 			$config->set('live_search_show_in_new_window', $live_search_show_in_new_window);
 			$config->set('live_search_show_for_guest', $live_search_show_for_guest);
 
-			add_log('admin', 'LOG_CONFIG_' . strtoupper($mode));
+			$phpbb_log->add('admin', 'LOG_CONFIG_' . strtoupper($mode));
+            
 
 			if($live_search_on_off_forum)
 			{

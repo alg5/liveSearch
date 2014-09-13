@@ -214,7 +214,6 @@
                         //var topic_path = './app.php/leave_search_by_user/topic/' + S_FORUM_ID + '/' + user_id;
 
                 //window.location = 'search.php?author_id=' + user_id + '&sr=topics&ls=1&forum_id=' + S_FORUM_ID;
-                alert('1');
                 window.location = './app.php/liveSearch/usertopic/' + S_FORUM_ID + '/' + user_id;
             });
             $('#posts_live_search').on('click', function (e) {

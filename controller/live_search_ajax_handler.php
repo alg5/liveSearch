@@ -234,32 +234,32 @@ gen_sort_selects($limit_days, $sort_by_text, $sort_days, $sort_key, $sort_dir, $
 		//$l_search_title = $this->user->lang['SEARCH_ACTIVE_TOPICS'];
 
 		$sql = "SELECT count(t.topic_id) as total_count, u.username" .
-		            " FROM " .TOPICS_TABLE . " t LEFT JOIN " . FORUMS_TABLE . " f ON (f.forum_id = t.forum_id)" .
+					" FROM " .TOPICS_TABLE . " t LEFT JOIN " . FORUMS_TABLE . " f ON (f.forum_id = t.forum_id)" .
 					" LEFT JOIN " . TOPICS_TRACK_TABLE . " tt ON (tt.user_id = " . $author_id .
 					" AND t.topic_id = tt.topic_id) " .
 					" LEFT JOIN " . FORUMS_TRACK_TABLE . " ft ON (ft.user_id = " . $author_id .
 					" AND ft.forum_id = f.forum_id) " .
 					" LEFT JOIN " . USERS_TABLE . " u ON t.topic_poster = u.user_id" .
-			        " WHERE t.topic_status <> " . ITEM_MOVED .
+					" WHERE t.topic_status <> " . ITEM_MOVED .
 					" AND t.topic_visibility = " . ITEM_APPROVED .
 					" AND t.topic_poster = " . $author_id . $this->build_subforums_search($forum_id);
 		$result = $this->db->sql_query($sql);
 		//$total_count = (int) $this->db->sql_fetchfield('total_count');
-        $row = $this->db->sql_fetchrow($result);
-        $total_count = (int) $row['total_count'];
-        $username = $row['username'];
+		$row = $this->db->sql_fetchrow($result);
+		$total_count = (int) $row['total_count'];
+		$username = $row['username'];
 		$this->db->sql_freeresult($result);
-        $forum_name = '';
-        $forum_has_subforums = false;
-         if($forum_id)
-        {
-            $sql = 	" SELECT forum_name, left_id, right_id FROM " . FORUMS_TABLE .  " WHERE forum_id=" . $forum_id; 
-            $result = $this->db->sql_query($sql);
-            $row = $this->db->sql_fetchrow($result);
-            $forum_name = $row['forum_name'] ;
-            $forum_has_subforums = ($row['right_id'] - $row['left_id'] > 1) ? true : false ;
-		    $this->db->sql_freeresult($result);
-        }
+		$forum_name = '';
+		$forum_has_subforums = false;
+		if($forum_id)
+		{
+			$sql = 	" SELECT forum_name, left_id, right_id FROM " . FORUMS_TABLE .  " WHERE forum_id=" . $forum_id;
+			$result = $this->db->sql_query($sql);
+			$row = $this->db->sql_fetchrow($result);
+			$forum_name = $row['forum_name'] ;
+			$forum_has_subforums = ($row['right_id'] - $row['left_id'] > 1) ? true : false ;
+			$this->db->sql_freeresult($result);
+		}
 
 		if ($total_count)
 		{
@@ -357,22 +357,22 @@ gen_sort_selects($limit_days, $sort_by_text, $sort_days, $sort_key, $sort_dir, $
 				$this->pagination->generate_template_pagination($u_search, 'pagination', 'start', $total_count, $per_page, $start);
 
 				}
-		    if ($forum_id)
-            {
-                $res_txt = sprintf($this->user->lang['LIVESEARCH_USERTOPIC_RESULT_IN_FORUM'], $username, $forum_name);
-                if ($forum_has_subforums)
-                {
-                     $res_txt .= $this->user->lang['LIVESEARCH_USERTOPIC_RESULT_IN_SUBFORUMS'];
-                }
-            }
-            else
-            {
-                 $res_txt = sprintf($this->user->lang['LIVESEARCH_USERTOPIC_RESULT'], $username);
-           }
+				if ($forum_id)
+				{
+					 $res_txt = sprintf($this->user->lang['LIVESEARCH_USERTOPIC_RESULT_IN_FORUM'], $username, $forum_name);
+					 if ($forum_has_subforums)
+					 {
+							$res_txt .= $this->user->lang['LIVESEARCH_USERTOPIC_RESULT_IN_SUBFORUMS'];
+					 }
+				}
+				else
+				{
+					  $res_txt = sprintf($this->user->lang['LIVESEARCH_USERTOPIC_RESULT'], $username);
+				}
 			$this->template->assign_vars(array(
 			'S_SHOW_TOPICS'		=> 1,
 			'SEARCH_MATCHES'	=>  $total_count == 0 ? '' : $l_search_matches,
-			'SEARCH_MATCHES_TXT'	=>   $res_txt,
+			'SEARCH_MATCHES_TXT'	=>	$res_txt,
 			'PAGE_NUMBER'		=> $total_count == 0 ?  0 : $this->pagination->on_page($total_count, $this->config['posts_per_page'], $start),
 			'TOTAL_MATCHES'		=> $total_count,
 			'REPORTED_IMG'		=> $this->user->img('icon_topic_reported', 'TOPIC_REPORTED'),

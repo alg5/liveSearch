@@ -120,7 +120,7 @@ class listener implements EventSubscriberInterface
 	public function search_get_topic_data($event)
 	{
 		$ls = $this->request->variable('ls', 0);
-		if ($ls == 0) 
+		if ($ls == 0)
 		{
 			return;
 		}
@@ -151,11 +151,17 @@ class listener implements EventSubscriberInterface
 	public function search_get_posts_data($event)
 	{
 		$ls = $this->request->variable('ls', 0);
-		if ($ls == 0) return;
+		if ($ls == 0)
+		{
+			return;
+		}
 
 		$forum_id = $this->request->variable('forum_id', 0);
 		$topic_id = $this->request->variable('topic_id', 0);
-		if ($forum_id == 0 && $topic_id == 0) return;
+		if ($forum_id == 0 && $topic_id == 0)
+		{
+			return;
+		}
 
 		$sql_array = $event['sql_array'];
 		$where = $sql_array['WHERE'];
@@ -187,16 +193,19 @@ class listener implements EventSubscriberInterface
 
 	private function build_subforums_search($forum_id)
 	{
-		if ($forum_id == 0) return '';
+		if ($forum_id == 0)
+		{
+			return '';
+		}
 		$sql = "SELECT left_id, right_id " .
-				" FROM " . FORUMS_TABLE . 
+				" FROM " . FORUMS_TABLE .
 				" WHERE forum_id = " . $forum_id ;
 		$result = $this->db->sql_query($sql);
 		$row = $this->db->sql_fetchrow($result);
 		$this->db->sql_freeresult($result);
 
 		$sql = "SELECT forum_id " .
-				" FROM " . FORUMS_TABLE . 
+				" FROM " . FORUMS_TABLE .
 				" WHERE left_id >= " . $row['left_id'] .
 				" AND right_id <= " .  $row['right_id'] .
 				" ORDER BY  left_id" ;
@@ -207,7 +216,7 @@ class listener implements EventSubscriberInterface
 		{
 			$subforums .= ( $row['forum_id'] . ',');
 		}
-		$subforums = substr($subforums, 0, -1) . " )"; 
+		$subforums = substr($subforums, 0, -1) . " )";
 		return $subforums;
 	}
 

@@ -12,7 +12,7 @@ namespace alg\liveSearch\controller;
 class live_search_ajax_handler
 {
 	protected $thankers = array();
-	public function __construct(\phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \phpbb\auth\auth $auth, \phpbb\template\template $template, \phpbb\user $user, \phpbb\cache\driver\driver_interface $cache, $phpbb_root_path, $php_ext, \phpbb\request\request_interface $request, $table_prefix, $phpbb_container)
+	public function __construct(\phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \phpbb\auth\auth $auth, \phpbb\template\template $template, \phpbb\user $user, \phpbb\cache\driver\driver_interface $cache, $phpbb_root_path, $php_ext, \phpbb\request\request_interface $request, $table_prefix, $phpbb_container, \phpbb\pagination $pagination)
 	{
 		$this->config = $config;
 		$this->db = $db;
@@ -24,6 +24,7 @@ class live_search_ajax_handler
 		$this->php_ext = $php_ext;
 		$this->request = $request;
 		$this->phpbb_container = $phpbb_container;
+		$this->pagination =  $pagination;
 		$this->return = array(); // save returned data in here
 		$this->error = array(); // save errors in here
 
@@ -232,22 +233,37 @@ gen_sort_selects($limit_days, $sort_by_text, $sort_days, $sort_key, $sort_dir, $
 		$author_id = $user;
 		//$l_search_title = $this->user->lang['SEARCH_ACTIVE_TOPICS'];
 
-		$sql = "SELECT count(t.topic_id) as total_count " .
-						" FROM " .TOPICS_TABLE . " t LEFT JOIN " . FORUMS_TABLE . " f ON (f.forum_id = t.forum_id)" .
-						" LEFT JOIN " . TOPICS_TRACK_TABLE . " tt ON (tt.user_id = " . $author_id .
-						" AND t.topic_id = tt.topic_id) " .
-						" LEFT JOIN " . FORUMS_TRACK_TABLE . " ft ON (ft.user_id = " . $author_id .
-						" AND ft.forum_id = f.forum_id) " .
-						" WHERE t.topic_status <> " . ITEM_MOVED .
-						" AND t.topic_visibility = " . ITEM_APPROVED .
-						" AND t.topic_poster = " . $author_id . $this->build_subforums_search($forum_id);
+		$sql = "SELECT count(t.topic_id) as total_count, u.username" .
+		            " FROM " .TOPICS_TABLE . " t LEFT JOIN " . FORUMS_TABLE . " f ON (f.forum_id = t.forum_id)" .
+					" LEFT JOIN " . TOPICS_TRACK_TABLE . " tt ON (tt.user_id = " . $author_id .
+					" AND t.topic_id = tt.topic_id) " .
+					" LEFT JOIN " . FORUMS_TRACK_TABLE . " ft ON (ft.user_id = " . $author_id .
+					" AND ft.forum_id = f.forum_id) " .
+					" LEFT JOIN " . USERS_TABLE . " u ON t.topic_poster = u.user_id" .
+			        " WHERE t.topic_status <> " . ITEM_MOVED .
+					" AND t.topic_visibility = " . ITEM_APPROVED .
+					" AND t.topic_poster = " . $author_id . $this->build_subforums_search($forum_id);
 		$result = $this->db->sql_query($sql);
-		$total_count = (int) $this->db->sql_fetchfield('total_count');
+		//$total_count = (int) $this->db->sql_fetchfield('total_count');
+        $row = $this->db->sql_fetchrow($result);
+        $total_count = (int) $row['total_count'];
+        $username = $row['username'];
 		$this->db->sql_freeresult($result);
+        $forum_name = '';
+        $forum_has_subforums = false;
+         if($forum_id)
+        {
+            $sql = 	" SELECT forum_name, left_id, right_id FROM " . FORUMS_TABLE .  " WHERE forum_id=" . $forum_id; 
+            $result = $this->db->sql_query($sql);
+            $row = $this->db->sql_fetchrow($result);
+            $forum_name = $row['forum_name'] ;
+            $forum_has_subforums = ($row['right_id'] - $row['left_id'] > 1) ? true : false ;
+		    $this->db->sql_freeresult($result);
+        }
 
 		if ($total_count)
 		{
-				$pagination = $this->phpbb_container->get('pagination');
+				//$pagination = $this->phpbb_container->get('pagination');
 
 				$sql = "SELECT t.*, f.forum_id, f.forum_name, tt.mark_time, ft.mark_time as f_mark_time" .
 								" FROM " .TOPICS_TABLE . " t LEFT JOIN " . FORUMS_TABLE . " f ON (f.forum_id = t.forum_id)" .
@@ -271,7 +287,7 @@ gen_sort_selects($limit_days, $sort_by_text, $sort_days, $sort_key, $sort_dir, $
 					$view_topic_url_params = "f=$forum_id&amp;t=$result_topic_id" . (($u_hilit) ? "&amp;hilit=$u_hilit" : '');
 					$view_topic_url = append_sid("{$this->phpbb_root_path}viewtopic.$this->php_ext", $view_topic_url_params);
 
- 			//	if ($this->user->data['is_registered'] && $this->config['load_db_lastread'])
+			//if ($this->user->data['is_registered'] && $this->config['load_db_lastread'])
 				//{
 				//	$topic_tracking_info[$forum_id] = get_topic_tracking($forum_id, $forum['topic_list'], $forum['rowset'], array($forum_id => $forum['mark_time']));
 				//}
@@ -299,7 +315,7 @@ gen_sort_selects($limit_days, $sort_by_text, $sort_days, $sort_key, $sort_dir, $
 					'FIRST_POST_TIME'			=> $this->user->format_date($row['topic_time']),
 					'S_ROW_COUNT'		=> $row,
 					'TOPIC_REPLIES'		=> $replies,
- 					'TOPIC_VIEWS'		=> $row['topic_views'],
+					'TOPIC_VIEWS'		=> $row['topic_views'],
 					'LAST_POST_AUTHOR_FULL'		=> get_username_string('full', $row['topic_last_poster_id'], $row['topic_last_poster_name'], $row['topic_last_poster_colour']),
 					'LAST_POST_TIME'			=> $this->user->format_date($row['topic_last_post_time']),
 					'ATTACH_ICON_IMG'		=> ($this->auth->acl_get('u_download') && $this->auth->acl_get('f_download', $forum_id) && $row['topic_attachment']) ? $this->user->img('icon_topic_attach', $this->user->lang['TOTAL_ATTACHMENTS']) : '',
@@ -314,7 +330,7 @@ gen_sort_selects($limit_days, $sort_by_text, $sort_days, $sort_key, $sort_dir, $
 					'TOPIC_ICON_IMG_WIDTH'	=> (!empty($icons[$row['icon_id']])) ? $icons[$row['icon_id']]['width'] : '',
 					'TOPIC_ICON_IMG_HEIGHT'	=> (!empty($icons[$row['icon_id']])) ? $icons[$row['icon_id']]['height'] : '',
 					'UNAPPROVED_IMG'		=> ($topic_unapproved || $posts_unapproved) ? $this->user->img('icon_topic_unapproved', ($topic_unapproved) ? 'TOPIC_UNAPPROVED' : 'POSTS_UNAPPROVED') : '',
- 					'S_TOPIC_DELETED'		=> $topic_deleted,
+					'S_TOPIC_DELETED'		=> $topic_deleted,
 					'S_TOPIC_REPORTED'		=> (!empty($row['topic_reported']) && $this->auth->acl_get('m_report', $forum_id)) ? true : false,
 					'S_HAS_POLL'			=> ($row['poll_start']) ? true : false,
 
@@ -325,28 +341,39 @@ gen_sort_selects($limit_days, $sort_by_text, $sort_days, $sort_key, $sort_dir, $
 					'U_MCP_QUEUE'			=> $u_mcp_queue,
 					'U_LAST_POST'			=> append_sid("{$this->phpbb_root_path}viewtopic.$this->php_ext", $view_topic_url_params . '&amp;p=' . $row['topic_last_post_id']) . '#p' . $row['topic_last_post_id'],
 						));
-				$pagination->generate_template_pagination($view_topic_url, 'searchresults.pagination', 'start', $replies + 1, $this->config['posts_per_page'], 1, true, true);
-					 //if ($topic_id && ($topic_id == $result_topic_id))
-					 //{
-					 //	 $template->assign_vars(array(
-					 //		  'SEARCH_TOPIC'		=> $topic_title,
-					 //		  'L_RETURN_TO_TOPIC'	=> $user->lang('RETURN_TO', $topic_title),
-					 //		  'U_SEARCH_TOPIC'	=> $view_topic_url
-					 //	 ));
-					 //}					
-					 $row++;				
+				$this->pagination->generate_template_pagination($view_topic_url, 'searchresults.pagination', 'start', $replies + 1, $this->config['posts_per_page'], 1, true, true);
+					//if ($topic_id && ($topic_id == $result_topic_id))
+					//{
+					//	 $template->assign_vars(array(
+					//		  'SEARCH_TOPIC'		=> $topic_title,
+					//		  'L_RETURN_TO_TOPIC'	=> $user->lang('RETURN_TO', $topic_title),
+					//		  'U_SEARCH_TOPIC'	=> $view_topic_url
+					//	 ));
+					//}
+					$row++;
 				}
 			//$pagination->generate_template_pagination($view_topic_url, 'pagination', 'start', $total_count + 1, $this->config['posts_per_page'], 1, true, true);
 			//print_r($u_search);
-				$pagination->generate_template_pagination($u_search, 'pagination', 'start', $total_count, $per_page, $start);
+				$this->pagination->generate_template_pagination($u_search, 'pagination', 'start', $total_count, $per_page, $start);
 
 				}
-			//print_r($sql);
+		    if ($forum_id)
+            {
+                $res_txt = sprintf($this->user->lang['LIVESEARCH_USERTOPIC_RESULT_IN_FORUM'], $username, $forum_name);
+                if ($forum_has_subforums)
+                {
+                     $res_txt .= $this->user->lang['LIVESEARCH_USERTOPIC_RESULT_IN_SUBFORUMS'];
+                }
+            }
+            else
+            {
+                 $res_txt = sprintf($this->user->lang['LIVESEARCH_USERTOPIC_RESULT'], $username);
+           }
 			$this->template->assign_vars(array(
 			'S_SHOW_TOPICS'		=> 1,
-				//'SEARCH_TITLE'		=> $l_search_title,
 			'SEARCH_MATCHES'	=>  $total_count == 0 ? '' : $l_search_matches,
-			'PAGE_NUMBER'		=> $total_count == 0 ?  0 : $pagination->on_page($total_count, $this->config['posts_per_page'], $start),
+			'SEARCH_MATCHES_TXT'	=>   $res_txt,
+			'PAGE_NUMBER'		=> $total_count == 0 ?  0 : $this->pagination->on_page($total_count, $this->config['posts_per_page'], $start),
 			'TOTAL_MATCHES'		=> $total_count,
 			'REPORTED_IMG'		=> $this->user->img('icon_topic_reported', 'TOPIC_REPORTED'),
 			'UNAPPROVED_IMG'	=> $this->user->img('icon_topic_unapproved', 'TOPIC_UNAPPROVED'),
@@ -369,7 +396,10 @@ gen_sort_selects($limit_days, $sort_by_text, $sort_days, $sort_key, $sort_dir, $
 
 	private function build_subforums_search($forum_id)
 	{
-		if ($forum_id == 0) return '';
+		if ($forum_id == 0)
+		{
+			return '';
+		}
 		$sql = "SELECT left_id, right_id " .
 				" FROM " . FORUMS_TABLE .
 				" WHERE forum_id = " . $forum_id ;

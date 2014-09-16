@@ -52,4 +52,7 @@ $lang = array_merge($lang, array(
 	'LIVE_SEARCH_USER'		=> 'Пользователи',
 	'LIVESEARCH_USER_TXT'	=> 'Имя...',
 	'LIVESEARCH_USER_T'	=> 'Для быстрого поиска начинайте печатать имя пользователя',
+	'LIVESEARCH_USERTOPIC_RESULT'	=> 'Темы пользователя  %1$s',
+	'LIVESEARCH_USERTOPIC_RESULT_IN_FORUM'	=> 'Темы пользователя  %1$s в форуме  %2$s',
+	'LIVESEARCH_USERTOPIC_RESULT_IN_SUBFORUMS'	=> ' и его подфорумах',
 ));

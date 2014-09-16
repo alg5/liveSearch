@@ -27,3 +27,4 @@ services:
             - @request
             - %core.table_prefix%
             - @service_container
+            - @pagination

@@ -62,3 +62,18 @@
     right: 10px;
 }
 
+
+
+/* Alecto */
+#leavesearch_btn {
+	background: url("/styles/prosilver/theme/images/icon_textbox_search.gif") no-repeat;
+	background-color: white;
+	border-radius: 0;
+	border-top-left-radius: 5px;
+	box-shadow: none;
+	margin-left: -15px;
+	padding: 0;
+	position: fixed;
+	top: 15px;
+	width: 15px;
+}

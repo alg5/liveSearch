@@ -3,7 +3,7 @@
     $().ready(function () {
 
   
-        $("#leavesearch_btn").hoverIntent(function ()
+        $("#leavesearch_btn").click(function ()
         {
              $('#leavesearch_btn').fadeOut("slow");
             $('#leavesearch').fadeIn("slow");

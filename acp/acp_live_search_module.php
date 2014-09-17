@@ -57,7 +57,7 @@ class acp_live_search_module
 			$config->set('live_search_show_in_new_window', $live_search_show_in_new_window);
 			$config->set('live_search_show_for_guest', $live_search_show_for_guest);
 
-			$phpbb_log->add('admin', 'LOG_CONFIG_' . strtoupper($mode));
+			$phpbb_log->add('admin', $user->data['user_id'], $user->ip, 'LOG_CONFIG_' . strtoupper($mode));
 
 			if($live_search_on_off_forum)
 			{

@@ -6,13 +6,13 @@
 
 
 // создаем кнопку поиска
-	$("#leavesearch_btn").before('<div style="float: right;"><div id="leavesearch-ShowHideBtn" style="background: url(/ext/alg/liveSearch/styles/prosilver/theme/images/show.png); cursor: pointer; margin-left: 25px; position: fixed; top: 0; width:24px; height:24px; visibility: hidden;" ></div></div>');
+	$("#leavesearch_btn").before('<div style="float: right;"><div id="leavesearch-ShowHideBtn" style="background: url(/ext/alg/liveSearch/styles/prosilver/theme/images/show-hide.png) 0 14px; cursor: pointer; position: fixed; top: 14px; width:14px; height:14px; visibility: hidden;" ></div></div>');
 
 
 // загружаем настройку показа кнопки поиска
 	var I = localStorage.getItem('extended_menu_hide_show');
 	if (I == null || isNaN(I)) { I = 1;}				// проверяем, существуют ли настройки
-	if (I == 0) { $('#leavesearch-ShowHideBtn').css('background','url(/ext/alg/liveSearch/styles/prosilver/theme/images/hide.png)'); }
+	if (I == 0) { $('#leavesearch-ShowHideBtn').css('background','url(/ext/alg/liveSearch/styles/prosilver/theme/images/show-hide.png) 0 0'); }
 
 
 // включаем блоки
@@ -36,11 +36,11 @@
 // функция показа/скрытия
 	function showHideleaveSearch() {
         	if (I == 0) {
-			$('#leavesearch-ShowHideBtn').css('background','url(/ext/alg/liveSearch/styles/prosilver/theme/images/hide.png)');
+			$('#leavesearch-ShowHideBtn').css('background','url(/ext/alg/liveSearch/styles/prosilver/theme/images/show-hide.png) 0 0');
 			$('#leavesearch_btn').hide();
 			$('#leavesearch').hide();
 		} else {
-			$('#leavesearch-ShowHideBtn').css('background','url(/ext/alg/liveSearch/styles/prosilver/theme/images/show.png)');
+			$('#leavesearch-ShowHideBtn').css('background','url(/ext/alg/liveSearch/styles/prosilver/theme/images/show-hide.png) 0 14px');
 			$('#leavesearch_btn').css({opacity: 0.0, visibility: "visible", display: "block"}).animate({opacity: "1.0"},1000);
 		}
         	localStorage.setItem('extended_menu_hide_show', I); 		// сохраняем настройку показа меню

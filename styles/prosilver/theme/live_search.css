@@ -63,3 +63,7 @@
     right: 10px;
 }
 
+
+@media screen and (max-width: 700px) {
+	#leavesearch-ShowHideBtn, #leavesearch, #leavesearch_btn { display: none !important; }
+}

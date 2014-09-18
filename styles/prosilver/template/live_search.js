@@ -1,9 +1,72 @@
 ﻿(function ($) {  // Avoid conflicts with other libraries
 
+
+// проверяем, включено ли расширение ExtendedControls
+	if ($('#extended-ShowHideMenuBtn').length == 0){
+
+
+// создаем кнопку поиска
+	$("#leavesearch_btn").before('<div style="float: right;"><div id="leavesearch-ShowHideBtn" style="background: url(/ext/alg/liveSearch/styles/prosilver/theme/images/show.png); cursor: pointer; margin-left: 25px; position: fixed; top: 0; width:24px; height:24px; visibility: hidden;" ></div></div>');
+
+
+// загружаем настройку показа кнопки поиска
+	var I = localStorage.getItem('extended_menu_hide_show');
+	if (I == null || isNaN(I)) { I = 1;}				// проверяем, существуют ли настройки
+	if (I == 0) { $('#leavesearch-ShowHideBtn').css('background','url(/ext/alg/liveSearch/styles/prosilver/theme/images/hide.png)'); }
+
+
+// включаем блоки
+	$(document).ready(function () {
+		setTimeout(function() {
+			$('#leavesearch-ShowHideBtn').css({opacity: 0.0, visibility: "visible"}).animate({opacity: '1.0'},1000);
+		        showHideleaveSearch();
+		}, 1000);
+	});
+
+
+// отрабатываем клики показать/скрыть для поиска
+	$("#leavesearch-ShowHideBtn").click(function ()
+        {
+		I = 1 - I;
+	        showHideleaveSearch();
+	});
+	}
+
+
+// функция показа/скрытия
+	function showHideleaveSearch() {
+        	if (I == 0) {
+			$('#leavesearch-ShowHideBtn').css('background','url(/ext/alg/liveSearch/styles/prosilver/theme/images/hide.png)');
+			$('#leavesearch_btn').hide();
+			$('#leavesearch').hide();
+		} else {
+			$('#leavesearch-ShowHideBtn').css('background','url(/ext/alg/liveSearch/styles/prosilver/theme/images/show.png)');
+			$('#leavesearch_btn').css({opacity: 0.0, visibility: "visible", display: "block"}).animate({opacity: "1.0"},1000);
+		}
+        	localStorage.setItem('extended_menu_hide_show', I); 		// сохраняем настройку показа меню
+	}
+
+
+
+// расчет ширины формы поиска
+	var leavesearchWidth = 0;
+	if ($('#topic_live_search').length > 0) {leavesearchWidth = $('#topic_live_search').outerWidth() + 75 }
+	if ($('#forum_live_search').length > 0) {leavesearchWidth = leavesearchWidth + $('#forum_live_search').outerWidth() + 90 }
+	if ($('#user_live_search').length > 0) {leavesearchWidth = leavesearchWidth + $('#user_live_search').outerWidth() + 125 }
+
+	if (leavesearchWidth > 300 && leavesearchWidth < 550 ) { leavesearchWidth = leavesearchWidth - 23; }
+	else if (leavesearchWidth > 500 ) { leavesearchWidth = leavesearchWidth - 45; }
+
+	$('#leavesearch').css('width', leavesearchWidth);
+
+
+
+
+
     $().ready(function () {
 
-  
-        $("#leavesearch_btn").click(function ()
+ 
+        $("#leavesearch_btn").hoverIntent(function ()
         {
              $('#leavesearch_btn').fadeOut("slow");
             $('#leavesearch').fadeIn("slow");
@@ -38,10 +101,12 @@
         });
         
         //live search forum
-        var topic_path = './app.php/liveSearch/forum/' + S_FORUM_ID + '/0';
+ //       var topic_path = './app.php/liveSearch/forum/' + S_FORUM_ID + '/0';
+        //"./../../../liveSearch/usertopic/0/54?'
         $("#forum_live_search").autocomplete(
 		    {
-		        url: topic_path,
+		        //url: topic_path,
+		        url: U_FORUM_LS_PATH,
 		        sortResults: false,
 		        width: 600,
 		        maxItemsToShow: maxItemsToShow_forum,
@@ -58,10 +123,10 @@
 		    });
 
         //live search topic
-        var topic_path = './app.php/liveSearch/topic/' + S_FORUM_ID + '/0';
+       // var topic_path = './app.php/liveSearch/topic/' + S_FORUM_ID + '/0';
         $("#topic_live_search").autocomplete(
 		    {
-		        url: topic_path,
+		        url: U_TOPIC_LS_PATH,
 		        sortResults: false,
 		        width: 600,
 		        maxItemsToShow: maxItemsToShow_topic,
@@ -78,8 +143,9 @@
 
         //Leave search user
         var user_path = './app.php/liveSearch/user/0/0';
+
         $("#user_live_search").autocomplete({
-            url: user_path,
+            url: U_USER_LS_PATH,
             selectFirst: true,
             minChars: minChars_user,
             addClassUl: 'drg',
@@ -96,7 +162,7 @@
         //Leave search user pm
         var user_path = './app.php/liveSearch/userpm/0/0';
         $("#user_live_search_pm").autocomplete({
-            url: user_path,
+            url: U_USER_PM_LS_PATH,
             selectFirst: true,
             minChars: minChars_user,
            // addClassUl: 'drg',
@@ -200,13 +266,14 @@
             $('.leave_search_contact-icon').on('click', function (e) {
                 e.preventDefault();
                 if ($(this).hasClass('icon-profile')) {
-                    window.location = './memberlist.php?mode=viewprofile&u=' + user_id;
+                    //window.location = './memberlist.php?mode=viewprofile&u=' + user_id;
+                    window.location = U_MEMBERLIST_LS_PATH + 'viewprofile&u=' + user_id;
                 }
                 if ($(this).hasClass('pm-icon')) {
-                    window.location = './ucp.php?i=pm&mode=compose&u=' + user_id;
+                    window.location = U_UCP_LS_PATH + 'compose&i=pm&u=' + user_id;
                 }
                 if ($(this).hasClass('email-icon')) {
-                    window.location = './memberlist.php?mode=email&u=' + user_id;
+                    window.location = U_MEMBERLIST_LS_PATH + 'email&u=' + user_id;
                 }
             });
             $('#topics_live_search').on('click', function (e) {
@@ -214,7 +281,15 @@
                         //var topic_path = './app.php/leave_search_by_user/topic/' + S_FORUM_ID + '/' + user_id;
 
                 //window.location = 'search.php?author_id=' + user_id + '&sr=topics&ls=1&forum_id=' + S_FORUM_ID;
-                window.location = './app.php/liveSearch/usertopic/' + S_FORUM_ID + '/' + user_id;
+                U_USERTOPIC_LS_PATH
+                 var arr = U_USERTOPIC_LS_PATH.split('/');
+                var l = arr.length;
+                arr[arr.length-2] = S_FORUM_ID;
+                arr[arr.length-1] = user_id;
+                var usertopic_path = arr.join('/');
+                alert(usertopic_path);
+               //window.location = './app.php/liveSearch/usertopic/' + S_FORUM_ID + '/' + user_id;
+               window.location = usertopic_path;
             });
             $('#posts_live_search').on('click', function (e) {
                 e.preventDefault();

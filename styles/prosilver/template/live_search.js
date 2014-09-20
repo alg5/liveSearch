@@ -1,5 +1,6 @@
 ﻿(function ($) {  // Avoid conflicts with other libraries
 
+<<<<<<< HEAD
     //****show-hide button update*****
     // check if ext  ExtendedControls is set on
 //	if ($('#extended-ShowHideMenuBtn').length == 0){
@@ -57,6 +58,57 @@
 
 
     //calculate witdh for search panel
+=======
+
+// проверяем, включено ли расширение ExtendedControls
+	if ($('#extended-ShowHideMenuBtn').length == 0){
+
+
+// создаем кнопку поиска
+	$("#leavesearch_btn").before('<div style="float: right;"><div id="leavesearch-ShowHideBtn" style="background: url(/ext/alg/liveSearch/styles/prosilver/theme/images/show-hide.png) 0 14px; cursor: pointer; position: fixed; top: 14px; width:14px; height:14px; visibility: hidden;" ></div></div>');
+
+
+// загружаем настройку показа кнопки поиска
+	var I = localStorage.getItem('extended_menu_hide_show');
+	if (I == null || isNaN(I)) { I = 1;}				// проверяем, существуют ли настройки
+	if (I == 0) { $('#leavesearch-ShowHideBtn').css('background','url(/ext/alg/liveSearch/styles/prosilver/theme/images/show-hide.png) 0 0'); }
+
+
+// включаем блоки
+	$(document).ready(function () {
+		setTimeout(function() {
+			$('#leavesearch-ShowHideBtn').css({opacity: 0.0, visibility: "visible"}).animate({opacity: '1.0'},1000);
+		        showHideleaveSearch();
+		}, 1000);
+	});
+
+
+// отрабатываем клики показать/скрыть для поиска
+	$("#leavesearch-ShowHideBtn").click(function ()
+        {
+		I = 1 - I;
+	        showHideleaveSearch();
+	});
+	}
+
+
+// функция показа/скрытия
+	function showHideleaveSearch() {
+        	if (I == 0) {
+			$('#leavesearch-ShowHideBtn').css('background','url(/ext/alg/liveSearch/styles/prosilver/theme/images/show-hide.png) 0 0');
+			$('#leavesearch_btn').hide();
+			$('#leavesearch').hide();
+		} else {
+			$('#leavesearch-ShowHideBtn').css('background','url(/ext/alg/liveSearch/styles/prosilver/theme/images/show-hide.png) 0 14px');
+			$('#leavesearch_btn').css({opacity: 0.0, visibility: "visible", display: "block"}).animate({opacity: "1.0"},1000);
+		}
+        	localStorage.setItem('extended_menu_hide_show', I); 		// сохраняем настройку показа меню
+	}
+
+
+
+// расчет ширины формы поиска
+>>>>>>> origin/master
 	var leavesearchWidth = 0;
 	if ($('#topic_live_search').length > 0) {leavesearchWidth = $('#topic_live_search').outerWidth() + 75 }
 	if ($('#forum_live_search').length > 0) {leavesearchWidth = leavesearchWidth + $('#forum_live_search').outerWidth() + 90 }
@@ -66,12 +118,23 @@
 	else if (leavesearchWidth > 500 ) { leavesearchWidth = leavesearchWidth - 45; }
 
 	$('#leavesearch').css('width', leavesearchWidth);
+<<<<<<< HEAD
     //****show-hide button update*****
     
     
     $().ready(function () {
 
        // showHideleaveSearch();
+=======
+
+
+
+
+
+    $().ready(function () {
+
+ 
+>>>>>>> origin/master
         $("#leavesearch_btn").hoverIntent(function ()
         {
              $('#leavesearch_btn').fadeOut("slow");

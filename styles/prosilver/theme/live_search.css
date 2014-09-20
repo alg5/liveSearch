@@ -36,7 +36,11 @@
 	cursor:pointer;
 	font-weight: bold;
 	height: 16px;
+<<<<<<< HEAD
 	/*display: none;*/
+=======
+	display: none;
+>>>>>>> origin/master
 }
 
 
@@ -84,3 +88,7 @@
 	
 }
 
+
+@media screen and (max-width: 700px) {
+	#leavesearch-ShowHideBtn, #leavesearch, #leavesearch_btn { display: none !important; }
+}

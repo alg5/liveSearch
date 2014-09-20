@@ -76,7 +76,8 @@ class live_search_ajax_handler
 		$arr_res = $arr_priority1 = $arr_priority2 = array();
 		while ($row = $this->db->sql_fetchrow($result))
 		{
-			if ($phpbb_content_visibility->get_visibility_sql('topic', $row['forum_id'], 't.'))
+            if ($this->auth->acl_get('f_read', $row['forum_id']) ) 
+
 			{
 				$pos = strpos(utf8_strtoupper($row['forum_name']), $q);
 				if ($pos !== false )
@@ -156,8 +157,10 @@ class live_search_ajax_handler
 
 	private function live_search_user($action, $q)
 	{
-		$sql = "SELECT user_id, username, user_email " .
-					" FROM " . USERS_TABLE .
+		//$sql = "SELECT user_id, username, user_email " .
+		$sql = "SELECT u.*, pf_phpbb_icq, pf_phpbb_website, pf_phpbb_wlm, pf_phpbb_yahoo, pf_phpbb_aol, pf_phpbb_facebook, pf_phpbb_googleplus, pf_phpbb_skype, pf_phpbb_twitter, pf_phpbb_youtube " .
+					" FROM " . USERS_TABLE . 
+                    " u LEFT JOIN " . PROFILE_FIELDS_DATA_TABLE . " pf on u.user_id = pf.user_id" .
 					" 	WHERE (user_type = " . USER_NORMAL . " OR user_type = " . USER_FOUNDER . ")" .
 					" AND username_clean " . $this->db->sql_like_expression(utf8_clean_string($q) . $this->db->get_any_char());
 					" ORDER BY username";
@@ -165,14 +168,29 @@ class live_search_ajax_handler
 		$result = $this->db->sql_query($sql);
 		//$user_list = array();
 		$message = '';
+        
 		while ($row = $this->db->sql_fetchrow($result))
 		{
 			$user_id = (int) $row['user_id'];
-			$user_email = $row['user_email'];
-			{
-				$message .= $row['username'] ."|$user_id|$user_email\n";
-			}
-		}
+			//$user_email = $row['user_email'];
+            $allow_pm = $this->config['allow_privmsg'] && $this->auth->acl_get('u_sendpm') && ($row['user_allow_pm'] || $this->auth->acl_gets('a_', 'm_') || $this->auth->acl_getf_global('m_')) ? 1 :0;
+	        $allow_email = (!empty($row['user_allow_viewemail']) && $this->auth->acl_get('u_sendemail')) || $this->auth->acl_get('a_email') ? 1 :0;
+	        $icq = empty($row['pf_phpbb_icq']) ? '' : $row['pf_phpbb_icq'];
+	        $website = empty($row['pf_phpbb_website']) ? '' :$row['pf_phpbb_website'];
+	        $allow_wlm = empty($row['pf_phpbb_wlm']) ? 0 :1;
+	        $allow_yahoo = empty($row['pf_phpbb_yahoo']) ? 0 :1;
+	        $allow_aol = empty($row['pf_phpbb_aol']) ? 0 :1;
+	        $allow_facebook = empty($row['pf_phpbb_facebook']) ? 0 :1;
+	        $allow_googleplus = empty($row['pf_phpbb_googleplus']) ? 0 :1;
+	        $skype = empty($row['pf_phpbb_skype']) ? '' :$row['pf_phpbb_skype'];
+	        $allow_twitter = empty($row['pf_phpbb_twitter']) ? 0 :1;
+	        $allow_youtube = empty($row['pf_phpbb_youtube']) ? 0 :1;
+            
+
+            $message .= $row['username'] ."|$user_id|$allow_pm|$allow_email|$icq|$website|$allow_wlm|$allow_yahoo|$allow_aol|$allow_facebook|$allow_googleplus|$skype|$allow_twitter|$allow_youtube\n";
+
+        }
+        
 		$this->db->sql_freeresult($result);
 		$json_response = new \phpbb\json_response;
 			$json_response->send($message);

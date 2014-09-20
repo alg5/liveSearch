@@ -50,12 +50,14 @@ class acp_live_search_module
 			$live_search_on_off_user = $request->variable('live_search_on_off_user', false);
 			$live_search_show_in_new_window = $request->variable('live_search_show_in_new_window', 0);
 			$live_search_show_for_guest = $request->variable('live_search_show_for_guest', 1);
+			$live_search_use_eye_button = $request->variable('live_search_use_eye_button', 1);
 
 			$config->set('live_search_on_off_forum', $live_search_on_off_forum);
 			$config->set('live_search_on_off_topic', $live_search_on_off_topic);
 			$config->set('live_search_on_off_user', $live_search_on_off_user);
 			$config->set('live_search_show_in_new_window', $live_search_show_in_new_window);
 			$config->set('live_search_show_for_guest', $live_search_show_for_guest);
+			$config->set('live_search_use_eye_button', $live_search_use_eye_button);
 
 			$phpbb_log->add('admin', $user->data['user_id'], $user->ip, 'LOG_CONFIG_' . strtoupper($mode));
 
@@ -100,6 +102,7 @@ class acp_live_search_module
 			'LIVE_SEARCH_MAX_ITEMS_TO_SHOW_USER'	=>  isset($config['live_search_max_items_to_show_user']) ? $config['live_search_max_items_to_show_user'] : 0,
 			'LIVE_SEARCH_SHOW_IN_NEW_WINDOW'	=>  isset($config['live_search_show_in_new_window']) ? $config['live_search_show_in_new_window'] : 0,
 			'LIVE_SEARCH_SHOW_FOR_GUEST'	=>  isset($config['live_search_show_for_guest']) ? $config['live_search_show_for_guest'] : 1,
+			'LIVE_SEARCH_USE_EYE_BUTTON'	=>  isset($config['live_search_use_eye_button']) ? $config['live_search_use_eye_button'] : 1,
 
 			'S_ERROR'			=> (sizeof($error)) ? true : false,
 			'ERROR_MSG'			=> implode('<br />', $error),

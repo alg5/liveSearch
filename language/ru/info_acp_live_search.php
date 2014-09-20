@@ -54,4 +54,5 @@ $lang = array_merge($lang, array(
 	'LIVE_SEARCH_USER_ON'				=> '<strong> Включить быстрый поиск по пользователям</strong>',
 	'LIVE_SEARCH_SHOW_IN_NEW_WINDOW'				=> 'Отображать результаты в новом окне ',
 	'LIVE_SEARCH_SHOW_FOR_GUEST'				=> 'Показывать для гостей ',
+	'LIVE_SEARCH_USE_EYE_BUTTON'				=> 'Использовать кнопку "глаз" для временного сокрытия панели поиска ',
 ));

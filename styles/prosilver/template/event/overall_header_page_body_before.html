@@ -1,27 +1,39 @@
  <!-- IF S_LIVE_SEARCH --> 
+     <!-- IF LIVE_SEARCH_USE_EYE_BUTTON --> 
+        <div style="float: right;">
+            <div id="leavesearch-ShowHideBtn" class="leavesearch-ShowHideBtn_open"  title='{L_LIVE_SEARCH_EYE_BUTTON_CLOSE_T}'  > </div>
+        </div>
+     <!-- ENDIF  -->
  <div id='leavesearch_btn'>{L_LIVE_SEARCH_CAPTION}</div>
-
-    <div id='leavesearch' >&nbsp; 
+    <div id='leavesearch' >
      <!-- IF LIVE_SEARCH_ON_OFF_FORUM --> 
-     {L_LIVE_SEARCH_FORUM}: <input  class="inputbox search tiny" id="forum_live_search" type=search placeholder="{L_LIVE_SEARCH_FORUM_TXT}"  title="{L_LIVE_SEARCH_FORUM_T}" /> &nbsp;&nbsp;
+        <span id="forum_live_search_text" style="padding-left:10px;">{L_LIVE_SEARCH_FORUM}: </span><input  class="inputbox search tiny" id="forum_live_search" type=search placeholder="{L_LIVE_SEARCH_FORUM_TXT}"  title="{L_LIVE_SEARCH_FORUM_T}" />
       <!-- ENDIF  -->
       <!-- IF LIVE_SEARCH_ON_OFF_TOPIC --> 
-     {L_LIVE_SEARCH_TOPIC}: <input  class="inputbox search tiny" id="topic_live_search" type=search placeholder="{L_LIVE_SEARCH_TXT}"  title="{L_LIVE_SEARCH_T}" /> &nbsp;&nbsp;
+        <span id="topic_live_search_text" style="padding-left:10px;">{L_LIVE_SEARCH_TOPIC}: </span><input class="inputbox search tiny" id="topic_live_search" type=search placeholder="{L_LIVE_SEARCH_TXT}"  title="{L_LIVE_SEARCH_T}" />
       <!-- ENDIF  -->
 
       <!-- IF LIVE_SEARCH_ON_OFF_USER --> 
-
-     {L_LIVE_SEARCH_USER}: 
-    <input  class="inputbox search tiny" id="user_live_search" type=search placeholder="{L_LIVESEARCH_USER_TXT}"  title="{L_LIVESEARCH_USER_T}" /> 
+     <span id="user_live_search_text" style="padding-left:10px;">{L_LIVE_SEARCH_USER}: </span><input class="inputbox search tiny" id="user_live_search" type=search placeholder="{L_LIVESEARCH_USER_TXT}"  title="{L_LIVESEARCH_USER_T}" /> 
         <div id="user_handle" class="dropdown hidden" >
 		<div class="pointer">
             <div class="pointer-inner">
         </div>
     </div>
-    <div class="dropdown-contents contact-icons" style='border-bottom-color: White'>
+    <div class="dropdown-contents contact-icons" style='border-bottom-color: White; '>
 		    <a href="javascript:void(0);" title="{L_LIVE_SEARCH_GO_PROFILE}" ><span class="leave_search_contact-icon   icon-profile" style="padding:0;"></span></a>
             <a href="#" title="{L_SEND_PRIVATE_MESSAGE}" ><span class="leave_search_contact-icon contact-icon pm-icon"></span></a>
             <a href="#" title="{L_SEND_EMAIL}"><span  class="leave_search_contact-icon contact-icon email-icon"></span></a>
+            <a href="#" title="{L_SEND_ICQ_MESSAGE}"><span  class="leave_search_contact-icon contact-icon phpbb_icq-icon"></span></a>
+            <a href="#" title="{L_VISIT_WEBSITE}"><span  class="leave_search_contact-icon contact-icon phpbb_website-icon"></span></a>
+            <a href="#" title="{L_WLM}"><span  class="leave_search_contact-icon contact-icon phpbb_wlm-icon"></span></a>
+            <a href="#" title="{L_YAHOO}"><span  class="leave_search_contact-icon contact-icon phpbb_yahoo-icon"></span></a>
+            <a href="#" title="AOL"><span  class="leave_search_contact-icon contact-icon phpbb_aol-icon"></span></a>
+            <a href="#" title="{L_FACEBOOK}"><span  class="leave_search_contact-icon contact-icon phpbb_facebook-icon"></span></a>
+            <a href="#" title="{L_GOOGLEPLUS}"><span  class="leave_search_contact-icon contact-icon phpbb_googleplus-icon"></span></a>
+            <a href="#" title="{L_SKYPE}"><span  class="leave_search_contact-icon contact-icon phpbb_skype-icon"></span></a>
+            <a href="#" title="{L_TWITTER}"><span  class="leave_search_contact-icon contact-icon phpbb_twitter-icon"></span></a>
+            <a href="#" title="{L_YOUTUBE}"><span  class="leave_search_contact-icon contact-icon phpbb_youtube-icon"></span></a>
     </div>
     <ul class="dropdown-contents" role="menu" style="margin-left: 0px; left: 0px; max-width: 1281px; ">
         <li ><a id="topics_live_search" href="javascript:void(0);" 

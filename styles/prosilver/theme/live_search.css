@@ -36,6 +36,7 @@
 	cursor:pointer;
 	font-weight: bold;
 	height: 16px;
+	/*display: none;*/
 }
 
 
@@ -60,5 +61,26 @@
 {
     left: auto; 
     right: 10px;
+}
+#leavesearch-ShowHideBtn 
+{
+    background-image: url("./images/show-hide.png");
+	cursor: pointer; 
+	position: fixed; 
+	top: 14px; 
+	width:14px; 
+	height:14px; 
+}
+.leavesearch-ShowHideBtn_open {
+    background-position:  0 14px;
+}
+.leavesearch-ShowHideBtn_close {
+    background-position:  0 0;
+}
+
+
+@media screen and (max-width: 700px) {
+	/*#leavesearch-ShowHideBtn, #leavesearch, #leavesearch_btn { display: none !important; }*/
+	
 }
 

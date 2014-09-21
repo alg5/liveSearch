@@ -1,4 +1,4 @@
-﻿(function ($) {  // Avoid conflicts with other libraries
+﻿(function ($) {  
 
     //****show-hide button update*****
     // check if ext  ExtendedControls is set on

@@ -1,6 +1,5 @@
 ﻿(function ($) {  // Avoid conflicts with other libraries
 
-<<<<<<< HEAD
     //****show-hide button update*****
     // check if ext  ExtendedControls is set on
 //	if ($('#extended-ShowHideMenuBtn').length == 0){
@@ -58,57 +57,6 @@
 
 
     //calculate witdh for search panel
-=======
-
-// проверяем, включено ли расширение ExtendedControls
-	if ($('#extended-ShowHideMenuBtn').length == 0){
-
-
-// создаем кнопку поиска
-	$("#leavesearch_btn").before('<div style="float: right;"><div id="leavesearch-ShowHideBtn" style="background: url(/ext/alg/liveSearch/styles/prosilver/theme/images/show-hide.png) 0 14px; cursor: pointer; position: fixed; top: 14px; width:14px; height:14px; visibility: hidden;" ></div></div>');
-
-
-// загружаем настройку показа кнопки поиска
-	var I = localStorage.getItem('extended_menu_hide_show');
-	if (I == null || isNaN(I)) { I = 1;}				// проверяем, существуют ли настройки
-	if (I == 0) { $('#leavesearch-ShowHideBtn').css('background','url(/ext/alg/liveSearch/styles/prosilver/theme/images/show-hide.png) 0 0'); }
-
-
-// включаем блоки
-	$(document).ready(function () {
-		setTimeout(function() {
-			$('#leavesearch-ShowHideBtn').css({opacity: 0.0, visibility: "visible"}).animate({opacity: '1.0'},1000);
-		        showHideleaveSearch();
-		}, 1000);
-	});
-
-
-// отрабатываем клики показать/скрыть для поиска
-	$("#leavesearch-ShowHideBtn").click(function ()
-        {
-		I = 1 - I;
-	        showHideleaveSearch();
-	});
-	}
-
-
-// функция показа/скрытия
-	function showHideleaveSearch() {
-        	if (I == 0) {
-			$('#leavesearch-ShowHideBtn').css('background','url(/ext/alg/liveSearch/styles/prosilver/theme/images/show-hide.png) 0 0');
-			$('#leavesearch_btn').hide();
-			$('#leavesearch').hide();
-		} else {
-			$('#leavesearch-ShowHideBtn').css('background','url(/ext/alg/liveSearch/styles/prosilver/theme/images/show-hide.png) 0 14px');
-			$('#leavesearch_btn').css({opacity: 0.0, visibility: "visible", display: "block"}).animate({opacity: "1.0"},1000);
-		}
-        	localStorage.setItem('extended_menu_hide_show', I); 		// сохраняем настройку показа меню
-	}
-
-
-
-// расчет ширины формы поиска
->>>>>>> origin/master
 	var leavesearchWidth = 0;
 	if ($('#topic_live_search').length > 0) {leavesearchWidth = $('#topic_live_search').outerWidth() + 75 }
 	if ($('#forum_live_search').length > 0) {leavesearchWidth = leavesearchWidth + $('#forum_live_search').outerWidth() + 90 }
@@ -118,23 +66,12 @@
 	else if (leavesearchWidth > 500 ) { leavesearchWidth = leavesearchWidth - 45; }
 
 	$('#leavesearch').css('width', leavesearchWidth);
-<<<<<<< HEAD
     //****show-hide button update*****
     
     
     $().ready(function () {
 
        // showHideleaveSearch();
-=======
-
-
-
-
-
-    $().ready(function () {
-
- 
->>>>>>> origin/master
         $("#leavesearch_btn").hoverIntent(function ()
         {
              $('#leavesearch_btn').fadeOut("slow");
@@ -285,14 +222,14 @@
             var allow_email = item.data[2];
             var icq = item.data[3];
             var website = item.data[4];
-            var allow_wlm = item.data[5];
-           var allow_yahoo = item.data[6];
-           var allow_aol = item.data[7];
-           var allow_facebook = item.data[8];
-           var allow_googleplus = item.data[9];
+            var wlm = item.data[5];
+           var yahoo = item.data[6];
+           var aol = item.data[7];
+           var facebook = item.data[8];
+           var googleplus = item.data[9];
            var skype = item.data[10];
-           var allow_twitter = item.data[11];
-           var allow_youtube = item.data[12];
+           var twitter = item.data[11];
+           var youtube = item.data[12];
 
             $('span.leave_search_contact-icon').each(function () {
                  $(this).parent().hide();
@@ -303,14 +240,14 @@
              if (allow_email == 1) $('#user_handle').find('span.email-icon').parent().show();
              if (icq != '') $('#user_handle').find('span.phpbb_icq-icon').parent().show();
              if (website != '') $('#user_handle').find('span.phpbb_website-icon').parent().show();
-             if (allow_wlm == 1) $('#user_handle').find('span.phpbb_wlm-icon').parent().show();
-             if (allow_yahoo == 1) $('#user_handle').find('span.phpbb_yahoo-icon').parent().show();
-             if (allow_aol == 1) $('#user_handle').find('span.phpbb_aol-icon').parent().show();
-             if (allow_facebook == 1) $('#user_handle').find('span.phpbb_facebook-icon').parent().show();
-             if (allow_googleplus == 1) $('#user_handle').find('span.phpbb_googleplus-icon').parent().show();
+             if (wlm != '') $('#user_handle').find('span.phpbb_wlm-icon').parent().show();
+             if (yahoo != '') $('#user_handle').find('span.phpbb_yahoo-icon').parent().show();
+             if (aol != '') $('#user_handle').find('span.phpbb_aol-icon').parent().show();
+             if (facebook != '') $('#user_handle').find('span.phpbb_facebook-icon').parent().show();
+             if (googleplus != '') $('#user_handle').find('span.phpbb_googleplus-icon').parent().show();
              if (skype != '') $('#user_handle').find('span.phpbb_skype-icon').parent().show();
-             if (allow_twitter == 1) $('#user_handle').find('span.phpbb_twitter-icon').parent().show();
-             if (allow_youtube == 1) $('#user_handle').find('span.phpbb_youtube-icon').parent().show();
+             if (twitter != '') $('#user_handle').find('span.phpbb_twitter-icon').parent().show();
+             if (youtube != '') $('#user_handle').find('span.phpbb_youtube-icon').parent().show();
 
 
 
@@ -332,8 +269,29 @@
                 if ($(this).hasClass('phpbb_website-icon')) {
                     window.location = website;
                 }
+                if ($(this).hasClass('phpbb_wlm-icon')) {
+                    //window.location = 'skype:' + skype + '?userinfo';
+                }
+                if ($(this).hasClass('phpbb_yahoo-icon')) {
+                    window.location = 'http://edit.yahoo.com/config/send_webmesg?.target=' + yahho  + '&.src=pg';
+                }
+                if ($(this).hasClass('phpbb_aol-icon')) {
+                   // window.location = 'http://edit.yahoo.com/config/send_webmesg?.target=' + yahho  + '&.src=pg';
+                }
+                if ($(this).hasClass('phpbb_facebook-icon')) {
+                    window.location = 'http://facebook.com/' + facebook + '/';
+                }
+                if ($(this).hasClass('phpbb_googleplus-icon')) {
+                    window.location = 'http://plus.google.com/'+googleplus;
+                }
                 if ($(this).hasClass('phpbb_skype-icon')) {
                     window.location = 'skype:' + skype + '?userinfo';
+                }
+                if ($(this).hasClass('phpbb_twitter-icon')) {
+                    window.location = 'http://twitter.com/' + twitter;
+                }
+                if ($(this).hasClass('phpbb_youtube-icon')) {
+                    window.location = 'http://youtube.com/user/' + youtube;
                 }
             });
             $('#topics_live_search').on('click', function (e) {

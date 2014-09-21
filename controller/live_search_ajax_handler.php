@@ -70,7 +70,7 @@ class live_search_ajax_handler
 		$topic_visibility = $phpbb_content_visibility->get_visibility_sql('topic', $forum_id, 't.');
 		$sql = "SELECT  f.forum_id, f.forum_name, pf.forum_name as forum_parent_name  " .
 				" FROM " . FORUMS_TABLE . " f LEFT JOIN " . FORUMS_TABLE . " pf on f.parent_id = pf.forum_id " .
-				" WHERE UPPER(f.forum_name) " . $this->db->sql_like_expression($this->db->get_any_char()  . $q . $this->db->get_any_char() ) .
+				" WHERE UPPER(f.forum_name) " . $this->db->sql_like_expression($this->db->get_any_char()  . $this->db->sql_escape($q) . $this->db->get_any_char() ) .
 				" ORDER BY f.forum_name";
 		$result = $this->db->sql_query($sql);
 		$arr_res = $arr_priority1 = $arr_priority2 = array();
@@ -101,7 +101,11 @@ class live_search_ajax_handler
 		foreach ($arr_res as $forum_info)
 		{
 			$forum_id = $forum_info['forum_id'];
-			$key = htmlspecialchars_decode($forum_info['forum_name'] . ' (' . $forum_info['forum_parent_name'] . ')'  );
+			$key = htmlspecialchars_decode($forum_info['forum_name']) ;
+            if ($forum_info['forum_parent_name'] )
+            {
+                $key .= ' (' . htmlspecialchars_decode($forum_info['forum_parent_name']) . ')'  ;
+            }
 			$message .=  $key . "|$forum_id\n";
 		}
 		$json_response = new \phpbb\json_response;
@@ -115,7 +119,7 @@ class live_search_ajax_handler
 		" t JOIN " . FORUMS_TABLE . " f on t.forum_id = f.forum_id " .
 		" WHERE t.topic_status <> " . ITEM_MOVED .
 		" AND t.topic_visibility = " . ITEM_APPROVED .
-		"  AND UPPER(t.topic_title) " . $this->db->sql_like_expression($this->db->get_any_char() . $q . $this->db->get_any_char()) .
+		"  AND UPPER(t.topic_title) " . $this->db->sql_like_expression($this->db->get_any_char() .  $this->db->sql_escape($q) . $this->db->get_any_char()) .
 		//$this->build_subforums_search($forum_id) .
 		" ORDER BY topic_title";
 		$result = $this->db->sql_query($sql);
@@ -162,7 +166,7 @@ class live_search_ajax_handler
 					" FROM " . USERS_TABLE . 
                     " u LEFT JOIN " . PROFILE_FIELDS_DATA_TABLE . " pf on u.user_id = pf.user_id" .
 					" 	WHERE (user_type = " . USER_NORMAL . " OR user_type = " . USER_FOUNDER . ")" .
-					" AND username_clean " . $this->db->sql_like_expression(utf8_clean_string($q) . $this->db->get_any_char());
+					" AND username_clean " . $this->db->sql_like_expression(utf8_clean_string( $this->db->sql_escape($q)) . $this->db->get_any_char());
 					" ORDER BY username";
 
 		$result = $this->db->sql_query($sql);
@@ -177,17 +181,17 @@ class live_search_ajax_handler
 	        $allow_email = (!empty($row['user_allow_viewemail']) && $this->auth->acl_get('u_sendemail')) || $this->auth->acl_get('a_email') ? 1 :0;
 	        $icq = empty($row['pf_phpbb_icq']) ? '' : $row['pf_phpbb_icq'];
 	        $website = empty($row['pf_phpbb_website']) ? '' :$row['pf_phpbb_website'];
-	        $allow_wlm = empty($row['pf_phpbb_wlm']) ? 0 :1;
-	        $allow_yahoo = empty($row['pf_phpbb_yahoo']) ? 0 :1;
-	        $allow_aol = empty($row['pf_phpbb_aol']) ? 0 :1;
-	        $allow_facebook = empty($row['pf_phpbb_facebook']) ? 0 :1;
-	        $allow_googleplus = empty($row['pf_phpbb_googleplus']) ? 0 :1;
+	        $wlm = empty($row['pf_phpbb_wlm']) ? '' : $row['pf_phpbb_wlm'];
+	        $yahoo = empty($row['pf_phpbb_yahoo']) ? '' :$row['pf_phpbb_yahoo'];
+	        $aol = empty($row['pf_phpbb_aol']) ? '' :$row['pf_phpbb_aol'];
+	        $facebook = empty($row['pf_phpbb_facebook']) ? '' :$row['pf_phpbb_facebook'];
+	        $googleplus = empty($row['pf_phpbb_googleplus']) ? '' :$row['pf_phpbb_googleplus'];
 	        $skype = empty($row['pf_phpbb_skype']) ? '' :$row['pf_phpbb_skype'];
-	        $allow_twitter = empty($row['pf_phpbb_twitter']) ? 0 :1;
-	        $allow_youtube = empty($row['pf_phpbb_youtube']) ? 0 :1;
+	        $twitter = empty($row['pf_phpbb_twitter']) ? '' :$row['pf_phpbb_twitter'];
+	        $youtube = empty($row['pf_phpbb_youtube']) ? '' :$row['pf_phpbb_youtube'];
             
 
-            $message .= $row['username'] ."|$user_id|$allow_pm|$allow_email|$icq|$website|$allow_wlm|$allow_yahoo|$allow_aol|$allow_facebook|$allow_googleplus|$skype|$allow_twitter|$allow_youtube\n";
+            $message .= $row['username'] ."|$user_id|$allow_pm|$allow_email|$icq|$website|$wlm|$yahoo|$aol|$facebook|$googleplus|$skype|$twitter|$youtube\n";
 
         }
         

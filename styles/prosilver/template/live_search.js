@@ -1,45 +1,31 @@
 ﻿(function ($) {  
-
-    //****show-hide button update*****
-    // check if ext  ExtendedControls is set on
-//	if ($('#extended-ShowHideMenuBtn').length == 0){
-
-
-    // create ShowHide button
-	//$("#leavesearch_btn").before('<div style="float: right;"><div id="leavesearch-ShowHideBtn" style="background: url(/ext/alg/liveSearch/styles/prosilver/theme/images/show-hide.png) 0 14px; cursor: pointer; position: fixed; top: 14px; width:14px; height:14px; visibility: hidden;" ></div></div>');
+var obj = { };
+$(obj).eye({
+        name: 'ls_eye',
+        title_open:LIVE_SEARCH_EYE_BUTTON_OPEN_T,
+        title_close:LIVE_SEARCH_EYE_BUTTON_CLOSE_T,
+        id: ['leavesearch_btn', 'leavesearch'],
 
 
-    // get setting for this button
-//	var I = localStorage.getItem('extended_menu_hide_show');
-//	if (I == null || isNaN(I)) { I = 1;}				// проверяем, существуют ли настройки
-//	//if (I == 0) { $('#leavesearch-ShowHideBtn').css('background','url(/ext/alg/liveSearch/styles/prosilver/theme/images/show-hide.png) 0 0'); }
-
-
-    // set on blocks
-//	$(document).ready(function () {
-//		setTimeout(function() {
-//			$('#leavesearch-ShowHideBtn').css({opacity: 0.0, visibility: "visible"}).animate({opacity: '1.0'},1000);
-//		        showHideleaveSearch();
-//		}, 1000);
-//	});
-
-    // togle show/hide
-	$("#leavesearch-ShowHideBtn").click(function ()
-        {
-		//I = 1 - I;
-	        //showHideleaveSearch();
-            if ($(this).hasClass('leavesearch-ShowHideBtn_open'))
-            {
-                $(this).removeClass('leavesearch-ShowHideBtn_open').addClass('leavesearch-ShowHideBtn_close').attr('title', LIVE_SEARCH_EYE_BUTTON_OPEN_T);
- 			    $('#leavesearch_btn').hide();
-			    $('#leavesearch').hide();
-           }
-            else
-            {
-                $(this).removeClass('leavesearch-ShowHideBtn_close').addClass('leavesearch-ShowHideBtn_open').attr('title', LIVE_SEARCH_EYE_BUTTON_CLOSE_T);
-  			    $('#leavesearch_btn').show();
-           }
 	});
+
+//    // togle show/hide
+//	$("#leavesearch-ShowHideBtn").click(function ()
+//        {
+//		//I = 1 - I;
+//	        //showHideleaveSearch();
+//            if ($(this).hasClass('leavesearch-ShowHideBtn_open'))
+//            {
+//                $(this).removeClass('leavesearch-ShowHideBtn_open').addClass('leavesearch-ShowHideBtn_close').attr('title', LIVE_SEARCH_EYE_BUTTON_OPEN_T);
+// 			    $('#leavesearch_btn').hide();
+//			    $('#leavesearch').hide();
+//           }
+//            else
+//            {
+//                $(this).removeClass('leavesearch-ShowHideBtn_close').addClass('leavesearch-ShowHideBtn_open').attr('title', LIVE_SEARCH_EYE_BUTTON_CLOSE_T);
+//  			    $('#leavesearch_btn').show();
+//           }
+//	});
 //	}
 
 

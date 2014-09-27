@@ -1,0 +1,16 @@
+.eye_btn 
+{
+    background-image: url("../jquery.eye/images/show-hide.png");
+	cursor: pointer; 
+	position: fixed; 
+	top: 14px; 
+	width:14px; 
+	height:14px; 
+	z-index :12;
+}
+.eye_btn_open {
+    background-position:  0 14px;
+}
+.eye_btn_close {
+    background-position:  0 0;
+}

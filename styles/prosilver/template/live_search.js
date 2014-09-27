@@ -5,42 +5,7 @@ $(obj).eye({
         title_open:LIVE_SEARCH_EYE_BUTTON_OPEN_T,
         title_close:LIVE_SEARCH_EYE_BUTTON_CLOSE_T,
         id: ['leavesearch_btn', 'leavesearch'],
-
-
 	});
-
-//    // togle show/hide
-//	$("#leavesearch-ShowHideBtn").click(function ()
-//        {
-//		//I = 1 - I;
-//	        //showHideleaveSearch();
-//            if ($(this).hasClass('leavesearch-ShowHideBtn_open'))
-//            {
-//                $(this).removeClass('leavesearch-ShowHideBtn_open').addClass('leavesearch-ShowHideBtn_close').attr('title', LIVE_SEARCH_EYE_BUTTON_OPEN_T);
-// 			    $('#leavesearch_btn').hide();
-//			    $('#leavesearch').hide();
-//           }
-//            else
-//            {
-//                $(this).removeClass('leavesearch-ShowHideBtn_close').addClass('leavesearch-ShowHideBtn_open').attr('title', LIVE_SEARCH_EYE_BUTTON_CLOSE_T);
-//  			    $('#leavesearch_btn').show();
-//           }
-//	});
-//	}
-
-
-//	function showHideleaveSearch() {
-//        	if (I == 0) {
-//			//$('#leavesearch-ShowHideBtn').css('background','url(/ext/alg/liveSearch/styles/prosilver/theme/images/show-hide.png) 0 0');
-//			$('#leavesearch_btn').hide();
-//			$('#leavesearch').hide();
-//		} else {
-//			//$('#leavesearch-ShowHideBtn').css('background','url(/ext/alg/liveSearch/styles/prosilver/theme/images/show-hide.png) 0 14px');
-//			$('#leavesearch_btn').css({opacity: 0.0, visibility: "visible", display: "block"}).animate({opacity: "1.0"},1000);
-//		}
-//        	localStorage.setItem('extended_menu_hide_show', I); 		// сохраняем настройку показа меню
-//	}
-
 
     //calculate witdh for search panel
 	var leavesearchWidth = 0;

@@ -273,7 +273,6 @@ $(obj).eye({
 
     function  goto_user_pm(item) {
         if (item == null || item.value == null || item.value == undefined) return;
-    console.log(item);
         	var old_value = $("#username_list").val();
 			var new_value = (old_value)? old_value+'\n'+item.value : item.value;
 			$("#username_list").val(new_value);

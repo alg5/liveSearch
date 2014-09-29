@@ -76,7 +76,7 @@ class live_search_ajax_handler
 		$arr_res = $arr_priority1 = $arr_priority2 = array();
 		while ($row = $this->db->sql_fetchrow($result))
 		{
-            if ($this->auth->acl_get('f_read', $row['forum_id']) ) 
+			if ($this->auth->acl_get('f_read', $row['forum_id']) )
 
 			{
 				$pos = strpos(utf8_strtoupper($row['forum_name']), $q);
@@ -102,10 +102,10 @@ class live_search_ajax_handler
 		{
 			$forum_id = $forum_info['forum_id'];
 			$key = htmlspecialchars_decode($forum_info['forum_name']) ;
-            if ($forum_info['forum_parent_name'] )
-            {
-                $key .= ' (' . htmlspecialchars_decode($forum_info['forum_parent_name']) . ')'  ;
-            }
+			if ($forum_info['forum_parent_name'] )
+			{
+				$key .= ' (' . htmlspecialchars_decode($forum_info['forum_parent_name']) . ')'  ;
+			}
 			$message .=  $key . "|$forum_id\n";
 		}
 		$json_response = new \phpbb\json_response;
@@ -163,38 +163,37 @@ class live_search_ajax_handler
 	{
 		//$sql = "SELECT user_id, username, user_email " .
 		$sql = "SELECT u.*, pf_phpbb_icq, pf_phpbb_website, pf_phpbb_wlm, pf_phpbb_yahoo, pf_phpbb_aol, pf_phpbb_facebook, pf_phpbb_googleplus, pf_phpbb_skype, pf_phpbb_twitter, pf_phpbb_youtube " .
-					" FROM " . USERS_TABLE . 
-                    " u LEFT JOIN " . PROFILE_FIELDS_DATA_TABLE . " pf on u.user_id = pf.user_id" .
-					" 	WHERE (user_type = " . USER_NORMAL . " OR user_type = " . USER_FOUNDER . ")" .
+					" FROM " . USERS_TABLE .
+					" u LEFT JOIN " . PROFILE_FIELDS_DATA_TABLE . " pf on u.user_id = pf.user_id" .
+					" WHERE (user_type = " . USER_NORMAL . " OR user_type = " . USER_FOUNDER . ")" .
 					" AND username_clean " . $this->db->sql_like_expression(utf8_clean_string( $this->db->sql_escape($q)) . $this->db->get_any_char());
 					" ORDER BY username";
 
 		$result = $this->db->sql_query($sql);
 		//$user_list = array();
 		$message = '';
-        
+
 		while ($row = $this->db->sql_fetchrow($result))
 		{
 			$user_id = (int) $row['user_id'];
 			//$user_email = $row['user_email'];
-            $allow_pm = $this->config['allow_privmsg'] && $this->auth->acl_get('u_sendpm') && ($row['user_allow_pm'] || $this->auth->acl_gets('a_', 'm_') || $this->auth->acl_getf_global('m_')) ? 1 :0;
-	        $allow_email = (!empty($row['user_allow_viewemail']) && $this->auth->acl_get('u_sendemail')) || $this->auth->acl_get('a_email') ? 1 :0;
-	        $icq = empty($row['pf_phpbb_icq']) ? '' : $row['pf_phpbb_icq'];
-	        $website = empty($row['pf_phpbb_website']) ? '' :$row['pf_phpbb_website'];
-	        $wlm = empty($row['pf_phpbb_wlm']) ? '' : $row['pf_phpbb_wlm'];
-	        $yahoo = empty($row['pf_phpbb_yahoo']) ? '' :$row['pf_phpbb_yahoo'];
-	        $aol = empty($row['pf_phpbb_aol']) ? '' :$row['pf_phpbb_aol'];
-	        $facebook = empty($row['pf_phpbb_facebook']) ? '' :$row['pf_phpbb_facebook'];
-	        $googleplus = empty($row['pf_phpbb_googleplus']) ? '' :$row['pf_phpbb_googleplus'];
-	        $skype = empty($row['pf_phpbb_skype']) ? '' :$row['pf_phpbb_skype'];
-	        $twitter = empty($row['pf_phpbb_twitter']) ? '' :$row['pf_phpbb_twitter'];
-	        $youtube = empty($row['pf_phpbb_youtube']) ? '' :$row['pf_phpbb_youtube'];
-            
+			$allow_pm = $this->config['allow_privmsg'] && $this->auth->acl_get('u_sendpm') && ($row['user_allow_pm'] || $this->auth->acl_gets('a_', 'm_') || $this->auth->acl_getf_global('m_')) ? 1 :0;
+			$allow_email = (!empty($row['user_allow_viewemail']) && $this->auth->acl_get('u_sendemail')) || $this->auth->acl_get('a_email') ? 1 :0;
+			$icq = empty($row['pf_phpbb_icq']) ? '' : $row['pf_phpbb_icq'];
+			$website = empty($row['pf_phpbb_website']) ? '' :$row['pf_phpbb_website'];
+			$wlm = empty($row['pf_phpbb_wlm']) ? '' : $row['pf_phpbb_wlm'];
+			$yahoo = empty($row['pf_phpbb_yahoo']) ? '' :$row['pf_phpbb_yahoo'];
+			$aol = empty($row['pf_phpbb_aol']) ? '' :$row['pf_phpbb_aol'];
+			$facebook = empty($row['pf_phpbb_facebook']) ? '' :$row['pf_phpbb_facebook'];
+			$googleplus = empty($row['pf_phpbb_googleplus']) ? '' :$row['pf_phpbb_googleplus'];
+			$skype = empty($row['pf_phpbb_skype']) ? '' :$row['pf_phpbb_skype'];
+			$twitter = empty($row['pf_phpbb_twitter']) ? '' :$row['pf_phpbb_twitter'];
+			$youtube = empty($row['pf_phpbb_youtube']) ? '' :$row['pf_phpbb_youtube'];
 
-            $message .= $row['username'] ."|$user_id|$allow_pm|$allow_email|$icq|$website|$wlm|$yahoo|$aol|$facebook|$googleplus|$skype|$twitter|$youtube\n";
+			$message .= $row['username'] ."|$user_id|$allow_pm|$allow_email|$icq|$website|$wlm|$yahoo|$aol|$facebook|$googleplus|$skype|$twitter|$youtube\n";
 
         }
-        
+
 		$this->db->sql_freeresult($result);
 		$json_response = new \phpbb\json_response;
 			$json_response->send($message);
@@ -381,15 +380,15 @@ gen_sort_selects($limit_days, $sort_by_text, $sort_days, $sort_key, $sort_dir, $
 				}
 				if ($forum_id)
 				{
-					 $res_txt = sprintf($this->user->lang['LIVESEARCH_USERTOPIC_RESULT_IN_FORUM'], $username, $forum_name);
-					 if ($forum_has_subforums)
-					 {
+					$res_txt = sprintf($this->user->lang['LIVESEARCH_USERTOPIC_RESULT_IN_FORUM'], $username, $forum_name);
+					if ($forum_has_subforums)
+					{
 							$res_txt .= $this->user->lang['LIVESEARCH_USERTOPIC_RESULT_IN_SUBFORUMS'];
-					 }
+					}
 				}
 				else
 				{
-					  $res_txt = sprintf($this->user->lang['LIVESEARCH_USERTOPIC_RESULT'], $username);
+					$res_txt = sprintf($this->user->lang['LIVESEARCH_USERTOPIC_RESULT'], $username);
 				}
 			$this->template->assign_vars(array(
 			'S_SHOW_TOPICS'		=> 1,

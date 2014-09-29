@@ -192,7 +192,7 @@ class live_search_ajax_handler
 
 			$message .= $row['username'] ."|$user_id|$allow_pm|$allow_email|$icq|$website|$wlm|$yahoo|$aol|$facebook|$googleplus|$skype|$twitter|$youtube\n";
 
-        }
+		}
 
 		$this->db->sql_freeresult($result);
 		$json_response = new \phpbb\json_response;

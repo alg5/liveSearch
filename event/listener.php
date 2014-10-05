@@ -39,10 +39,9 @@ class listener implements EventSubscriberInterface
 
 	public function adm_page_header($event)
 	{
-		   $this->template->assign_vars(array(
+		$this->template->assign_vars(array(
 				'U_USER_LS_ACP_PATH'	=> append_sid("{$this->phpbb_root_path}liveSearch/user/0/0"),
 			));
-	
 	}
 	public function posting_modify_template_vars($event)
 	{
@@ -50,7 +49,7 @@ class listener implements EventSubscriberInterface
 		if($this->config['live_search_on_off_similartopic'] )
 		{
 			$mode = $event['mode'];
-		   $this->template->assign_vars(array(
+			$this->template->assign_vars(array(
 				'S_SIMILARTOPIC_SHOW'		=> $mode == 'post' ,
 				'MIN_CHARS_FORUM'	=>isset($this->config['live_search_min_num_symblols_forum']) ? $this->config['live_search_min_num_symblols_forum'] : 1,
 				'MIN_CHARS_USER'	=>isset($this->config['live_search_min_num_symblols_user']) ? $this->config['live_search_min_num_symblols_user'] : 1,

@@ -231,7 +231,7 @@ class live_search_ajax_handler
 		// Which forums should not be searched? Author searches are also carried out in unindexed forums
 		$ex_fid_ary = array_keys($this->auth->acl_getf('!f_read', true));
 		$not_in_fid = (sizeof($ex_fid_ary)) ? 'WHERE ' . $this->db->sql_in_set('f.forum_id', $ex_fid_ary, true) . " OR (f.forum_password <> '' AND fa.user_id <> " . (int) $this->user->data['user_id'] . ')' : "";
- 
+
 		// find out in which forums the user is allowed to view posts
 		$m_approve_posts_fid_sql = $this->content_visibility->get_global_visibility_sql('post', $ex_fid_ary, 'p.');
 		$m_approve_topics_fid_sql = $this->content_visibility->get_global_visibility_sql('topic', $ex_fid_ary, 't.');
@@ -286,7 +286,7 @@ class live_search_ajax_handler
 								" WHERE " . $this->db->sql_in_set('f.forum_id', $ex_fid_ary, true) .
 								" AND t.topic_status <> " . ITEM_MOVED .
 								" AND t.topic_visibility = " . ITEM_APPROVED .
-								" AND t.topic_poster = " . $author_id . 
+								" AND t.topic_poster = " . $author_id .
 								$this->build_subforums_search($forum_id);
 								" ORDER BY " . $sort_key . " " . $sort_dir;
 				$result = $this->db->sql_query_limit($sql, $per_page, $start);
@@ -320,7 +320,7 @@ class live_search_ajax_handler
 						$unread_topic = (isset($topic_tracking_info[$ls_topic_id]) && $row['topic_last_post_time'] > $topic_tracking_info[$ls_topic_id]) ? true : false;
 
 						topic_status($row, $replies, $unread_topic, $folder_img, $folder_alt, $topic_type);
-					   //topic_status($row, $replies, (isset($topic_tracking_info[$forum_id][$row['topic_id']]) && $row['topic_last_post_time'] > $topic_tracking_info[$forum_id][$row['topic_id']]) ? true : false, $folder_img, $folder_alt, $topic_type);
+						//topic_status($row, $replies, (isset($topic_tracking_info[$forum_id][$row['topic_id']]) && $row['topic_last_post_time'] > $topic_tracking_info[$forum_id][$row['topic_id']]) ? true : false, $folder_img, $folder_alt, $topic_type);
 
 						$topic_unapproved = ($row['topic_visibility'] == ITEM_UNAPPROVED && $this->auth->acl_get('m_approve', $ls_forum_id)) ? true : false;
 						//$topic_unapproved = (($row['topic_visibility'] == ITEM_UNAPPROVED || $row['topic_visibility'] == ITEM_REAPPROVE) && $this->auth->acl_get('m_approve', $ls_forum_id)) ? true : false;

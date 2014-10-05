@@ -3,14 +3,10 @@ services:
         class: alg\liveSearch\event\listener
         arguments:
             - @config
-            - @dbal.conn
-            - @auth
             - @template
             - @user
             - %core.root_path%
             - %core.php_ext%
-            - @request
-            - @service_container
         tags:
             - { name: event.listener }
     alg.liveSearch.live_search_ajax_handler:
@@ -21,10 +17,11 @@ services:
             - @auth
             - @template
             - @user
-            - @cache.driver
+            - @cache
             - %core.root_path%
             - %core.php_ext%
             - @request
             - %core.table_prefix%
             - @service_container
             - @pagination
+            - @content.visibility

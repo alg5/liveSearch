@@ -124,6 +124,24 @@ $(obj).eye({
                 goto_user_pm(item);
             }
         });
+        //console.log($('.ls_similartopics').next().find('input[name=subject]'));
+        //Live search similar topic during new topic
+        $('.ls_similartopics').next().find('input[name=subject]').autocomplete({
+ 		        url: U_SIMILARTOPIC_LS_PATH,
+		        sortResults: false,
+		        width: 600,
+		        maxItemsToShow: maxItemsToShow_topic,
+		        selectFirst: true,
+		        minChars: minChars_topic,
+                fixedPos:false,
+
+		        showResult: function (value, data) {
+		            return '<span style="">' + hilight(value, $("#topic_live_search").val()) + '</span>';
+		        },
+		        onItemSelect: function (item) {
+		            goto_topic(item);
+		        }
+        });
 
 
 

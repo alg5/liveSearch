@@ -38,10 +38,10 @@ class listener implements EventSubscriberInterface
 
 	public function adm_page_header($event)
 	{
-		   $this->template->assign_vars(array(
+			$this->template->assign_vars(array(
 				'U_USER_LS_ACP_PATH'				=> append_sid("{$this->phpbb_root_path}liveSearch/user/0/0"),
 			));
-	
+
 	}
 	public function posting_modify_template_vars($event)
 	{

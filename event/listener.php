@@ -36,26 +36,26 @@ class listener implements EventSubscriberInterface
 		);
 	}
 
-    public function adm_page_header($event)
-    {
-           $this->template->assign_vars(array(
-			    'U_USER_LS_ACP_PATH'		        => append_sid("{$this->phpbb_root_path}liveSearch/user/0/0"),
-		    ));
-    
-    }
+	public function adm_page_header($event)
+	{
+		   $this->template->assign_vars(array(
+				'U_USER_LS_ACP_PATH'				=> append_sid("{$this->phpbb_root_path}liveSearch/user/0/0"),
+			));
+	
+	}
 	public function posting_modify_template_vars($event)
 	{
-        if($this->config['live_search_on_off_similartopic'] )
+		if($this->config['live_search_on_off_similartopic'] )
 		{
 			$mode = $event['mode'];
-           $this->template->assign_vars(array(
-			    'S_SIMILARTOPIC_SHOW'		=> $mode == 'post' ,
-			    'MIN_CHARS_FORUM'	=>isset($this->config['live_search_min_num_symblols_forum']) ? $this->config['live_search_min_num_symblols_forum'] : 1,
-			    'MIN_CHARS_USER'	=>isset($this->config['live_search_min_num_symblols_user']) ? $this->config['live_search_min_num_symblols_user'] : 1,
-			    'MAX_ITEMS_TO_SHOW_FORUM'	=>isset($this->config['live_search_max_items_to_show_forum']) ?$this->config['live_search_max_items_to_show_forum'] : 20,
-			    'MAX_ITEMS_TO_SHOW_USER'	=>isset($this->config['live_search_max_items_to_show_user']) ?$this->config['live_search_max_items_to_show_user'] : 20,
-		    ));
-        }
+			$this->template->assign_vars(array(
+				'S_SIMILARTOPIC_SHOW'		=> $mode == 'post' ,
+				'MIN_CHARS_FORUM'	=>isset($this->config['live_search_min_num_symblols_forum']) ? $this->config['live_search_min_num_symblols_forum'] : 1,
+				'MIN_CHARS_USER'	=>isset($this->config['live_search_min_num_symblols_user']) ? $this->config['live_search_min_num_symblols_user'] : 1,
+				'MAX_ITEMS_TO_SHOW_FORUM'	=>isset($this->config['live_search_max_items_to_show_forum']) ?$this->config['live_search_max_items_to_show_forum'] : 20,
+				'MAX_ITEMS_TO_SHOW_USER'	=>isset($this->config['live_search_max_items_to_show_user']) ?$this->config['live_search_max_items_to_show_user'] : 20,
+			));
+		}
 	}
 
 	public function page_header_after($event)
@@ -71,14 +71,14 @@ class listener implements EventSubscriberInterface
 			$is_live_search = $is_live_search && $this->user->data['is_registered'];
 		}
 		$this->template->assign_vars(array(
-			'U_FORUM_LS_PATH'		        => append_sid("{$this->phpbb_root_path}liveSearch/forum/0/0"),
-			'U_TOPIC_LS_PATH'		        => append_sid("{$this->phpbb_root_path}liveSearch/topic/0/0"),
-			'U_SIMILARTOPIC_LS_PATH'		        => append_sid("{$this->phpbb_root_path}liveSearch/similartopic/0/0"),
-			'U_USER_LS_PATH'		        => append_sid("{$this->phpbb_root_path}liveSearch/user/0/0"),
-			'U_USERTOPIC_LS_PATH'		        => append_sid("{$this->phpbb_root_path}liveSearch/usertopic/0/0"),
-			'U_USER_PM_LS_PATH'		        => append_sid("{$this->phpbb_root_path}liveSearch/userpm/0/0"),
-			'U_MEMBERLIST_LS_PATH'		    => append_sid("{$this->phpbb_root_path}memberlist.$this->php_ext", "mode="),
-			'U_UCP_LS_PATH'		    => append_sid("{$this->phpbb_root_path}ucp.$this->php_ext", "mode="),
+			'U_FORUM_LS_PATH'				=> append_sid("{$this->phpbb_root_path}liveSearch/forum/0/0"),
+			'U_TOPIC_LS_PATH'				=> append_sid("{$this->phpbb_root_path}liveSearch/topic/0/0"),
+			'U_SIMILARTOPIC_LS_PATH'				=> append_sid("{$this->phpbb_root_path}liveSearch/similartopic/0/0"),
+			'U_USER_LS_PATH'				=> append_sid("{$this->phpbb_root_path}liveSearch/user/0/0"),
+			'U_USERTOPIC_LS_PATH'				=> append_sid("{$this->phpbb_root_path}liveSearch/usertopic/0/0"),
+			'U_USER_PM_LS_PATH'				=> append_sid("{$this->phpbb_root_path}liveSearch/userpm/0/0"),
+			'U_MEMBERLIST_LS_PATH'			=> append_sid("{$this->phpbb_root_path}memberlist.$this->php_ext", "mode="),
+			'U_UCP_LS_PATH'			=> append_sid("{$this->phpbb_root_path}ucp.$this->php_ext", "mode="),
 			'U_FORUM_REDIRECT'		=> append_sid("{$this->phpbb_root_path}viewforum.$this->php_ext", ""),
 			'U_TOPIC_REDIRECT'			=> append_sid("{$this->phpbb_root_path}viewtopic.$this->php_ext", ""),
 			'LIVE_SEARCH_ON_OFF_FORUM'	=>  $on_off_forum,

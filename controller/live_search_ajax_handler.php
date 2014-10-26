@@ -217,11 +217,11 @@ class live_search_ajax_handler
 		$limit_days		= array(0 => $this->user->lang['ALL_RESULTS'], 1 => $this->user->lang['1_DAY'], 7 => $this->user->lang['7_DAYS'], 14 => $this->user->lang['2_WEEKS'], 30 => $this->user->lang['1_MONTH'], 90 => $this->user->lang['3_MONTHS'], 180 => $this->user->lang['6_MONTHS'], 365 => $this->user->lang['1_YEAR']);
 		$sort_by_text	= array('a' => $this->user->lang['SORT_AUTHOR'], 't' => $this->user->lang['SORT_TIME'], 'f' => $this->user->lang['SORT_FORUM'], 'i' => $this->user->lang['SORT_TOPIC_TITLE'], 's' => $this->user->lang['SORT_POST_SUBJECT']);
 
-        $s_limit_days = $s_sort_key = $s_sort_dir = $u_sort_param = '';
-        gen_sort_selects($limit_days, $sort_by_text, $sort_days, $sort_key, $sort_dir, $s_limit_days, $s_sort_key, $s_sort_dir, $u_sort_param);
+		$s_limit_days = $s_sort_key = $s_sort_dir = $u_sort_param = '';
+		gen_sort_selects($limit_days, $sort_by_text, $sort_days, $sort_key, $sort_dir, $s_limit_days, $s_sort_key, $s_sort_dir, $u_sort_param);
 
 		$show_results	= 'topics';
-        $u_search = append_sid("{$this->phpbb_root_path}liveSearch/usertopic/$forum_id/$author_id");
+		$u_search = append_sid("{$this->phpbb_root_path}liveSearch/usertopic/$forum_id/$author_id");
 
 		// Define initial vars
 		$page_title = $this->user->lang['SEARCH'];
@@ -234,41 +234,39 @@ class live_search_ajax_handler
 		$forum_id = $forum;
 		$author_id = $user;
 
-        // clear arrays
-	    $id_ary = array();
-        $author_id_ary[] = $author_id;
-        
-        // Select which method we'll use to obtain the post_id or topic_id information
-        $error = false;
-	    $search_type = $this->config['search_type'];
-	    $search = new $search_type($error, $this->phpbb_root_path, $this->php_ext, $this->auth, $this->config, $this->db, $author_id);
-	    if ($error)
-	    {
-		    trigger_error($error);
-	    }
+		// clear arrays
+		$id_ary = array();
+		$author_id_ary[] = $author_id;
 
+		// Select which method we'll use to obtain the post_id or topic_id information
+		$error = false;
+		$search_type = $this->config['search_type'];
+		$search = new $search_type($error, $this->phpbb_root_path, $this->php_ext, $this->auth, $this->config, $this->db, $author_id);
+		if ($error)
+		{
+			trigger_error($error);
+		}
 
-	    // Which forums should not be searched? Author searches are also carried out in unindexed forums
+		// Which forums should not be searched? Author searches are also carried out in unindexed forums
 		$ex_fid_ary = array_keys($this->auth->acl_getf('!f_read', true));
-	    $not_in_fid = (sizeof($ex_fid_ary)) ? 'WHERE ' . $this->db->sql_in_set('f.forum_id', $ex_fid_ary, true) . " OR (f.forum_password <> '' AND fa.user_id <> " . (int) $this->user->data['user_id'] . ')' : "";
- 
-        // find out in which forums the user is allowed to view posts
-	    $m_approve_posts_fid_sql = $this->content_visibility->get_global_visibility_sql('post', $ex_fid_ary, 'p.');
-	    $m_approve_topics_fid_sql = $this->content_visibility->get_global_visibility_sql('topic', $ex_fid_ary, 't.');
-	    // define some variables needed for retrieving post_id/topic_id information
-	    $sort_by_sql = array('a' => 'u.username_clean', 't' => (($show_results == 'posts') ? 'p.post_time' : 't.topic_last_post_time'), 'f' => 'f.forum_id', 'i' => 't.topic_title', 's' => (($show_results == 'posts') ? 'p.post_subject' : 't.topic_title'));
-	    
-        $total_match_count = 0;
-	    // Set limit for the $total_match_count to reduce server load
-	    $total_matches_limit = 1000;
-	    $found_more_search_matches = false;
+		$not_in_fid = (sizeof($ex_fid_ary)) ? 'WHERE ' . $this->db->sql_in_set('f.forum_id', $ex_fid_ary, true) . " OR (f.forum_password <> '' AND fa.user_id <> " . (int) $this->user->data['user_id'] . ')' : "";
 
-        // make sure that some arrays are always in the same order
-	    sort($ex_fid_ary);
-	    sort($author_id_ary);
+		// find out in which forums the user is allowed to view posts
+		$m_approve_posts_fid_sql = $this->content_visibility->get_global_visibility_sql('post', $ex_fid_ary, 'p.');
+		$m_approve_topics_fid_sql = $this->content_visibility->get_global_visibility_sql('topic', $ex_fid_ary, 't.');
+		// define some variables needed for retrieving post_id/topic_id information
+		$sort_by_sql = array('a' => 'u.username_clean', 't' => (($show_results == 'posts') ? 'p.post_time' : 't.topic_last_post_time'), 'f' => 'f.forum_id', 'i' => 't.topic_title', 's' => (($show_results == 'posts') ? 'p.post_subject' : 't.topic_title'));
 
-        
-        //$l_search_title = $this->user->lang['SEARCH_ACTIVE_TOPICS'];
+		$total_match_count = 0;
+		// Set limit for the $total_match_count to reduce server load
+		$total_matches_limit = 1000;
+		$found_more_search_matches = false;
+
+		// make sure that some arrays are always in the same order
+		sort($ex_fid_ary);
+		sort($author_id_ary);
+
+		//$l_search_title = $this->user->lang['SEARCH_ACTIVE_TOPICS'];
 
 		$sql = "SELECT count(t.topic_id) as total_count, u.username" .
 					" FROM " .TOPICS_TABLE . " t LEFT JOIN " . FORUMS_TABLE . " f ON (f.forum_id = t.forum_id)" .
@@ -277,7 +275,7 @@ class live_search_ajax_handler
 					" LEFT JOIN " . FORUMS_TRACK_TABLE . " ft ON (ft.user_id = " . $author_id .
 					" AND ft.forum_id = f.forum_id) " .
 					" LEFT JOIN " . USERS_TABLE . " u ON t.topic_poster = u.user_id" .
-                    " WHERE " . $this->db->sql_in_set('f.forum_id', $ex_fid_ary, true) .
+					" WHERE " . $this->db->sql_in_set('f.forum_id', $ex_fid_ary, true) .
 					" AND t.topic_status <> " . ITEM_MOVED .
 					" AND t.topic_visibility = " . ITEM_APPROVED .
 					" AND t.topic_poster = " . $author_id . $this->build_subforums_search($forum_id);
@@ -306,59 +304,55 @@ class live_search_ajax_handler
 								" AND t.topic_id = tt.topic_id) " .
 								" LEFT JOIN " . FORUMS_TRACK_TABLE . " ft ON (ft.user_id = " . $author_id .
 								" AND ft.forum_id = f.forum_id) " .
-                                " WHERE " . $this->db->sql_in_set('f.forum_id', $ex_fid_ary, true) .
-					            " AND t.topic_status <> " . ITEM_MOVED .
+								" WHERE " . $this->db->sql_in_set('f.forum_id', $ex_fid_ary, true) .
+								" AND t.topic_status <> " . ITEM_MOVED .
 								" AND t.topic_visibility = " . ITEM_APPROVED .
-								" AND t.topic_poster = " . $author_id . 
-                                //$this->build_subforums_search($forum_id);
+								" AND t.topic_poster = " . $author_id .
+								//$this->build_subforums_search($forum_id);
 								" ORDER BY " . $sort_key . " " . $sort_dir;
 						$result = $this->db->sql_query_limit($sql, $per_page, $start);
-                        //print_r($sql);
+						//print_r($sql);
 				$row_count = 0;
-                $rowset = array();
-			    while ($row = $this->db->sql_fetchrow($result))
+				$rowset = array();
+				while ($row = $this->db->sql_fetchrow($result))
 				{
-			        $ls_forum_id = (int) $row['forum_id'];
-			        $ls_topic_id = (int) $row['topic_id'];
-			        $rowset[$ls_topic_id] = $row;
-                    if ($this->auth->acl_get('f_read',$ls_forum_id))
-                    {
-                        $row_count++;
-				        // Get topic tracking info
-				        if ($this->user->data['is_registered'] && $this->config['load_db_lastread'] && !$this->config['ls_topics_cache'])   //todo ls_topics_cache
-				        {
-					        $topic_tracking_info = get_topic_tracking($ls_forum_id, $ls_topic_id, $rowset, array($ls_forum_id => $row['f_mark_time']));
-				        }
-				        else if ($this->config['load_anon_lastread'] || $this->user->data['is_registered'])
-				        {
-					        $topic_tracking_info = get_complete_topic_tracking($ls_forum_id, $ls_topic_id);
+					$ls_forum_id = (int) $row['forum_id'];
+					$ls_topic_id = (int) $row['topic_id'];
+					$rowset[$ls_topic_id] = $row;
+					if ($this->auth->acl_get('f_read',$ls_forum_id))
+					{
+						$row_count++;
+						// Get topic tracking info
+						if ($this->user->data['is_registered'] && $this->config['load_db_lastread'] && !$this->config['ls_topics_cache'])   //todo ls_topics_cache
+						{
+							$topic_tracking_info = get_topic_tracking($ls_forum_id, $ls_topic_id, $rowset, array($ls_forum_id => $row['f_mark_time']));
+						}
+						else if ($this->config['load_anon_lastread'] || $this->user->data['is_registered'])
+						{
+							$topic_tracking_info = get_complete_topic_tracking($ls_forum_id, $ls_topic_id);
 
-					        if (!$this->user->data['is_registered'])
-					        {
-						        $this->user->data['user_lastmark'] = (isset($tracking_topics['l'])) ? (int) (base_convert($tracking_topics['l'], 36, 10) + $this->config['board_startdate']) : 0;
-					        }
-				        }
-                        
-                        $replies = $this->content_visibility->get_count('topic_posts', $row, $ls_forum_id) - 1;
-                        $folder_img = $folder_alt = $topic_type = '';
-				        $unread_topic = (isset($topic_tracking_info[$ls_topic_id]) && $row['topic_last_post_time'] > $topic_tracking_info[$ls_topic_id]) ? true : false;
+							if (!$this->user->data['is_registered'])
+							{
+								$this->user->data['user_lastmark'] = (isset($tracking_topics['l'])) ? (int) (base_convert($tracking_topics['l'], 36, 10) + $this->config['board_startdate']) : 0;
+							}
+						}
 
-                        topic_status($row, $replies, $unread_topic, $folder_img, $folder_alt, $topic_type);
-				       //topic_status($row, $replies, (isset($topic_tracking_info[$forum_id][$row['topic_id']]) && $row['topic_last_post_time'] > $topic_tracking_info[$forum_id][$row['topic_id']]) ? true : false, $folder_img, $folder_alt, $topic_type);
+						$replies = $this->content_visibility->get_count('topic_posts', $row, $ls_forum_id) - 1;
+						$folder_img = $folder_alt = $topic_type = '';
+						$unread_topic = (isset($topic_tracking_info[$ls_topic_id]) && $row['topic_last_post_time'] > $topic_tracking_info[$ls_topic_id]) ? true : false;
 
-				        $topic_unapproved = ($row['topic_visibility'] == ITEM_UNAPPROVED && $this->auth->acl_get('m_approve', $ls_forum_id)) ? true : false;
-				        //$topic_unapproved = (($row['topic_visibility'] == ITEM_UNAPPROVED || $row['topic_visibility'] == ITEM_REAPPROVE) && $this->auth->acl_get('m_approve', $ls_forum_id)) ? true : false;
-				        
-                        $posts_unapproved = ($row['topic_visibility'] == ITEM_APPROVED && $row['topic_posts_unapproved'] && $this->auth->acl_get('m_approve', $ls_forum_id)) ? true : false;
-				        //$posts_unapproved = ($row['topic_visibility'] == ITEM_APPROVED && $row['topic_posts_unapproved'] && $this->auth->acl_get('m_approve', $forum_id)) ? true : false;
-                       
-                       
-                       
-					    $result_topic_id = $row['topic_id'];
-					    $view_topic_url_params = "f=$forum_id&amp;t=$result_topic_id" ;
-					    $view_topic_url = append_sid("{$this->phpbb_root_path}viewtopic.$this->php_ext", $view_topic_url_params);
-                    
+						topic_status($row, $replies, $unread_topic, $folder_img, $folder_alt, $topic_type);
+					   //topic_status($row, $replies, (isset($topic_tracking_info[$forum_id][$row['topic_id']]) && $row['topic_last_post_time'] > $topic_tracking_info[$forum_id][$row['topic_id']]) ? true : false, $folder_img, $folder_alt, $topic_type);
 
+						$topic_unapproved = ($row['topic_visibility'] == ITEM_UNAPPROVED && $this->auth->acl_get('m_approve', $ls_forum_id)) ? true : false;
+						//$topic_unapproved = (($row['topic_visibility'] == ITEM_UNAPPROVED || $row['topic_visibility'] == ITEM_REAPPROVE) && $this->auth->acl_get('m_approve', $ls_forum_id)) ? true : false;
+
+						$posts_unapproved = ($row['topic_visibility'] == ITEM_APPROVED && $row['topic_posts_unapproved'] && $this->auth->acl_get('m_approve', $ls_forum_id)) ? true : false;
+						//$posts_unapproved = ($row['topic_visibility'] == ITEM_APPROVED && $row['topic_posts_unapproved'] && $this->auth->acl_get('m_approve', $forum_id)) ? true : false;
+
+						$result_topic_id = $row['topic_id'];
+						$view_topic_url_params = "f=$forum_id&amp;t=$result_topic_id" ;
+						$view_topic_url = append_sid("{$this->phpbb_root_path}viewtopic.$this->php_ext", $view_topic_url_params);
 
 				$unread_topic = (isset($topic_tracking_info[$forum_id][$row['topic_id']]) && $row['topic_last_post_time'] > $topic_tracking_info[$forum_id][$row['topic_id']]) ? true : false;
 				$topic_deleted = $row['topic_visibility'] == ITEM_DELETED;
@@ -409,7 +403,7 @@ class live_search_ajax_handler
 					//}
 					//$row++;
 				}
-                }
+				}
 			//$pagination->generate_template_pagination($view_topic_url, 'pagination', 'start', $total_count + 1, $this->config['posts_per_page'], 1, true, true);
 			//print_r($u_search);
 				$this->pagination->generate_template_pagination($u_search, 'pagination', 'start', $total_count, $per_page, $start);
@@ -427,7 +421,7 @@ class live_search_ajax_handler
 				{
 					$res_txt = sprintf($this->user->lang['LIVESEARCH_USERTOPIC_RESULT'], $username);
 				}
-            $l_search_matches =  $this->user->lang('FOUND_SEARCH_MATCHES', $total_count) ;
+			$l_search_matches =  $this->user->lang('FOUND_SEARCH_MATCHES', $total_count) ;
 			$this->template->assign_vars(array(
 			'S_SHOW_TOPICS'		=> 1,
 			'SEARCH_MATCHES'	=>  $total_count == 0 ? '' : $this->user->lang('FOUND_SEARCH_MATCHES', $total_count) ,

@@ -53,7 +53,7 @@ class v_1_0_0 extends \phpbb\db\migration\migration
 				(isset($this->config['live_search_on_off_similartopic'])),
 				array('config.remove', array('live_search_on_off_similartopic')),
 			)),
-			array('if', array(
+		    array('if', array(
 				(isset($this->config['live_search_min_num_symblols_forum'])),
 				array('config.remove', array('live_search_min_num_symblols_forum')),
 			)),

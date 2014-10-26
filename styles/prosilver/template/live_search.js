@@ -1,12 +1,14 @@
 ﻿(function ($) {  
-var obj = { };
-$(obj).eye({
-        name: 'ls_eye',
-        title_open:LIVE_SEARCH_EYE_BUTTON_OPEN_T,
-        title_close:LIVE_SEARCH_EYE_BUTTON_CLOSE_T,
-        id: ['leavesearch_btn', 'leavesearch'],
-	});
-
+if (LIVE_SEARCH_USE_EYE_BUTTON)
+{
+    var obj = { };
+    $(obj).eye({
+            name: 'ls_eye',
+            title_open:LIVE_SEARCH_EYE_BUTTON_OPEN_T,
+            title_close:LIVE_SEARCH_EYE_BUTTON_CLOSE_T,
+            id: ['leavesearch_btn', 'leavesearch'],
+	    });
+}
     //calculate witdh for search panel
 	var leavesearchWidth = 0;
 	if ($('#topic_live_search').length > 0) {leavesearchWidth = $('#topic_live_search').outerWidth() + 75 }

@@ -1,7 +1,7 @@
 {
     "name": "alg/liveSearch",
     "type": "phpbb-extension",
-    "description": "bla-bla",
+    "description": "Live Search (as in Google)",
     "homepage": "http://www.phpbbguru.net",
     "version": "1.0.0",
     "time": "2014-07-10",
@@ -27,8 +27,8 @@
         },
         "version-check": {
             "host": "alg5.github.io",
-            "directory": "/liveSearch",
-            "filename": "version.json"
+            "directory": "/versions",
+            "filename": "liveSearch.json"
         }
     }
 }

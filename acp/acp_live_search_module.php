@@ -49,7 +49,7 @@ class acp_live_search_module
 			$live_search_on_off_topic = $request->variable('live_search_on_off_topic', false);
 			$live_search_on_off_user = $request->variable('live_search_on_off_user', false);
 			$live_search_on_off_similartopic = $request->variable('live_search_on_off_similartopic', false);
-			$live_search_show_in_new_window = $request->variable('live_search_show_in_new_window', 0);
+            $live_search_show_in_new_window = $request->variable('live_search_show_in_new_window', 0);
 			$live_search_show_for_guest = $request->variable('live_search_show_for_guest', 1);
 			$live_search_use_eye_button = $request->variable('live_search_use_eye_button', 1);
 
@@ -84,7 +84,7 @@ class acp_live_search_module
 				$config->set('live_search_min_num_symblols_user', $live_search_min_num_symblols_user);
 				$config->set('live_search_max_items_to_show_user', $live_search_max_items_to_show_user);
 			}
-
+            
 			if($live_search_on_off_similartopic)
 			{
 				$live_search_min_num_symblols_similartopic= $request->variable('live_search_min_num_symblols_similartopic', 5);
@@ -111,7 +111,7 @@ class acp_live_search_module
 			'LIVE_SEARCH_MAX_ITEMS_TO_SHOW_USER'	=>  isset($config['live_search_max_items_to_show_user']) ? $config['live_search_max_items_to_show_user'] : 0,
 			'LIVE_SEARCH_MIN_NUM_SYMBLOLS_SIMILARTOPIC'	=>  isset($config['live_search_min_num_symblols_similartopic']) ? $config['live_search_min_num_symblols_similartopic'] : 0,
 			'LIVE_SEARCH_MAX_ITEMS_TO_SHOW_SIMILARTOPIC'	=>  isset($config['live_search_max_items_to_show_similartopic']) ? $config['live_search_max_items_to_show_similartopic'] : 0,
-			'LIVE_SEARCH_SHOW_IN_NEW_WINDOW'	=>  isset($config['live_search_show_in_new_window']) ? $config['live_search_show_in_new_window'] : 0,
+            'LIVE_SEARCH_SHOW_IN_NEW_WINDOW'	=>  isset($config['live_search_show_in_new_window']) ? $config['live_search_show_in_new_window'] : 0,
 			'LIVE_SEARCH_SHOW_FOR_GUEST'	=>  isset($config['live_search_show_for_guest']) ? $config['live_search_show_for_guest'] : 1,
 			'LIVE_SEARCH_USE_EYE_BUTTON'	=>  isset($config['live_search_use_eye_button']) ? $config['live_search_use_eye_button'] : 1,
 

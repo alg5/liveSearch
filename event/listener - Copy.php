@@ -19,6 +19,7 @@ class listener implements EventSubscriberInterface
 
 	public function __construct(\phpbb\config\config $config, \phpbb\template\template $template, \phpbb\user $user, $phpbb_root_path, $php_ext)
 	{
+print_r('asdfffhfhfh');
 		$this->template = $template;
 		$this->user = $user;
 		$this->config = $config;
@@ -45,6 +46,7 @@ class listener implements EventSubscriberInterface
     }
 	public function posting_modify_template_vars($event)
 	{
+		//print_r($event['tpl_ary']);
         if($this->config['live_search_on_off_similartopic'] )
 		{
 			$mode = $event['mode'];
@@ -60,6 +62,8 @@ class listener implements EventSubscriberInterface
 
 	public function page_header_after($event)
 	{
+            print_r('ytrewq');
+            print_r($this->config['live_search_use_eye_button']);
 		$this->user->add_lang_ext('alg/liveSearch', 'live_search');
 		$on_off_forum = isset($this->config['live_search_on_off_forum']) ? (bool) $this->config['live_search_on_off_forum'] : false;
 		$on_off_topic = isset($this->config['live_search_on_off_topic']) ? (bool) $this->config['live_search_on_off_topic'] : false;
@@ -96,5 +100,8 @@ class listener implements EventSubscriberInterface
 			'LIVE_SEARCH_EYE_BUTTON_OPEN_T'	=>  $this->user->lang['LIVE_SEARCH_EYE_BUTTON_OPEN_T'],
 			'LIVE_SEARCH_EYE_BUTTON_CLOSE_T'	=>  $this->user->lang['LIVE_SEARCH_EYE_BUTTON_CLOSE_T'],
 			));
+                        print_r($this->config['live_search_use_eye_button']);
+
 	}
+
 }

@@ -369,7 +369,7 @@ class live_search_ajax_handler
 								" WHERE t.topic_status <> " . ITEM_MOVED .
 								" AND t.topic_visibility = " . ITEM_APPROVED .
 								" AND t.topic_poster = " . $author_id ;
-							   if (sizeof($ex_fid_ary))
+								if (sizeof($ex_fid_ary))
 								{
 									$sql .= " AND " . $this->db->sql_in_set('f.forum_id', $ex_fid_ary, true);
 								}

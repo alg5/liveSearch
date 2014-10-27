@@ -128,22 +128,30 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
         });
         //console.log($('.ls_similartopics').next().find('input[name=subject]'));
         //Live search similar topic during new topic
-        $('.ls_similartopics').next().find('input[name=subject]').autocomplete({
- 		        url: U_SIMILARTOPIC_LS_PATH,
-		        sortResults: false,
-		        width: 600,
-		        maxItemsToShow: maxItemsToShow_topic,
-		        selectFirst: true,
-		        minChars: minChars_topic,
-                fixedPos:false,
+ 
+        if (S_SIMILARTOPIC_SHOW)
+        {
+            var new_topic = $('.ls_similartopics').next().find('input[name=subject]');
+            $(new_topic).attr('autocomplete', 'off');
+            //console.log(new_topic);
+            $('.ls_similartopics').next().find('input[name=subject]').autocomplete({
+ 		            url: U_SIMILARTOPIC_LS_PATH,
+		            sortResults: false,
+		            width: 600,
+		            maxItemsToShow: maxItemsToShow_topic,
+		            selectFirst: true,
+		            minChars: minChars_topic,
+                    fixedPos:false,
 
-		        showResult: function (value, data) {
-		            return '<span style="">' + hilight(value, $("#topic_live_search").val()) + '</span>';
-		        },
-		        onItemSelect: function (item) {
-		            goto_topic(item);
-		        }
-        });
+		            showResult: function (value, data) {
+		                return '<span style="">' + hilight(value, $("#topic_live_search").val()) + '</span>';
+		            },
+		            onItemSelect: function (item) {
+		                goto_topic(item);
+		            }
+            });
+
+        }
 
 
 

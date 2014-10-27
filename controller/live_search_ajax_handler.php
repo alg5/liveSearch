@@ -164,67 +164,67 @@ class live_search_ajax_handler
 
 	private function live_search_user($action, $q)
 	{
-        // Initialize \phpbb\db\tools object
+		// Initialize \phpbb\db\tools object
 		$this->db_tools = new \phpbb\db\tools($this->db);
 
 		//$sql = "SELECT user_id, username, user_email " .
-        //$sql = "SELECT u.*, pf_phpbb_icq, pf_phpbb_website, pf_phpbb_wlm, pf_phpbb_yahoo, pf_phpbb_aol, pf_phpbb_facebook, pf_phpbb_googleplus, pf_phpbb_skype, pf_phpbb_twitter, pf_phpbb_youtube " .
-        //            " FROM " . USERS_TABLE .
-        //            " u LEFT JOIN " . PROFILE_FIELDS_DATA_TABLE . " pf on u.user_id = pf.user_id" .
-        //            " WHERE (user_type = " . USER_NORMAL . " OR user_type = " . USER_FOUNDER . ")" .
-        //            " AND username_clean " . $this->db->sql_like_expression(utf8_clean_string( $this->db->sql_escape($q)) . $this->db->get_any_char());
-        //            " ORDER BY username";
-        $sql =  "SELECT u.*";
-        $is_icq = $this->db_tools->sql_column_exists($this->table_prefix . 'profile_fields_data', 'pf_phpbb_icq');
-        if ($is_icq)
-        {
-            $sql .= ", pf_phpbb_icq";
-        }
-        $is_website = $this->db_tools->sql_column_exists($this->table_prefix . 'profile_fields_data', 'pf_phpbb_website');
-        if ($is_website)
-        {
-            $sql .= ", pf_phpbb_website";
-        }
-        $is_wlm = $this->db_tools->sql_column_exists($this->table_prefix . 'profile_fields_data', 'pf_phpbb_wlm');
-        if ($is_wlm)
-        {
-            $sql .= ", pf_phpbb_wlm";
-        }
-        $is_yahoo = $this->db_tools->sql_column_exists($this->table_prefix . 'profile_fields_data', 'pf_phpbb_yahoo');
-        if ($is_yahoo)
-        {
-            $sql .= ", pf_phpbb_yahoo";
-        }
-        $is_aol = $this->db_tools->sql_column_exists($this->table_prefix . 'profile_fields_data', 'pf_phpbb_aol');
-        if ($is_aol)
-        {
-            $sql .= ", pf_phpbb_aol";
-        }
-        $is_facebook = $this->db_tools->sql_column_exists($this->table_prefix . 'profile_fields_data', 'pf_phpbb_facebook');
-        if ($is_facebook)
-        {
-            $sql .= ", pf_phpbb_facebook";
-        }
-        $is_googleplus = $this->db_tools->sql_column_exists($this->table_prefix . 'profile_fields_data', 'pf_phpbb_googleplus');
-        if ($is_googleplus)
-        {
-            $sql .= ", pf_phpbb_googleplus";
-        }
-        $is_skype = $this->db_tools->sql_column_exists($this->table_prefix . 'profile_fields_data', 'pf_phpbb_skype');
-        if ($is_skype)
-        {
-            $sql .= ", pf_phpbb_skype";
-        }
-        $is_twitter = $this->db_tools->sql_column_exists($this->table_prefix . 'profile_fields_data', 'pf_phpbb_twitter');
-        if ($is_twitter)
-        {
-            $sql .= ", pf_phpbb_twitter";
-        }
-        $is_youtube = $this->db_tools->sql_column_exists($this->table_prefix . 'profile_fields_data', 'pf_phpbb_youtube');
-        if ($is_youtube)
-        {
-            $sql .= ", pf_phpbb_youtube";
-        }
+		//$sql = "SELECT u.*, pf_phpbb_icq, pf_phpbb_website, pf_phpbb_wlm, pf_phpbb_yahoo, pf_phpbb_aol, pf_phpbb_facebook, pf_phpbb_googleplus, pf_phpbb_skype, pf_phpbb_twitter, pf_phpbb_youtube " .
+		//			" FROM " . USERS_TABLE .
+		//			" u LEFT JOIN " . PROFILE_FIELDS_DATA_TABLE . " pf on u.user_id = pf.user_id" .
+		//			" WHERE (user_type = " . USER_NORMAL . " OR user_type = " . USER_FOUNDER . ")" .
+		//			" AND username_clean " . $this->db->sql_like_expression(utf8_clean_string( $this->db->sql_escape($q)) . $this->db->get_any_char());
+		//			" ORDER BY username";
+		$sql =  "SELECT u.*";
+		$is_icq = $this->db_tools->sql_column_exists($this->table_prefix . 'profile_fields_data', 'pf_phpbb_icq');
+		if ($is_icq)
+		{
+			$sql .= ", pf_phpbb_icq";
+		}
+		$is_website = $this->db_tools->sql_column_exists($this->table_prefix . 'profile_fields_data', 'pf_phpbb_website');
+		if ($is_website)
+		{
+			$sql .= ", pf_phpbb_website";
+		}
+		$is_wlm = $this->db_tools->sql_column_exists($this->table_prefix . 'profile_fields_data', 'pf_phpbb_wlm');
+		if ($is_wlm)
+		{
+			$sql .= ", pf_phpbb_wlm";
+		}
+		$is_yahoo = $this->db_tools->sql_column_exists($this->table_prefix . 'profile_fields_data', 'pf_phpbb_yahoo');
+		if ($is_yahoo)
+		{
+			$sql .= ", pf_phpbb_yahoo";
+		}
+		$is_aol = $this->db_tools->sql_column_exists($this->table_prefix . 'profile_fields_data', 'pf_phpbb_aol');
+		if ($is_aol)
+		{
+			$sql .= ", pf_phpbb_aol";
+		}
+		$is_facebook = $this->db_tools->sql_column_exists($this->table_prefix . 'profile_fields_data', 'pf_phpbb_facebook');
+		if ($is_facebook)
+		{
+			$sql .= ", pf_phpbb_facebook";
+		}
+		$is_googleplus = $this->db_tools->sql_column_exists($this->table_prefix . 'profile_fields_data', 'pf_phpbb_googleplus');
+		if ($is_googleplus)
+		{
+			$sql .= ", pf_phpbb_googleplus";
+		}
+		$is_skype = $this->db_tools->sql_column_exists($this->table_prefix . 'profile_fields_data', 'pf_phpbb_skype');
+		if ($is_skype)
+		{
+			$sql .= ", pf_phpbb_skype";
+		}
+		$is_twitter = $this->db_tools->sql_column_exists($this->table_prefix . 'profile_fields_data', 'pf_phpbb_twitter');
+		if ($is_twitter)
+		{
+			$sql .= ", pf_phpbb_twitter";
+		}
+		$is_youtube = $this->db_tools->sql_column_exists($this->table_prefix . 'profile_fields_data', 'pf_phpbb_youtube');
+		if ($is_youtube)
+		{
+			$sql .= ", pf_phpbb_youtube";
+		}
 		$sql .=	" FROM " . USERS_TABLE .
 					" u LEFT JOIN " . PROFILE_FIELDS_DATA_TABLE . " pf on u.user_id = pf.user_id" .
 					" WHERE (user_type = " . USER_NORMAL . " OR user_type = " . USER_FOUNDER . ")" .
@@ -327,7 +327,6 @@ class live_search_ajax_handler
 		sort($author_id_ary);
 
 		//$l_search_title = $this->user->lang['SEARCH_ACTIVE_TOPICS'];
-
 		$sql = "SELECT count(t.topic_id) as total_count, u.username" .
 					" FROM " .TOPICS_TABLE . " t LEFT JOIN " . FORUMS_TABLE . " f ON (f.forum_id = t.forum_id)" .
 					" LEFT JOIN " . TOPICS_TRACK_TABLE . " tt ON (tt.user_id = " . $author_id .
@@ -335,10 +334,13 @@ class live_search_ajax_handler
 					" LEFT JOIN " . FORUMS_TRACK_TABLE . " ft ON (ft.user_id = " . $author_id .
 					" AND ft.forum_id = f.forum_id) " .
 					" LEFT JOIN " . USERS_TABLE . " u ON t.topic_poster = u.user_id" .
-					" WHERE " . $this->db->sql_in_set('f.forum_id', $ex_fid_ary, true) .
-					" AND t.topic_status <> " . ITEM_MOVED .
+					" WHERE  t.topic_status <> " . ITEM_MOVED .
 					" AND t.topic_visibility = " . ITEM_APPROVED .
-					" AND t.topic_poster = " . $author_id . $this->build_subforums_search($forum_id);
+					" AND t.topic_poster = " . $author_id . $this->build_subforums_search($forum_id) ;
+					if (sizeof($ex_fid_ary))
+					{
+						$sql .= " AND " . $this->db->sql_in_set('f.forum_id', $ex_fid_ary, true);
+					}
 		$result = $this->db->sql_query($sql);
 		$row = $this->db->sql_fetchrow($result);
 		$total_count = (int) $row['total_count'];
@@ -364,12 +366,14 @@ class live_search_ajax_handler
 								" AND t.topic_id = tt.topic_id) " .
 								" LEFT JOIN " . FORUMS_TRACK_TABLE . " ft ON (ft.user_id = " . $author_id .
 								" AND ft.forum_id = f.forum_id) " .
-								" WHERE " . $this->db->sql_in_set('f.forum_id', $ex_fid_ary, true) .
-								" AND t.topic_status <> " . ITEM_MOVED .
+								" WHERE t.topic_status <> " . ITEM_MOVED .
 								" AND t.topic_visibility = " . ITEM_APPROVED .
-								" AND t.topic_poster = " . $author_id .
-								//$this->build_subforums_search($forum_id);
-								" ORDER BY " . $sort_key . " " . $sort_dir;
+								" AND t.topic_poster = " . $author_id ;
+							   if (sizeof($ex_fid_ary))
+								{
+									$sql .= " AND " . $this->db->sql_in_set('f.forum_id', $ex_fid_ary, true);
+								}
+								$sql .= " ORDER BY " . $sort_key . " " . $sort_dir;
 						$result = $this->db->sql_query_limit($sql, $per_page, $start);
 						//print_r($sql);
 				$row_count = 0;

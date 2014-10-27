@@ -132,8 +132,7 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
         if (S_SIMILARTOPIC_SHOW)
         {
             var new_topic = $('.ls_similartopics').next().find('input[name=subject]');
-            $(new_topic).attr('autocomplete', 'off');
-            //console.log(new_topic);
+            $(new_topic).attr('autocomplete', 'off').css('padding-left', '2px');
             $('.ls_similartopics').next().find('input[name=subject]').autocomplete({
  		            url: U_SIMILARTOPIC_LS_PATH,
 		            sortResults: false,

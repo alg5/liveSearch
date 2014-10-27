@@ -12,7 +12,7 @@ namespace alg\liveSearch\controller;
 class live_search_ajax_handler
 {
 	protected $thankers = array();
-	public function __construct(\phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \phpbb\auth\auth $auth, \phpbb\template\template $template, \phpbb\user $user, \phpbb\cache\service $cache, $phpbb_root_path, $php_ext, \phpbb\request\request_interface $request, $table_prefix, $phpbb_container, \phpbb\pagination $pagination, \phpbb\content_visibility $content_visibility)
+	public function __construct(\phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \phpbb\auth\auth $auth, \phpbb\template\template $template, \phpbb\user $user, \phpbb\cache\service $cache, $phpbb_root_path, $php_ext, \phpbb\request\request_interface $request, $table_prefix, $phpbb_container, \phpbb\pagination $pagination, \phpbb\content_visibility $content_visibility, $table_prefix)
 	{
 		$this->config = $config;
 		$this->db = $db;
@@ -26,6 +26,7 @@ class live_search_ajax_handler
 		$this->phpbb_container = $phpbb_container;
 		$this->pagination =  $pagination;
 		$this->content_visibility = $content_visibility;
+		$this->table_prefix = $table_prefix;
 		$this->return = array(); // save returned data in here
 		$this->error = array(); // save errors in here
 
@@ -163,9 +164,68 @@ class live_search_ajax_handler
 
 	private function live_search_user($action, $q)
 	{
+        // Initialize \phpbb\db\tools object
+		$this->db_tools = new \phpbb\db\tools($this->db);
+
 		//$sql = "SELECT user_id, username, user_email " .
-		$sql = "SELECT u.*, pf_phpbb_icq, pf_phpbb_website, pf_phpbb_wlm, pf_phpbb_yahoo, pf_phpbb_aol, pf_phpbb_facebook, pf_phpbb_googleplus, pf_phpbb_skype, pf_phpbb_twitter, pf_phpbb_youtube " .
-					" FROM " . USERS_TABLE .
+        //$sql = "SELECT u.*, pf_phpbb_icq, pf_phpbb_website, pf_phpbb_wlm, pf_phpbb_yahoo, pf_phpbb_aol, pf_phpbb_facebook, pf_phpbb_googleplus, pf_phpbb_skype, pf_phpbb_twitter, pf_phpbb_youtube " .
+        //            " FROM " . USERS_TABLE .
+        //            " u LEFT JOIN " . PROFILE_FIELDS_DATA_TABLE . " pf on u.user_id = pf.user_id" .
+        //            " WHERE (user_type = " . USER_NORMAL . " OR user_type = " . USER_FOUNDER . ")" .
+        //            " AND username_clean " . $this->db->sql_like_expression(utf8_clean_string( $this->db->sql_escape($q)) . $this->db->get_any_char());
+        //            " ORDER BY username";
+        $sql =  "SELECT u.*";
+        $is_icq = $this->db_tools->sql_column_exists($this->table_prefix . 'profile_fields_data', 'pf_phpbb_icq');
+        if ($is_icq)
+        {
+            $sql .= ", pf_phpbb_icq";
+        }
+        $is_website = $this->db_tools->sql_column_exists($this->table_prefix . 'profile_fields_data', 'pf_phpbb_website');
+        if ($is_website)
+        {
+            $sql .= ", pf_phpbb_website";
+        }
+        $is_wlm = $this->db_tools->sql_column_exists($this->table_prefix . 'profile_fields_data', 'pf_phpbb_wlm');
+        if ($is_wlm)
+        {
+            $sql .= ", pf_phpbb_wlm";
+        }
+        $is_yahoo = $this->db_tools->sql_column_exists($this->table_prefix . 'profile_fields_data', 'pf_phpbb_yahoo');
+        if ($is_yahoo)
+        {
+            $sql .= ", pf_phpbb_yahoo";
+        }
+        $is_aol = $this->db_tools->sql_column_exists($this->table_prefix . 'profile_fields_data', 'pf_phpbb_aol');
+        if ($is_aol)
+        {
+            $sql .= ", pf_phpbb_aol";
+        }
+        $is_facebook = $this->db_tools->sql_column_exists($this->table_prefix . 'profile_fields_data', 'pf_phpbb_facebook');
+        if ($is_facebook)
+        {
+            $sql .= ", pf_phpbb_facebook";
+        }
+        $is_googleplus = $this->db_tools->sql_column_exists($this->table_prefix . 'profile_fields_data', 'pf_phpbb_googleplus');
+        if ($is_googleplus)
+        {
+            $sql .= ", pf_phpbb_googleplus";
+        }
+        $is_skype = $this->db_tools->sql_column_exists($this->table_prefix . 'profile_fields_data', 'pf_phpbb_skype');
+        if ($is_skype)
+        {
+            $sql .= ", pf_phpbb_skype";
+        }
+        $is_twitter = $this->db_tools->sql_column_exists($this->table_prefix . 'profile_fields_data', 'pf_phpbb_twitter');
+        if ($is_twitter)
+        {
+            $sql .= ", pf_phpbb_twitter";
+        }
+        $is_youtube = $this->db_tools->sql_column_exists($this->table_prefix . 'profile_fields_data', 'pf_phpbb_youtube');
+        if ($is_youtube)
+        {
+            $sql .= ", pf_phpbb_youtube";
+        }
+		$sql .=	" FROM " . USERS_TABLE .
 					" u LEFT JOIN " . PROFILE_FIELDS_DATA_TABLE . " pf on u.user_id = pf.user_id" .
 					" WHERE (user_type = " . USER_NORMAL . " OR user_type = " . USER_FOUNDER . ")" .
 					" AND username_clean " . $this->db->sql_like_expression(utf8_clean_string( $this->db->sql_escape($q)) . $this->db->get_any_char());
@@ -181,16 +241,16 @@ class live_search_ajax_handler
 			//$user_email = $row['user_email'];
 			$allow_pm = $this->config['allow_privmsg'] && $this->auth->acl_get('u_sendpm') && ($row['user_allow_pm'] || $this->auth->acl_gets('a_', 'm_') || $this->auth->acl_getf_global('m_')) ? 1 :0;
 			$allow_email = (!empty($row['user_allow_viewemail']) && $this->auth->acl_get('u_sendemail')) || $this->auth->acl_get('a_email') ? 1 :0;
-			$icq = empty($row['pf_phpbb_icq']) ? '' : $row['pf_phpbb_icq'];
-			$website = empty($row['pf_phpbb_website']) ? '' :$row['pf_phpbb_website'];
-			$wlm = empty($row['pf_phpbb_wlm']) ? '' : $row['pf_phpbb_wlm'];
-			$yahoo = empty($row['pf_phpbb_yahoo']) ? '' :$row['pf_phpbb_yahoo'];
-			$aol = empty($row['pf_phpbb_aol']) ? '' :$row['pf_phpbb_aol'];
-			$facebook = empty($row['pf_phpbb_facebook']) ? '' :$row['pf_phpbb_facebook'];
-			$googleplus = empty($row['pf_phpbb_googleplus']) ? '' :$row['pf_phpbb_googleplus'];
-			$skype = empty($row['pf_phpbb_skype']) ? '' :$row['pf_phpbb_skype'];
-			$twitter = empty($row['pf_phpbb_twitter']) ? '' :$row['pf_phpbb_twitter'];
-			$youtube = empty($row['pf_phpbb_youtube']) ? '' :$row['pf_phpbb_youtube'];
+			$icq = !$is_icq  || empty($row['pf_phpbb_icq']) ? '' : $row['pf_phpbb_icq'];
+			$website = !$is_website || empty($row['pf_phpbb_website']) ? '' : $row['pf_phpbb_website'];
+			$wlm = !$is_wlm || empty($row['pf_phpbb_wlm']) ? '' : $row['pf_phpbb_wlm'];
+			$yahoo = !$is_yahoo || empty($row['pf_phpbb_yahoo']) ? '' :$row['pf_phpbb_yahoo'];
+			$aol = !$is_aol || empty($row['pf_phpbb_aol']) ? '' :$row['pf_phpbb_aol'];
+			$facebook = !$is_facebook || empty($row['pf_phpbb_facebook']) ? '' :$row['pf_phpbb_facebook'];
+			$googleplus = !$is_googleplus || empty($row['pf_phpbb_googleplus']) ? '' :$row['pf_phpbb_googleplus'];
+			$skype = !$is_skype || empty($row['pf_phpbb_skype']) ? '' :$row['pf_phpbb_skype'];
+			$twitter = !$is_twitter || empty($row['pf_phpbb_twitter']) ? '' :$row['pf_phpbb_twitter'];
+			$youtube = !$is_youtube || empty($row['pf_phpbb_youtube']) ? '' :$row['pf_phpbb_youtube'];
 
 			$message .= $row['username'] ."|$user_id|$allow_pm|$allow_email|$icq|$website|$wlm|$yahoo|$aol|$facebook|$googleplus|$skype|$twitter|$youtube\n";
 

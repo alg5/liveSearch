@@ -127,7 +127,6 @@ class live_search_ajax_handler
 		" ORDER BY topic_title";
 		$result = $this->db->sql_query($sql);
 		$topic_list = array();
-
 		$arr_res = $arr_priority1 = $arr_priority2 = array();
 		while ($row = $this->db->sql_fetchrow($result))
 		{
@@ -154,11 +153,12 @@ class live_search_ajax_handler
 			$forum_id = $topic_info['forum_id'];
 			$topic_id = ($topic_info['topic_status'] == 2) ? (int) $topic_info['topic_moved_id'] : (int) $topic_info['topic_id'];
 			$topic_info['topic_title'] = str_replace('|', ' ', $topic_info['topic_title']);
-			$key = htmlspecialchars_decode($topic_info['topic_title'] . ' (' . $topic_info['forum_name'] . ')'  );
-			$message .= $key . "|$topic_id|$forum_id\n";
+			$key = htmlspecialchars_decode($topic_info['topic_title']   );
+			$forum_name = htmlspecialchars_decode( ' (' . $topic_info['forum_name'] . ')'  );
+			$message .= $key . "|$topic_id|$forum_id|$forum_name\n";
 		}
 		$json_response = new \phpbb\json_response;
-			$json_response->send($message);
+		$json_response->send($message);
 
 	}
 
@@ -167,13 +167,6 @@ class live_search_ajax_handler
 		// Initialize \phpbb\db\tools object
 		$this->db_tools = new \phpbb\db\tools($this->db);
 
-		//$sql = "SELECT user_id, username, user_email " .
-		//$sql = "SELECT u.*, pf_phpbb_icq, pf_phpbb_website, pf_phpbb_wlm, pf_phpbb_yahoo, pf_phpbb_aol, pf_phpbb_facebook, pf_phpbb_googleplus, pf_phpbb_skype, pf_phpbb_twitter, pf_phpbb_youtube " .
-		//			" FROM " . USERS_TABLE .
-		//			" u LEFT JOIN " . PROFILE_FIELDS_DATA_TABLE . " pf on u.user_id = pf.user_id" .
-		//			" WHERE (user_type = " . USER_NORMAL . " OR user_type = " . USER_FOUNDER . ")" .
-		//			" AND username_clean " . $this->db->sql_like_expression(utf8_clean_string( $this->db->sql_escape($q)) . $this->db->get_any_char());
-		//			" ORDER BY username";
 		$sql =  "SELECT u.*";
 		$is_icq = $this->db_tools->sql_column_exists($this->table_prefix . 'profile_fields_data', 'pf_phpbb_icq');
 		if ($is_icq)
@@ -232,7 +225,6 @@ class live_search_ajax_handler
 					" ORDER BY username";
 
 		$result = $this->db->sql_query($sql);
-		//$user_list = array();
 		$message = '';
 
 		while ($row = $this->db->sql_fetchrow($result))

@@ -90,7 +90,9 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
 		        minChars: minChars_topic,
 
 		        showResult: function (value, data) {
-		            return '<span style="">' + hilight(value, $("#topic_live_search").val()) + '</span>';
+                console.log(value);
+                console.log(data);
+		            return '<span style="">' + hilight(value, $("#topic_live_search").val()) + data[2] + '</span>';
 		        },
 		        onItemSelect: function (item) {
 		            goto_topic(item);

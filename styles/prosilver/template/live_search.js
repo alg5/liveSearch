@@ -2,7 +2,7 @@
 if (LIVE_SEARCH_USE_EYE_BUTTON)
 {
     var obj = { };
-    $(obj).eye({
+   $(obj).eye({
             name: 'ls_eye',
             title_open:LIVE_SEARCH_EYE_BUTTON_OPEN_T,
             title_close:LIVE_SEARCH_EYE_BUTTON_CLOSE_T,

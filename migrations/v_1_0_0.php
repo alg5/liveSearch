@@ -107,7 +107,7 @@ class v_1_0_0 extends \phpbb\db\migration\migration
 			array('config.add', array('live_search_show_for_guest', v_1_0_0::ON)),
 			array('config.add', array('live_search_use_eye_button', v_1_0_0::ON)),
 			// Current version
-			array('config.add', array('live_search', '1.0.3')),
+			array('config.add', array('live_search', '1.0.4')),
 
 			// Remove old ACP modules
 			array('if', array(

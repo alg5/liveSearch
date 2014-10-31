@@ -19,7 +19,6 @@ var prefix = '_eye_';
     */
 
     $.cls_eye = function ($elem, options) {
-
     this.options = options;
         /**
         * Init and sanitize options
@@ -75,9 +74,10 @@ var prefix = '_eye_';
             btn = btn + 'title="' + this.options.title_open + '"';
     }
     btn = btn + '> </div> </div>';
-       var new_content = $('#wrap').html() + btn;
-   $('#wrap').html(new_content) ;
-    this.dom.$btn_eye = $('#' +  this.options.name);
+   //var new_content = $('#wrap').html() + btn;
+  //$('#wrap').html(new_content) ;
+  $('#wrap').append(btn) ;
+   this.dom.$btn_eye = $('#' +  this.options.name);
 
         /**
         * Shortcut to self

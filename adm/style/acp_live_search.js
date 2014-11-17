@@ -33,12 +33,11 @@
 
 
         });
-
+        // don't use will be in next version
         //***ACP***
         console.log($('form#select_user').find('.username'));
         $('form#select_user').find('.username').on('change', function (e) {
             e.preventDefaults();
-            alert('aaa');
         });
         $('form#select_user').find('.username').autocomplete({
             url: U_USER_LS_ACP_PATH,
@@ -61,7 +60,6 @@
         }
 
         function goto_acp_user_perm(item) {
-            alert(item);
             //            if (item == null || item.value == null || item.value == undefined) return;
             //            var old_value = $("#username_list").val();
             //            var new_value = (old_value) ? old_value + '\n' + item.value : item.value;

@@ -26,3 +26,4 @@ services:
             - @pagination
             - @content.visibility
             - %core.table_prefix%
+            - @profilefields.manager

@@ -15,27 +15,16 @@
             <div class="pointer-inner">
         </div>
     </div>
-    <div class="dropdown-contents contact-icons" style='border-bottom-color: White; '>
-		    <a href="javascript:void(0);" title="{L_LIVE_SEARCH_GO_PROFILE}" ><span class="leave_search_contact-icon   icon-profile" style="padding:0;"></span></a>
-            <a href="#" title="{L_SEND_PRIVATE_MESSAGE}" ><span class="leave_search_contact-icon contact-icon pm-icon"></span></a>
-            <a href="#" title="{L_SEND_EMAIL}"><span  class="leave_search_contact-icon contact-icon email-icon"></span></a>
-            <a href="#" title="{L_SEND_ICQ_MESSAGE}"><span  class="leave_search_contact-icon contact-icon phpbb_icq-icon"></span></a>
-            <a href="#" title="{L_VISIT_WEBSITE}"><span  class="leave_search_contact-icon contact-icon phpbb_website-icon"></span></a>
-            <a href="#" title="{L_WLM}"><span  class="leave_search_contact-icon contact-icon phpbb_wlm-icon"></span></a>
-            <a href="#" title="{L_YAHOO}"><span  class="leave_search_contact-icon contact-icon phpbb_yahoo-icon"></span></a>
-            <a href="#" title="AOL"><span  class="leave_search_contact-icon contact-icon phpbb_aol-icon"></span></a>
-            <a href="#" title="{L_FACEBOOK}"><span  class="leave_search_contact-icon contact-icon phpbb_facebook-icon"></span></a>
-            <a href="#" title="{L_GOOGLEPLUS}"><span  class="leave_search_contact-icon contact-icon phpbb_googleplus-icon"></span></a>
-            <a href="#" title="{L_SKYPE}"><span  class="leave_search_contact-icon contact-icon phpbb_skype-icon"></span></a>
-            <a href="#" title="{L_TWITTER}"><span  class="leave_search_contact-icon contact-icon phpbb_twitter-icon"></span></a>
-            <a href="#" title="{L_YOUTUBE}"><span  class="leave_search_contact-icon contact-icon phpbb_youtube-icon"></span></a>
-    </div>
+    <div id='ls_contacts'class="dropdown-contents contact-icons" style='border-bottom-color: White; '></div>
+
+    
     <ul class="dropdown-contents" role="menu" style="margin-left: 0px; left: 0px; max-width: 1281px; ">
         <li ><a id="topics_live_search" href="javascript:void(0);" 
             title="<!-- IF S_FORUM_ID -->{L_LIVE_SEARCH_TOOLTIP_BY_FORUM} {FORUM_NAME}<!-- ELSE -->{L_LIVE_SEARCH_TOOLTIP_ALL}<!-- ENDIF -->" 
             role="menuitem">{L_LIVE_SEARCH_TOPICS_BY_USER}
         </a></li>
 	    <li class="separator"></li>
+   
 		<li><a id="posts_live_search" href="javascript:void(0);" style=' display:none':
          title="<!-- IF S_TOPIC_ID -->{L_LIVE_SEARCH_TOOLTIP_BY_TOPIC} {TOPIC_TITLE}<!-- ELSEIF S_FORUM_ID-->{L_LIVE_SEARCH_TOOLTIP_BY_FORUM} {FORUM_NAME}<!-- ELSE -->{L_LIVE_SEARCH_TOOLTIP_ALL}<!-- ENDIF -->"  
          role="menuitem">{L_LIVE_SEARCH_POSTS_BY_USER}</a></li>

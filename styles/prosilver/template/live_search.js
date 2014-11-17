@@ -90,8 +90,6 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
 		        minChars: minChars_topic,
 
 		        showResult: function (value, data) {
-                console.log(value);
-                console.log(data);
 		            return '<span style="">' + hilight(value, $("#topic_live_search").val()) + data[2] + '</span>';
 		        },
 		        onItemSelect: function (item) {
@@ -128,7 +126,6 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
                 goto_user_pm(item);
             }
         });
-        //console.log($('.ls_similartopics').next().find('input[name=subject]'));
         //Live search similar topic during new topic
  
         if (S_SIMILARTOPIC_SHOW)
@@ -198,95 +195,75 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
 
             var username = item.value;
             var user_id = item.data[0];
-            var allow_pm = item.data[1];
-            var allow_email = item.data[2];
-            var icq = item.data[3];
-            var website = item.data[4];
-            var wlm = item.data[5];
-           var yahoo = item.data[6];
-           var aol = item.data[7];
-           var facebook = item.data[8];
-           var googleplus = item.data[9];
-           var skype = item.data[10];
-           var twitter = item.data[11];
-           var youtube = item.data[12];
-
-            $('span.leave_search_contact-icon').each(function () {
-                 $(this).parent().hide();
-            });
-            $('#user_handle').find('span.icon-profile').parent().show();
-
-             if (allow_pm == 1) $('#user_handle').find('span.pm-icon').parent().show();
-             if (allow_email == 1) $('#user_handle').find('span.email-icon').parent().show();
-             if (icq != '') $('#user_handle').find('span.phpbb_icq-icon').parent().show();
-             if (website != '') $('#user_handle').find('span.phpbb_website-icon').parent().show();
-             if (wlm != '') $('#user_handle').find('span.phpbb_wlm-icon').parent().show();
-             if (yahoo != '') $('#user_handle').find('span.phpbb_yahoo-icon').parent().show();
-             if (aol != '') $('#user_handle').find('span.phpbb_aol-icon').parent().show();
-             if (facebook != '') $('#user_handle').find('span.phpbb_facebook-icon').parent().show();
-             if (googleplus != '') $('#user_handle').find('span.phpbb_googleplus-icon').parent().show();
-             if (skype != '') $('#user_handle').find('span.phpbb_skype-icon').parent().show();
-             if (twitter != '') $('#user_handle').find('span.phpbb_twitter-icon').parent().show();
-             if (youtube != '') $('#user_handle').find('span.phpbb_youtube-icon').parent().show();
-
-
-
-
-            $('.leave_search_contact-icon').on('click', function (e) {
-                e.preventDefault();
-                if ($(this).hasClass('icon-profile')) {
-                    window.location = U_MEMBERLIST_LS_PATH + 'viewprofile&u=' + user_id;
+             $('#ls_contacts').empty();
+             var new_contact  = '';
+             var len = item.data.length -1;
+             var contacts_arr = item.data.clone();
+            contacts_arr.shift();
+            for (var  i=0; i<contacts_arr.length; i++)
+            {
+                var arr = contacts_arr[i].split('^');
+                var contact_name = arr[0];
+                var contact_desc = arr[1];
+                var contact_url = arr[2];
+                var REMAINDER =i % 4;
+               // var new_contact  = '';
+                var class_contact;        
+                //var url_contact;        
+                switch ( contact_name)
+                {
+                    case 'profile':
+                        class_contact =  'leave_search_contact-icon   icon-profile';
+                        contact_url = U_PROFILE + user_id;
+                        break;
+                     case 'pm':
+                        class_contact =  'leave_search_contact-icon contact-icon ' + arr[0] + '-icon';
+                        contact_url = U_PM + user_id;
+                        break;
+                     case 'email':
+                        class_contact =  'leave_search_contact-icon contact-icon ' + arr[0] + '-icon';
+                       contact_url = U_MAIL + user_id;
+                        break;
+                     case 'jabber':
+                        class_contact =  'leave_search_contact-icon contact-icon ' + arr[0] + '-icon';
+                       contact_url = U_JABBER + user_id;
+                        break;
+                   default:
+                        class_contact =  'leave_search_contact-icon contact-icon ' + arr[0] + '-icon';
+                       contact_url = arr[2];
+                }                
+                var S_LAST_CELL = ((REMAINDER == 3) || (i == (contacts_arr.length-1)  && contacts_arr.length < 4)) ;
+				if (REMAINDER == 0)
+                {
+                    new_contact = new_contact + '<div>';
                 }
-                if ($(this).hasClass('pm-icon')) {
-                    window.location = U_UCP_LS_PATH + 'compose&i=pm&u=' + user_id;
+                new_contact =  new_contact + '<a href="' + contact_url + '" title="'  + contact_desc + '"';
+                if (S_LAST_CELL)
+                {
+                    var new_contact = new_contact + ' class="last-cell"';
                 }
-                if ($(this).hasClass('email-icon')) {
-                    window.location = U_MEMBERLIST_LS_PATH + 'email&u=' + user_id;
+                //debug
+//                if (contact_name == 'profile')
+//                {
+//                    alert ('listenrer: ' + U_PROFILE + '; controller: ' + contact_url);
+//                }
+                if (contact_name == 'jabber')
+                {
+                    var new_contact = new_contact + ' onclick="popup(this.href, 750, 320); return false;"';
                 }
-                if ($(this).hasClass('phpbb_icq-icon')) {
-                    window.location = 'https://www.icq.com/people/' + icq + '/';
-                }
-                if ($(this).hasClass('phpbb_website-icon')) {
-                    window.location = website;
-                }
-                if ($(this).hasClass('phpbb_wlm-icon')) {
-                    //window.location = 'skype:' + skype + '?userinfo';
-                }
-                if ($(this).hasClass('phpbb_yahoo-icon')) {
-                    window.location = 'http://edit.yahoo.com/config/send_webmesg?.target=' + yahho  + '&.src=pg';
-                }
-                if ($(this).hasClass('phpbb_aol-icon')) {
-                   // window.location = 'http://edit.yahoo.com/config/send_webmesg?.target=' + yahho  + '&.src=pg';
-                }
-                if ($(this).hasClass('phpbb_facebook-icon')) {
-                    window.location = 'http://facebook.com/' + facebook + '/';
-                }
-                if ($(this).hasClass('phpbb_googleplus-icon')) {
-                    window.location = 'http://plus.google.com/'+googleplus;
-                }
-                if ($(this).hasClass('phpbb_skype-icon')) {
-                    window.location = 'skype:' + skype + '?userinfo';
-                }
-                if ($(this).hasClass('phpbb_twitter-icon')) {
-                    window.location = 'http://twitter.com/' + twitter;
-                }
-                if ($(this).hasClass('phpbb_youtube-icon')) {
-                    window.location = 'http://youtube.com/user/' + youtube;
-                }
-            });
+                var new_contact = new_contact + '>';
+                var new_contact = new_contact + '<span class="';
+                new_contact = new_contact + class_contact + '"></span></a>';
+                if ( REMAINDER == 3 || i ==  (contacts_arr.length-1))
+                {
+					new_contact = new_contact + '</div>';
+				}
+            }
+            $('#ls_contacts').append(new_contact);
+   
             $('#topics_live_search').on('click', function (e) {
                 e.preventDefault();
-                        //var topic_path = './app.php/leave_search_by_user/topic/' + S_FORUM_ID + '/' + user_id;
-
-                //window.location = 'search.php?author_id=' + user_id + '&sr=topics&ls=1&forum_id=' + S_FORUM_ID;
-                //U_USERTOPIC_LS_PATH
-                 var arr = U_USERTOPIC_LS_PATH.split('/');
-                var l = arr.length;
-                arr[arr.length-2] = S_FORUM_ID;
-                arr[arr.length-1] = user_id;
-                var usertopic_path = arr.join('/');
-               // alert(usertopic_path);
-               //window.location = './app.php/liveSearch/usertopic/' + S_FORUM_ID + '/' + user_id;
+                var usertopic_path = U_USERTOPIC_LS_PATH  + S_FORUM_ID + '/' + user_id;
                window.location = usertopic_path;
             });
             $('#posts_live_search').on('click', function (e) {
@@ -306,6 +283,19 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
 			var new_value = (old_value)? old_value+'\n'+item.value : item.value;
 			$("#username_list").val(new_value);
 
+    }
+
+    if (!Array.prototype.clone)
+    {
+        Array.prototype.clone = function () 
+        {
+            var arr1 = new Array();
+            for (var property in this) 
+            {
+                arr1[property] = typeof (this[property]) == 'object' ? this[property].clone() : this[property]
+            }
+            return arr1;
+        }
     }
 
 

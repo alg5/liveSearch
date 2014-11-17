@@ -3,8 +3,8 @@
     "type": "phpbb-extension",
     "description": "Live Search (as in Google)",
     "homepage": "http://www.phpbbguru.net",
-    "version": "1.0.4",
-    "time": "2014-31-10",
+    "version": "1.0.5",
+    "time": "2014-17-11",
     "license": "GPL-2.0",
     "authors": [
         {

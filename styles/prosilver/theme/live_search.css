@@ -63,3 +63,13 @@
     right: 10px;
 }
 
+.phpbb_vk-icon {
+	
+  background: url("./images/vk.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+  cursor: pointer;
+  height: 16px;
+  position: relative;
+  width: 16px;
+
+}
+

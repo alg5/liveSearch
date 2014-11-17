@@ -57,4 +57,5 @@ $lang = array_merge($lang, array(
 	'LIVESEARCH_USERTOPIC_RESULT_IN_SUBFORUMS'	=> ' и его подфорумах',
 	'LIVE_SEARCH_EYE_BUTTON_OPEN_T'	=> 'Показать панель поиска',
 	'LIVE_SEARCH_EYE_BUTTON_CLOSE_T'	=> 'Скрыть панель поиска',
+	'VIEW_VK_PROFILE'	=> 'Просмотр профиля ВКонтакте',
 ));

@@ -2,7 +2,6 @@
 /**
 *
 * @author Alg
-* @version 1.0.0	$
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
@@ -12,7 +11,7 @@ namespace alg\liveSearch\controller;
 class live_search_ajax_handler
 {
 	protected $thankers = array();
-	public function __construct(\phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \phpbb\auth\auth $auth, \phpbb\template\template $template, \phpbb\user $user, \phpbb\cache\service $cache, $phpbb_root_path, $php_ext, \phpbb\request\request_interface $request, $table_prefix, $phpbb_container, \phpbb\pagination $pagination, \phpbb\content_visibility $content_visibility, $table_prefix)
+	public function __construct(\phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \phpbb\auth\auth $auth, \phpbb\template\template $template, \phpbb\user $user, \phpbb\cache\service $cache, $phpbb_root_path, $php_ext, \phpbb\request\request_interface $request, $table_prefix, $phpbb_container, \phpbb\pagination $pagination, \phpbb\content_visibility $content_visibility, $table_prefix,  \phpbb\profilefields\manager $profilefields_manager)
 	{
 		$this->config = $config;
 		$this->db = $db;
@@ -27,6 +26,7 @@ class live_search_ajax_handler
 		$this->pagination =  $pagination;
 		$this->content_visibility = $content_visibility;
 		$this->table_prefix = $table_prefix;
+		$this->profilefields_manager = $profilefields_manager;
 		$this->return = array(); // save returned data in here
 		$this->error = array(); // save errors in here
 
@@ -164,90 +164,98 @@ class live_search_ajax_handler
 
 	private function live_search_user($action, $q)
 	{
+		$sql =	"SELECT field_name, field_contact_desc, field_contact_url  FROM " . PROFILE_FIELDS_TABLE . " WHERE field_is_contact=1 AND field_active=1 ORDER BY field_order" ;
+		$result = $this->db->sql_query($sql);
+        $fields_list = '';
+        $user_contacts = array();
+        while ($row = $this->db->sql_fetchrow($result))
+		{
+            $user_contacts[] = $row;
+            $fields_list .=  ', pf_' . $row['field_name'] ;
+        }
+ 		$this->db->sql_freeresult($result);
+  
 		// Initialize \phpbb\db\tools object
-		$this->db_tools = new \phpbb\db\tools($this->db);
+		//$this->db_tools = new \phpbb\db\tools($this->db);
 
-		$sql =  "SELECT u.*";
-		$is_icq = $this->db_tools->sql_column_exists($this->table_prefix . 'profile_fields_data', 'pf_phpbb_icq');
-		if ($is_icq)
-		{
-			$sql .= ", pf_phpbb_icq";
-		}
-		$is_website = $this->db_tools->sql_column_exists($this->table_prefix . 'profile_fields_data', 'pf_phpbb_website');
-		if ($is_website)
-		{
-			$sql .= ", pf_phpbb_website";
-		}
-		$is_wlm = $this->db_tools->sql_column_exists($this->table_prefix . 'profile_fields_data', 'pf_phpbb_wlm');
-		if ($is_wlm)
-		{
-			$sql .= ", pf_phpbb_wlm";
-		}
-		$is_yahoo = $this->db_tools->sql_column_exists($this->table_prefix . 'profile_fields_data', 'pf_phpbb_yahoo');
-		if ($is_yahoo)
-		{
-			$sql .= ", pf_phpbb_yahoo";
-		}
-		$is_aol = $this->db_tools->sql_column_exists($this->table_prefix . 'profile_fields_data', 'pf_phpbb_aol');
-		if ($is_aol)
-		{
-			$sql .= ", pf_phpbb_aol";
-		}
-		$is_facebook = $this->db_tools->sql_column_exists($this->table_prefix . 'profile_fields_data', 'pf_phpbb_facebook');
-		if ($is_facebook)
-		{
-			$sql .= ", pf_phpbb_facebook";
-		}
-		$is_googleplus = $this->db_tools->sql_column_exists($this->table_prefix . 'profile_fields_data', 'pf_phpbb_googleplus');
-		if ($is_googleplus)
-		{
-			$sql .= ", pf_phpbb_googleplus";
-		}
-		$is_skype = $this->db_tools->sql_column_exists($this->table_prefix . 'profile_fields_data', 'pf_phpbb_skype');
-		if ($is_skype)
-		{
-			$sql .= ", pf_phpbb_skype";
-		}
-		$is_twitter = $this->db_tools->sql_column_exists($this->table_prefix . 'profile_fields_data', 'pf_phpbb_twitter');
-		if ($is_twitter)
-		{
-			$sql .= ", pf_phpbb_twitter";
-		}
-		$is_youtube = $this->db_tools->sql_column_exists($this->table_prefix . 'profile_fields_data', 'pf_phpbb_youtube');
-		if ($is_youtube)
-		{
-			$sql .= ", pf_phpbb_youtube";
-		}
-		$sql .=	" FROM " . USERS_TABLE .
+		$sql = "SELECT u.user_id, u.username, user_allow_pm, user_allow_viewemail, user_type, user_inactive_reason, user_jabber, user_email " . $fields_list . " FROM " . USERS_TABLE .
 					" u LEFT JOIN " . PROFILE_FIELDS_DATA_TABLE . " pf on u.user_id = pf.user_id" .
 					" WHERE (user_type = " . USER_NORMAL . " OR user_type = " . USER_FOUNDER . ")" .
 					" AND username_clean " . $this->db->sql_like_expression(utf8_clean_string( $this->db->sql_escape($q)) . $this->db->get_any_char());
 					" ORDER BY username";
+                    
+                    
 
 		$result = $this->db->sql_query($sql);
-		$message = '';
+        $user_info = array();
+        $id_cache = array();
+        while ($row = $this->db->sql_fetchrow($result))
+        {
+            $user_info[] = $row;
+            //$id_cache[] = $row['user_id'];
+        }
+        //// Grab all profile fields from users in id cache for later use - similar to the poster cache
+        //$profile_fields_tmp =$this->profilefields_manager->grab_profile_fields_data($id_cache);
+        
+        //// filter out fields not to be displayed 
+        //$profile_fields_cache = array();
+        //foreach ($profile_fields_tmp as $profile_user_id => $profile_fields)
+        //{
+        //    $profile_fields_cache[$profile_user_id] = array();
+        //    foreach ($profile_fields as $used_ident => $profile_field)
+        //    {
+        //        if ($profile_field['data']['field_is_contact'] == 1 && $profile_field['data']['field_active'] ==1)
+        //        {
+        //            $profile_fields_cache[$profile_user_id][$used_ident] = $profile_field;
+        //        }
+        //    }
+        //}
+        //unset($profile_fields_tmp);
+        //print_r($profile_fields_cache);
 
-		while ($row = $this->db->sql_fetchrow($result))
+       
+		$message = '';
+		//while ($row = $this->db->sql_fetchrow($result))
+        foreach($user_info as $row)
 		{
 			$user_id = (int) $row['user_id'];
-			//$user_email = $row['user_email'];
-			$allow_pm = $this->config['allow_privmsg'] && $this->auth->acl_get('u_sendpm') && ($row['user_allow_pm'] || $this->auth->acl_gets('a_', 'm_') || $this->auth->acl_getf_global('m_')) ? 1 :0;
-			$allow_email = (!empty($row['user_allow_viewemail']) && $this->auth->acl_get('u_sendemail')) || $this->auth->acl_get('a_email') ? 1 :0;
-			$icq = !$is_icq  || empty($row['pf_phpbb_icq']) ? '' : $row['pf_phpbb_icq'];
-			$website = !$is_website || empty($row['pf_phpbb_website']) ? '' : $row['pf_phpbb_website'];
-			$wlm = !$is_wlm || empty($row['pf_phpbb_wlm']) ? '' : $row['pf_phpbb_wlm'];
-			$yahoo = !$is_yahoo || empty($row['pf_phpbb_yahoo']) ? '' :$row['pf_phpbb_yahoo'];
-			$aol = !$is_aol || empty($row['pf_phpbb_aol']) ? '' :$row['pf_phpbb_aol'];
-			$facebook = !$is_facebook || empty($row['pf_phpbb_facebook']) ? '' :$row['pf_phpbb_facebook'];
-			$googleplus = !$is_googleplus || empty($row['pf_phpbb_googleplus']) ? '' :$row['pf_phpbb_googleplus'];
-			$skype = !$is_skype || empty($row['pf_phpbb_skype']) ? '' :$row['pf_phpbb_skype'];
-			$twitter = !$is_twitter || empty($row['pf_phpbb_twitter']) ? '' :$row['pf_phpbb_twitter'];
-			$youtube = !$is_youtube || empty($row['pf_phpbb_youtube']) ? '' :$row['pf_phpbb_youtube'];
+			$message .= $row['username'] . '|' . $user_id;
+            if( $this->user->data['user_id']!= ANONYMOUS)
+            {
+                //add user profile
+                $url = append_sid("{$this->phpbb_root_path}memberlist.$this->php_ext", 'mode=viewprofile&amp;u=' . $user_id);
+                $message .= '|profile^' . $this->user->lang['LIVE_SEARCH_GO_PROFILE'] . '^' . $url;
+            }
 
-			$message .= $row['username'] ."|$user_id|$allow_pm|$allow_email|$icq|$website|$wlm|$yahoo|$aol|$facebook|$googleplus|$skype|$twitter|$youtube\n";
+            $url = $this->get_url_pm($row);
+            if($url)
+            {
+                $message .= '|pm^' . $this->user->lang['SEND_PRIVATE_MESSAGE'] . '^' . $url ;
+            }
+            $url = $this->get_url_email($row);
+
+            if($url)
+            {
+                $message .= '|email^' . $this->user->lang['SEND_EMAIL'] . '^' . $url ;
+            }
+            $url = $this->get_url_jabber($row);
+            if($url)
+            {
+                $message .= '|jabber^' . $this->user->lang['SEND_EMAIL'] . '^' . $url ;
+            }
+            
+            foreach ($row as $f_name=>$f_value)
+            {
+                if (strpos($f_name , 'pf_phpbb_') === 0 && $f_value != '')
+                {
+                    $contact = $this->build_user_contact_by_name($user_contacts, $f_name, $f_value);
+                    $message .= "|$contact";
+                }
+                
+            }
+            $message .= "\n";
 
 		}
-
 		$this->db->sql_freeresult($result);
 		$json_response = new \phpbb\json_response;
 			$json_response->send($message);
@@ -333,6 +341,10 @@ class live_search_ajax_handler
 					{
 						$sql .= " AND " . $this->db->sql_in_set('f.forum_id', $ex_fid_ary, true);
 					}
+                    if ($forum_id)
+                    {
+						$sql .= $this->build_subforums_search($forum_id) ;
+                    }
 		$result = $this->db->sql_query($sql);
 		$row = $this->db->sql_fetchrow($result);
 		$total_count = (int) $row['total_count'];
@@ -365,6 +377,10 @@ class live_search_ajax_handler
 								{
 									$sql .= " AND " . $this->db->sql_in_set('f.forum_id', $ex_fid_ary, true);
 								}
+                                if ($forum_id)
+                                {
+									$sql .= $this->build_subforums_search($forum_id) ;
+                                }
 								$sql .= " ORDER BY " . $sort_key . " " . $sort_dir;
 						$result = $this->db->sql_query_limit($sql, $per_page, $start);
 						//print_r($sql);
@@ -531,4 +547,80 @@ class live_search_ajax_handler
 		$subforums = substr($subforums, 0, -1) . " )";
 		return $subforums;
 	}
+    
+    private function build_user_contact_by_name($user_contacts, $f_name, $f_value)
+    {
+        $this->user->add_lang('memberlist');
+        foreach ($user_contacts as $contact)
+        {
+            if ($contact['field_name'] == str_replace('pf_', '', $f_name))
+            {
+                return $contact['field_name']  . '^' . $this->user->lang[$contact['field_contact_desc']] . '^' . sprintf($contact['field_contact_url'], $f_value);
+            }
+        }
+        return '';
+        
+    }
+    
+    private function get_url_pm($seeking_user)
+    {
+        if( $this->user->data['user_id'] == ANONYMOUS)
+        {
+            return '';
+        }
+        
+    	//$allow_pm = $this->config['allow_privmsg'] && $this->auth->acl_get('u_sendpm') && ($row['user_allow_pm'] || $this->auth->acl_gets('a_', 'm_') || $this->auth->acl_getf_global('m_')) ? 1 :0;
+        $ids[] = $seeking_user['user_id'];
+	    // Can this user receive a Private Message?
+	    $can_receive_pm = (
+		    // They must be a "normal" user
+		    $seeking_user['user_type'] != USER_IGNORE &&
+
+		    // They must not be deactivated by the administrator
+		    ($seeking_user['user_type'] != USER_INACTIVE || $seeking_user['user_inactive_reason'] != INACTIVE_MANUAL) &&
+
+		    // They must be able to read PMs
+            $this->auth->acl_get_list($ids, 'u_readpm') &&
+
+		    // They must not be permanently banned (don't need. we give only active users)
+		    //!in_array($seeking_user['user_id'], $permanently_banned_users = phpbb_get_banned_user_ids(array_keys($user_cache), false)) &&
+
+		    // They must allow users to contact via PM
+		    (($this->auth->acl_gets('a_', 'm_') || $this->auth->acl_getf_global('m_')) || $seeking_user['allow_pm'])
+	    );
+
+	$u_pm = '';
+
+	if ($this->config['allow_privmsg'] && $this->auth->acl_get('u_sendpm') && $can_receive_pm)
+	{
+		$u_pm = append_sid("{$this->phpbb_root_path}ucp.$this->php_ext", 'i=pm&amp;mode=compose&amp;u' . $seeking_user['user_id']);
+	}
+    return $u_pm;
+    
+    }
+    
+    private function get_url_email($seeking_user)
+    {
+        $seeking_user_id = $seeking_user['user_id'];
+        $url = '';
+ 		if ( $this->user->data['user_id'] != ANONYMOUS && (!empty($seeking_user['user_allow_viewemail']) && $this->auth->acl_get('u_sendemail')) || $this->auth->acl_get('a_email'))
+		{
+			$url = ($this->config['board_email_form'] && $this->config['email_enable']) ? append_sid("{$this->phpbb_root_path}memberlist.$this->php_ext", "email&amp;u=$seeking_user_id"): (($this->config['board_hide_emails'] && !$this->auth->acl_get('a_email')) ? '' : 'mailto:' . $seeking_user['user_email']);
+			//$url = ($         config['board_email_form'] && $        config['email_enable']) ? append_sid("{$phpbb_root_path}memberlist.$phpEx", "mode=email&amp;u=$poster_id") : (($config['board_hide_emails'] && !$auth->acl_get('a_email')) ? '' : 'mailto:' . $row['user_email']);
+            //append_sid("{$phpbb_root_path}memberlist.$phpEx", "mode=email&amp;u=$poster_id") : (($config['board_hide_emails'] && !$auth->acl_get('a_email')) ? '' : 'mailto:' . $row['user_email']);
+		}
+		return $url;
+   }
+    
+   private function get_url_jabber($seeking_user)
+   {
+        $seeking_user_id = $seeking_user['user_id'];
+        $url = '';
+        if (!$this->user->data['user_id'] != ANONYMOUS && $seeking_user['user_jabber'] && $this->auth->acl_get('u_sendim'))
+        {
+   			$url = append_sid("$this->phpbb_root_path}memberlist.$this->php_ext", "mode=contact&amp;action=jabber&amp;u=$seeking_user_id");
+        }
+        return $url;
+   }
+   
 }

@@ -195,7 +195,7 @@ class live_search_ajax_handler
 		//// Grab all profile fields from users in id cache for later use - similar to the poster cache
 		//$profile_fields_tmp =$this->profilefields_manager->grab_profile_fields_data($id_cache);
 
-		//// filter out fields not to be displayed 
+		//// filter out fields not to be displayed
 		//$profile_fields_cache = array();
 		//foreach ($profile_fields_tmp as $profile_user_id => $profile_fields)
 		//{
@@ -241,14 +241,14 @@ class live_search_ajax_handler
 				$message .= '|jabber^' . $this->user->lang['SEND_EMAIL'] . '^' . $url ;
 			}
 
-			foreach ($row as $f_name=>$f_value)
+			foreach ($row as $f_name => $f_value)
 			{
 				if (strpos($f_name , 'pf_phpbb_') === 0 && $f_value != '')
 				{
 					$contact = $this->build_user_contact_by_name($user_contacts, $f_name, $f_value);
 					$message .= "|$contact";
 				}
-				
+
 			}
 			$message .= "\n";
 
@@ -542,7 +542,7 @@ class live_search_ajax_handler
 		$subforums = substr($subforums, 0, -1) . " )";
 		return $subforums;
 	}
-    
+
 	private function build_user_contact_by_name($user_contacts, $f_name, $f_value)
 	{
 		$this->user->add_lang('memberlist');
@@ -555,7 +555,7 @@ class live_search_ajax_handler
 			}
 		}
 		return '';
-		
+
 	}
 
 	private function get_url_pm($seeking_user)
@@ -564,7 +564,7 @@ class live_search_ajax_handler
 		{
 			return '';
 		}
-		
+
 		//$allow_pm = $this->config['allow_privmsg'] && $this->auth->acl_get('u_sendpm') && ($row['user_allow_pm'] || $this->auth->acl_gets('a_', 'm_') || $this->auth->acl_getf_global('m_')) ? 1 :0;
 		$ids[] = $seeking_user['user_id'];
 		// Can this user receive a Private Message?
@@ -595,11 +595,11 @@ class live_search_ajax_handler
 
 	}
 
-    private function get_url_email($seeking_user)
+	private function get_url_email($seeking_user)
 	{
 		$seeking_user_id = $seeking_user['user_id'];
 		$url = '';
- 		if ( $this->user->data['user_id'] != ANONYMOUS && (!empty($seeking_user['user_allow_viewemail']) && $this->auth->acl_get('u_sendemail')) || $this->auth->acl_get('a_email'))
+		if ($this->user->data['user_id'] != ANONYMOUS && (!empty($seeking_user['user_allow_viewemail']) && $this->auth->acl_get('u_sendemail')) || $this->auth->acl_get('a_email'))
 		{
 			$url = ($this->config['board_email_form'] && $this->config['email_enable']) ? append_sid("{$this->phpbb_root_path}memberlist.$this->php_ext", "email&amp;u=$seeking_user_id"): (($this->config['board_hide_emails'] && !$this->auth->acl_get('a_email')) ? '' : 'mailto:' . $seeking_user['user_email']);
 		}

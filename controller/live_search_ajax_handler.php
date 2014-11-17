@@ -11,7 +11,7 @@ namespace alg\liveSearch\controller;
 class live_search_ajax_handler
 {
 	protected $thankers = array();
-	public function __construct(\phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \phpbb\auth\auth $auth, \phpbb\template\template $template, \phpbb\user $user, \phpbb\cache\service $cache, $phpbb_root_path, $php_ext, \phpbb\request\request_interface $request, $table_prefix, $phpbb_container, \phpbb\pagination $pagination, \phpbb\content_visibility $content_visibility, $table_prefix,  \phpbb\profilefields\manager $profilefields_manager)
+	public function __construct(\phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \phpbb\auth\auth $auth, \phpbb\template\template $template, \phpbb\user $user, \phpbb\cache\service $cache, $phpbb_root_path, $php_ext, \phpbb\request\request_interface $request, $table_prefix, $phpbb_container, \phpbb\pagination $pagination, \phpbb\content_visibility $content_visibility, $table_prefix, \phpbb\profilefields\manager $profilefields_manager)
 	{
 		$this->config = $config;
 		$this->db = $db;
@@ -166,15 +166,15 @@ class live_search_ajax_handler
 	{
 		$sql =	"SELECT field_name, field_contact_desc, field_contact_url  FROM " . PROFILE_FIELDS_TABLE . " WHERE field_is_contact=1 AND field_active=1 ORDER BY field_order" ;
 		$result = $this->db->sql_query($sql);
-        $fields_list = '';
-        $user_contacts = array();
-        while ($row = $this->db->sql_fetchrow($result))
+		$fields_list = '';
+		$user_contacts = array();
+		while ($row = $this->db->sql_fetchrow($result))
 		{
-            $user_contacts[] = $row;
-            $fields_list .=  ', pf_' . $row['field_name'] ;
-        }
- 		$this->db->sql_freeresult($result);
-  
+			$user_contacts[] = $row;
+			$fields_list .=  ', pf_' . $row['field_name'] ;
+		}
+		$this->db->sql_freeresult($result);
+
 		// Initialize \phpbb\db\tools object
 		//$this->db_tools = new \phpbb\db\tools($this->db);
 
@@ -183,77 +183,74 @@ class live_search_ajax_handler
 					" WHERE (user_type = " . USER_NORMAL . " OR user_type = " . USER_FOUNDER . ")" .
 					" AND username_clean " . $this->db->sql_like_expression(utf8_clean_string( $this->db->sql_escape($q)) . $this->db->get_any_char());
 					" ORDER BY username";
-                    
-                    
 
 		$result = $this->db->sql_query($sql);
-        $user_info = array();
-        $id_cache = array();
-        while ($row = $this->db->sql_fetchrow($result))
-        {
-            $user_info[] = $row;
-            //$id_cache[] = $row['user_id'];
-        }
-        //// Grab all profile fields from users in id cache for later use - similar to the poster cache
-        //$profile_fields_tmp =$this->profilefields_manager->grab_profile_fields_data($id_cache);
-        
-        //// filter out fields not to be displayed 
-        //$profile_fields_cache = array();
-        //foreach ($profile_fields_tmp as $profile_user_id => $profile_fields)
-        //{
-        //    $profile_fields_cache[$profile_user_id] = array();
-        //    foreach ($profile_fields as $used_ident => $profile_field)
-        //    {
-        //        if ($profile_field['data']['field_is_contact'] == 1 && $profile_field['data']['field_active'] ==1)
-        //        {
-        //            $profile_fields_cache[$profile_user_id][$used_ident] = $profile_field;
-        //        }
-        //    }
-        //}
-        //unset($profile_fields_tmp);
-        //print_r($profile_fields_cache);
+		$user_info = array();
+		$id_cache = array();
+		while ($row = $this->db->sql_fetchrow($result))
+		{
+			$user_info[] = $row;
+			//$id_cache[] = $row['user_id'];
+		}
+		//// Grab all profile fields from users in id cache for later use - similar to the poster cache
+		//$profile_fields_tmp =$this->profilefields_manager->grab_profile_fields_data($id_cache);
 
-       
+		//// filter out fields not to be displayed 
+		//$profile_fields_cache = array();
+		//foreach ($profile_fields_tmp as $profile_user_id => $profile_fields)
+		//{
+		//    $profile_fields_cache[$profile_user_id] = array();
+		//    foreach ($profile_fields as $used_ident => $profile_field)
+		//    {
+		//        if ($profile_field['data']['field_is_contact'] == 1 && $profile_field['data']['field_active'] ==1)
+		//        {
+		//            $profile_fields_cache[$profile_user_id][$used_ident] = $profile_field;
+		//        }
+		//    }
+		//}
+		//unset($profile_fields_tmp);
+		//print_r($profile_fields_cache);
+
 		$message = '';
 		//while ($row = $this->db->sql_fetchrow($result))
-        foreach($user_info as $row)
+		foreach($user_info as $row)
 		{
 			$user_id = (int) $row['user_id'];
 			$message .= $row['username'] . '|' . $user_id;
-            if( $this->user->data['user_id']!= ANONYMOUS)
-            {
-                //add user profile
-                $url = append_sid("{$this->phpbb_root_path}memberlist.$this->php_ext", 'mode=viewprofile&amp;u=' . $user_id);
-                $message .= '|profile^' . $this->user->lang['LIVE_SEARCH_GO_PROFILE'] . '^' . $url;
-            }
+			if( $this->user->data['user_id']!= ANONYMOUS)
+			{
+				//add user profile
+				$url = append_sid("{$this->phpbb_root_path}memberlist.$this->php_ext", 'mode=viewprofile&amp;u=' . $user_id);
+				$message .= '|profile^' . $this->user->lang['LIVE_SEARCH_GO_PROFILE'] . '^' . $url;
+			}
 
-            $url = $this->get_url_pm($row);
-            if($url)
-            {
-                $message .= '|pm^' . $this->user->lang['SEND_PRIVATE_MESSAGE'] . '^' . $url ;
-            }
-            $url = $this->get_url_email($row);
+			$url = $this->get_url_pm($row);
+			if($url)
+			{
+				$message .= '|pm^' . $this->user->lang['SEND_PRIVATE_MESSAGE'] . '^' . $url ;
+			}
+			$url = $this->get_url_email($row);
 
-            if($url)
-            {
-                $message .= '|email^' . $this->user->lang['SEND_EMAIL'] . '^' . $url ;
-            }
-            $url = $this->get_url_jabber($row);
-            if($url)
-            {
-                $message .= '|jabber^' . $this->user->lang['SEND_EMAIL'] . '^' . $url ;
-            }
-            
-            foreach ($row as $f_name=>$f_value)
-            {
-                if (strpos($f_name , 'pf_phpbb_') === 0 && $f_value != '')
-                {
-                    $contact = $this->build_user_contact_by_name($user_contacts, $f_name, $f_value);
-                    $message .= "|$contact";
-                }
-                
-            }
-            $message .= "\n";
+			if($url)
+			{
+				$message .= '|email^' . $this->user->lang['SEND_EMAIL'] . '^' . $url ;
+			}
+			$url = $this->get_url_jabber($row);
+			if($url)
+			{
+				$message .= '|jabber^' . $this->user->lang['SEND_EMAIL'] . '^' . $url ;
+			}
+
+			foreach ($row as $f_name=>$f_value)
+			{
+				if (strpos($f_name , 'pf_phpbb_') === 0 && $f_value != '')
+				{
+					$contact = $this->build_user_contact_by_name($user_contacts, $f_name, $f_value);
+					$message .= "|$contact";
+				}
+				
+			}
+			$message .= "\n";
 
 		}
 		$this->db->sql_freeresult($result);
@@ -337,14 +334,14 @@ class live_search_ajax_handler
 					" WHERE  t.topic_status <> " . ITEM_MOVED .
 					" AND t.topic_visibility = " . ITEM_APPROVED .
 					" AND t.topic_poster = " . $author_id . $this->build_subforums_search($forum_id) ;
-					if (sizeof($ex_fid_ary))
-					{
-						$sql .= " AND " . $this->db->sql_in_set('f.forum_id', $ex_fid_ary, true);
-					}
-                    if ($forum_id)
-                    {
-						$sql .= $this->build_subforums_search($forum_id) ;
-                    }
+		if (sizeof($ex_fid_ary))
+		{
+			$sql .= " AND " . $this->db->sql_in_set('f.forum_id', $ex_fid_ary, true);
+		}
+		if ($forum_id)
+		{
+			$sql .= $this->build_subforums_search($forum_id) ;
+		}
 		$result = $this->db->sql_query($sql);
 		$row = $this->db->sql_fetchrow($result);
 		$total_count = (int) $row['total_count'];
@@ -364,120 +361,118 @@ class live_search_ajax_handler
 
 		if ($total_count)
 		{
-				$sql = "SELECT t.*, f.forum_id, f.forum_name, tt.mark_time, ft.mark_time as f_mark_time" .
-								" FROM " .TOPICS_TABLE . " t LEFT JOIN " . FORUMS_TABLE . " f ON (f.forum_id = t.forum_id)" .
-								" LEFT JOIN " . TOPICS_TRACK_TABLE . " tt ON (tt.user_id = " . $author_id .
-								" AND t.topic_id = tt.topic_id) " .
-								" LEFT JOIN " . FORUMS_TRACK_TABLE . " ft ON (ft.user_id = " . $author_id .
-								" AND ft.forum_id = f.forum_id) " .
-								" WHERE t.topic_status <> " . ITEM_MOVED .
-								" AND t.topic_visibility = " . ITEM_APPROVED .
-								" AND t.topic_poster = " . $author_id ;
-								if (sizeof($ex_fid_ary))
-								{
-									$sql .= " AND " . $this->db->sql_in_set('f.forum_id', $ex_fid_ary, true);
-								}
-                                if ($forum_id)
-                                {
-									$sql .= $this->build_subforums_search($forum_id) ;
-                                }
-								$sql .= " ORDER BY " . $sort_key . " " . $sort_dir;
-						$result = $this->db->sql_query_limit($sql, $per_page, $start);
-						//print_r($sql);
-				$row_count = 0;
-				$rowset = array();
-				while ($row = $this->db->sql_fetchrow($result))
-				{
-					$ls_forum_id = (int) $row['forum_id'];
-					$ls_topic_id = (int) $row['topic_id'];
-					$rowset[$ls_topic_id] = $row;
-					if ($this->auth->acl_get('f_read',$ls_forum_id))
-					{
-						$row_count++;
-						// Get topic tracking info
-						if ($this->user->data['is_registered'] && $this->config['load_db_lastread'] && !$this->config['ls_topics_cache'])   //todo ls_topics_cache
-						{
-							$topic_tracking_info = get_topic_tracking($ls_forum_id, $ls_topic_id, $rowset, array($ls_forum_id => $row['f_mark_time']));
-						}
-						else if ($this->config['load_anon_lastread'] || $this->user->data['is_registered'])
-						{
-							$topic_tracking_info = get_complete_topic_tracking($ls_forum_id, $ls_topic_id);
-
-							if (!$this->user->data['is_registered'])
+			$sql = "SELECT t.*, f.forum_id, f.forum_name, tt.mark_time, ft.mark_time as f_mark_time" .
+							" FROM " .TOPICS_TABLE . " t LEFT JOIN " . FORUMS_TABLE . " f ON (f.forum_id = t.forum_id)" .
+							" LEFT JOIN " . TOPICS_TRACK_TABLE . " tt ON (tt.user_id = " . $author_id .
+							" AND t.topic_id = tt.topic_id) " .
+							" LEFT JOIN " . FORUMS_TRACK_TABLE . " ft ON (ft.user_id = " . $author_id .
+							" AND ft.forum_id = f.forum_id) " .
+							" WHERE t.topic_status <> " . ITEM_MOVED .
+							" AND t.topic_visibility = " . ITEM_APPROVED .
+							" AND t.topic_poster = " . $author_id ;
+							if (sizeof($ex_fid_ary))
 							{
-								$this->user->data['user_lastmark'] = (isset($tracking_topics['l'])) ? (int) (base_convert($tracking_topics['l'], 36, 10) + $this->config['board_startdate']) : 0;
+								$sql .= " AND " . $this->db->sql_in_set('f.forum_id', $ex_fid_ary, true);
 							}
+			if ($forum_id)
+			{
+				$sql .= $this->build_subforums_search($forum_id) ;
+			}
+			$sql .= " ORDER BY " . $sort_key . " " . $sort_dir;
+			$result = $this->db->sql_query_limit($sql, $per_page, $start);
+			$row_count = 0;
+			$rowset = array();
+			while ($row = $this->db->sql_fetchrow($result))
+			{
+				$ls_forum_id = (int) $row['forum_id'];
+				$ls_topic_id = (int) $row['topic_id'];
+				$rowset[$ls_topic_id] = $row;
+				if ($this->auth->acl_get('f_read',$ls_forum_id))
+				{
+					$row_count++;
+					// Get topic tracking info
+					if ($this->user->data['is_registered'] && $this->config['load_db_lastread'] && !$this->config['ls_topics_cache'])   //todo ls_topics_cache
+					{
+						$topic_tracking_info = get_topic_tracking($ls_forum_id, $ls_topic_id, $rowset, array($ls_forum_id => $row['f_mark_time']));
+					}
+					else if ($this->config['load_anon_lastread'] || $this->user->data['is_registered'])
+					{
+						$topic_tracking_info = get_complete_topic_tracking($ls_forum_id, $ls_topic_id);
+
+						if (!$this->user->data['is_registered'])
+						{
+							$this->user->data['user_lastmark'] = (isset($tracking_topics['l'])) ? (int) (base_convert($tracking_topics['l'], 36, 10) + $this->config['board_startdate']) : 0;
 						}
+					}
 
-						$replies = $this->content_visibility->get_count('topic_posts', $row, $ls_forum_id) - 1;
-						$folder_img = $folder_alt = $topic_type = '';
-						$unread_topic = (isset($topic_tracking_info[$ls_topic_id]) && $row['topic_last_post_time'] > $topic_tracking_info[$ls_topic_id]) ? true : false;
+					$replies = $this->content_visibility->get_count('topic_posts', $row, $ls_forum_id) - 1;
+					$folder_img = $folder_alt = $topic_type = '';
+					$unread_topic = (isset($topic_tracking_info[$ls_topic_id]) && $row['topic_last_post_time'] > $topic_tracking_info[$ls_topic_id]) ? true : false;
 
-						topic_status($row, $replies, $unread_topic, $folder_img, $folder_alt, $topic_type);
-						//topic_status($row, $replies, (isset($topic_tracking_info[$forum_id][$row['topic_id']]) && $row['topic_last_post_time'] > $topic_tracking_info[$forum_id][$row['topic_id']]) ? true : false, $folder_img, $folder_alt, $topic_type);
+					topic_status($row, $replies, $unread_topic, $folder_img, $folder_alt, $topic_type);
+					//topic_status($row, $replies, (isset($topic_tracking_info[$forum_id][$row['topic_id']]) && $row['topic_last_post_time'] > $topic_tracking_info[$forum_id][$row['topic_id']]) ? true : false, $folder_img, $folder_alt, $topic_type);
 
-						$topic_unapproved = ($row['topic_visibility'] == ITEM_UNAPPROVED && $this->auth->acl_get('m_approve', $ls_forum_id)) ? true : false;
-						//$topic_unapproved = (($row['topic_visibility'] == ITEM_UNAPPROVED || $row['topic_visibility'] == ITEM_REAPPROVE) && $this->auth->acl_get('m_approve', $ls_forum_id)) ? true : false;
+					$topic_unapproved = ($row['topic_visibility'] == ITEM_UNAPPROVED && $this->auth->acl_get('m_approve', $ls_forum_id)) ? true : false;
+					//$topic_unapproved = (($row['topic_visibility'] == ITEM_UNAPPROVED || $row['topic_visibility'] == ITEM_REAPPROVE) && $this->auth->acl_get('m_approve', $ls_forum_id)) ? true : false;
 
-						$posts_unapproved = ($row['topic_visibility'] == ITEM_APPROVED && $row['topic_posts_unapproved'] && $this->auth->acl_get('m_approve', $ls_forum_id)) ? true : false;
-						//$posts_unapproved = ($row['topic_visibility'] == ITEM_APPROVED && $row['topic_posts_unapproved'] && $this->auth->acl_get('m_approve', $forum_id)) ? true : false;
+					$posts_unapproved = ($row['topic_visibility'] == ITEM_APPROVED && $row['topic_posts_unapproved'] && $this->auth->acl_get('m_approve', $ls_forum_id)) ? true : false;
+					//$posts_unapproved = ($row['topic_visibility'] == ITEM_APPROVED && $row['topic_posts_unapproved'] && $this->auth->acl_get('m_approve', $forum_id)) ? true : false;
 
-						$result_topic_id = $row['topic_id'];
-						$view_topic_url_params = "f=$forum_id&amp;t=$result_topic_id" ;
-						$view_topic_url = append_sid("{$this->phpbb_root_path}viewtopic.$this->php_ext", $view_topic_url_params);
+					$result_topic_id = $row['topic_id'];
+					$view_topic_url_params = "f=$forum_id&amp;t=$result_topic_id" ;
+					$view_topic_url = append_sid("{$this->phpbb_root_path}viewtopic.$this->php_ext", $view_topic_url_params);
 
-				$unread_topic = (isset($topic_tracking_info[$forum_id][$row['topic_id']]) && $row['topic_last_post_time'] > $topic_tracking_info[$forum_id][$row['topic_id']]) ? true : false;
-				$topic_deleted = $row['topic_visibility'] == ITEM_DELETED;
-				$u_mcp_queue = ($topic_unapproved || $posts_unapproved) ? append_sid("{$this->phpbb_root_path}mcp.$this->php_exp", 'i=queue&amp;mode=' . (($topic_unapproved) ? 'approve_details' : 'unapproved_posts') . "&amp;t=$result_topic_id", true, $this->user->session_id) : '';
-				$u_mcp_queue = (!$u_mcp_queue && $topic_deleted) ? append_sid("{$this->phpbb_root_path}mcp.$this->php_exp", "i=queue&amp;mode=deleted_topics&amp;t=$result_topic_id", true, $this->user->session_id) : '';
+					$unread_topic = (isset($topic_tracking_info[$forum_id][$row['topic_id']]) && $row['topic_last_post_time'] > $topic_tracking_info[$forum_id][$row['topic_id']]) ? true : false;
+					$topic_deleted = $row['topic_visibility'] == ITEM_DELETED;
+					$u_mcp_queue = ($topic_unapproved || $posts_unapproved) ? append_sid("{$this->phpbb_root_path}mcp.$this->php_exp", 'i=queue&amp;mode=' . (($topic_unapproved) ? 'approve_details' : 'unapproved_posts') . "&amp;t=$result_topic_id", true, $this->user->session_id) : '';
+					$u_mcp_queue = (!$u_mcp_queue && $topic_deleted) ? append_sid("{$this->phpbb_root_path}mcp.$this->php_exp", "i=queue&amp;mode=deleted_topics&amp;t=$result_topic_id", true, $this->user->session_id) : '';
 
-				$this->template->assign_block_vars('searchresults', array (
-					'TOPIC_TITLE'		=> censor_text($row['topic_title']),
-					'FORUM_TITLE'		=> $row['forum_name'],
-					'TOPIC_AUTHOR_FULL'			=> get_username_string('full', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
-					'FIRST_POST_TIME'			=> $this->user->format_date($row['topic_time']),
-					'S_ROW_COUNT'		=> $row,
-					'TOPIC_REPLIES'		=> $replies,
-					'TOPIC_VIEWS'		=> $row['topic_views'],
-					'LAST_POST_AUTHOR_FULL'		=> get_username_string('full', $row['topic_last_poster_id'], $row['topic_last_poster_name'], $row['topic_last_poster_colour']),
-					'LAST_POST_TIME'			=> $this->user->format_date($row['topic_last_post_time']),
-					'ATTACH_ICON_IMG'		=> ($this->auth->acl_get('u_download') && $this->auth->acl_get('f_download', $forum_id) && $row['topic_attachment']) ? $this->user->img('icon_topic_attach', $this->user->lang['TOTAL_ATTACHMENTS']) : '',
-					'S_UNREAD_TOPIC'		=> $unread_topic,
-					'S_TOPIC_UNAPPROVED'	=> $topic_unapproved,
-					'S_POSTS_UNAPPROVED'	=> $posts_unapproved,
-					'TOPIC_IMG_STYLE'		=> $folder_img,
-					'TOPIC_FOLDER_IMG'		=> $this->user->img($folder_img, $folder_alt),
-					'TOPIC_FOLDER_IMG_ALT'	=> $this->user->lang[$folder_alt],
+					$this->template->assign_block_vars('searchresults', array (
+						'TOPIC_TITLE'		=> censor_text($row['topic_title']),
+						'FORUM_TITLE'		=> $row['forum_name'],
+						'TOPIC_AUTHOR_FULL'			=> get_username_string('full', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
+						'FIRST_POST_TIME'			=> $this->user->format_date($row['topic_time']),
+						'S_ROW_COUNT'		=> $row,
+						'TOPIC_REPLIES'		=> $replies,
+						'TOPIC_VIEWS'		=> $row['topic_views'],
+						'LAST_POST_AUTHOR_FULL'		=> get_username_string('full', $row['topic_last_poster_id'], $row['topic_last_poster_name'], $row['topic_last_poster_colour']),
+						'LAST_POST_TIME'			=> $this->user->format_date($row['topic_last_post_time']),
+						'ATTACH_ICON_IMG'		=> ($this->auth->acl_get('u_download') && $this->auth->acl_get('f_download', $forum_id) && $row['topic_attachment']) ? $this->user->img('icon_topic_attach', $this->user->lang['TOTAL_ATTACHMENTS']) : '',
+						'S_UNREAD_TOPIC'		=> $unread_topic,
+						'S_TOPIC_UNAPPROVED'	=> $topic_unapproved,
+						'S_POSTS_UNAPPROVED'	=> $posts_unapproved,
+						'TOPIC_IMG_STYLE'		=> $folder_img,
+						'TOPIC_FOLDER_IMG'		=> $this->user->img($folder_img, $folder_alt),
+						'TOPIC_FOLDER_IMG_ALT'	=> $this->user->lang[$folder_alt],
 
-					'TOPIC_ICON_IMG'		=> (!empty($icons[$row['icon_id']])) ? $icons[$row['icon_id']]['img'] : '',
-					'TOPIC_ICON_IMG_WIDTH'	=> (!empty($icons[$row['icon_id']])) ? $icons[$row['icon_id']]['width'] : '',
-					'TOPIC_ICON_IMG_HEIGHT'	=> (!empty($icons[$row['icon_id']])) ? $icons[$row['icon_id']]['height'] : '',
-					'UNAPPROVED_IMG'		=> ($topic_unapproved || $posts_unapproved) ? $this->user->img('icon_topic_unapproved', ($topic_unapproved) ? 'TOPIC_UNAPPROVED' : 'POSTS_UNAPPROVED') : '',
-					'S_TOPIC_DELETED'		=> $topic_deleted,
-					'S_TOPIC_REPORTED'		=> (!empty($row['topic_reported']) && $this->auth->acl_get('m_report', $forum_id)) ? true : false,
-					'S_HAS_POLL'			=> ($row['poll_start']) ? true : false,
+						'TOPIC_ICON_IMG'		=> (!empty($icons[$row['icon_id']])) ? $icons[$row['icon_id']]['img'] : '',
+						'TOPIC_ICON_IMG_WIDTH'	=> (!empty($icons[$row['icon_id']])) ? $icons[$row['icon_id']]['width'] : '',
+						'TOPIC_ICON_IMG_HEIGHT'	=> (!empty($icons[$row['icon_id']])) ? $icons[$row['icon_id']]['height'] : '',
+						'UNAPPROVED_IMG'		=> ($topic_unapproved || $posts_unapproved) ? $this->user->img('icon_topic_unapproved', ($topic_unapproved) ? 'TOPIC_UNAPPROVED' : 'POSTS_UNAPPROVED') : '',
+						'S_TOPIC_DELETED'		=> $topic_deleted,
+						'S_TOPIC_REPORTED'		=> (!empty($row['topic_reported']) && $this->auth->acl_get('m_report', $forum_id)) ? true : false,
+						'S_HAS_POLL'			=> ($row['poll_start']) ? true : false,
 
 						'NEWEST_POST_IMG'	=> $this->user->img('icon_topic_newest', 'VIEW_NEWEST_POST'),
-					'U_NEWEST_POST'			=> append_sid("{$this->phpbb_root_path}viewtopic.$this->php_ext", $view_topic_url_params . '&amp;view=unread') . '#unread',
-					'U_VIEW_TOPIC'		=> $view_topic_url,
-					'U_VIEW_FORUM'		=> append_sid("{$this->phpbb_root_path}viewforum.$this->php_ext", 'f=' . $row['forum_id']),
-					'U_MCP_QUEUE'			=> $u_mcp_queue,
-					'U_LAST_POST'			=> append_sid("{$this->phpbb_root_path}viewtopic.$this->php_ext", $view_topic_url_params . '&amp;p=' . $row['topic_last_post_id']) . '#p' . $row['topic_last_post_id'],
-						));
-				$this->pagination->generate_template_pagination($view_topic_url, 'searchresults.pagination', 'start', $replies + 1, $this->config['posts_per_page'], 1, true, true);
-					//if ($topic_id && ($topic_id == $result_topic_id))
-					//{
-					//	 $template->assign_vars(array(
-					//		  'SEARCH_TOPIC'		=> $topic_title,
-					//		  'L_RETURN_TO_TOPIC'	=> $user->lang('RETURN_TO', $topic_title),
-					//		  'U_SEARCH_TOPIC'	=> $view_topic_url
-					//	 ));
-					//}
-					//$row++;
+						'U_NEWEST_POST'			=> append_sid("{$this->phpbb_root_path}viewtopic.$this->php_ext", $view_topic_url_params . '&amp;view=unread') . '#unread',
+						'U_VIEW_TOPIC'		=> $view_topic_url,
+						'U_VIEW_FORUM'		=> append_sid("{$this->phpbb_root_path}viewforum.$this->php_ext", 'f=' . $row['forum_id']),
+						'U_MCP_QUEUE'			=> $u_mcp_queue,
+						'U_LAST_POST'			=> append_sid("{$this->phpbb_root_path}viewtopic.$this->php_ext", $view_topic_url_params . '&amp;p=' . $row['topic_last_post_id']) . '#p' . $row['topic_last_post_id'],
+							));
+					$this->pagination->generate_template_pagination($view_topic_url, 'searchresults.pagination', 'start', $replies + 1, $this->config['posts_per_page'], 1, true, true);
+						//if ($topic_id && ($topic_id == $result_topic_id))
+						//{
+						//	 $template->assign_vars(array(
+						//		  'SEARCH_TOPIC'		=> $topic_title,
+						//		  'L_RETURN_TO_TOPIC'	=> $user->lang('RETURN_TO', $topic_title),
+						//		  'U_SEARCH_TOPIC'	=> $view_topic_url
+						//	 ));
+						//}
+						//$row++;
 				}
-				}
+			}
 			//$pagination->generate_template_pagination($view_topic_url, 'pagination', 'start', $total_count + 1, $this->config['posts_per_page'], 1, true, true);
-			//print_r($u_search);
 				$this->pagination->generate_template_pagination($u_search, 'pagination', 'start', $total_count, $per_page, $start);
 
 				}
@@ -548,46 +543,47 @@ class live_search_ajax_handler
 		return $subforums;
 	}
     
-    private function build_user_contact_by_name($user_contacts, $f_name, $f_value)
-    {
-        $this->user->add_lang('memberlist');
-        foreach ($user_contacts as $contact)
-        {
-            if ($contact['field_name'] == str_replace('pf_', '', $f_name))
-            {
-                return $contact['field_name']  . '^' . $this->user->lang[$contact['field_contact_desc']] . '^' . sprintf($contact['field_contact_url'], $f_value);
-            }
-        }
-        return '';
-        
-    }
-    
-    private function get_url_pm($seeking_user)
-    {
-        if( $this->user->data['user_id'] == ANONYMOUS)
-        {
-            return '';
-        }
-        
-    	//$allow_pm = $this->config['allow_privmsg'] && $this->auth->acl_get('u_sendpm') && ($row['user_allow_pm'] || $this->auth->acl_gets('a_', 'm_') || $this->auth->acl_getf_global('m_')) ? 1 :0;
-        $ids[] = $seeking_user['user_id'];
-	    // Can this user receive a Private Message?
-	    $can_receive_pm = (
-		    // They must be a "normal" user
-		    $seeking_user['user_type'] != USER_IGNORE &&
+	private function build_user_contact_by_name($user_contacts, $f_name, $f_value)
+	{
+		$this->user->add_lang('memberlist');
+		foreach ($user_contacts as $contact)
+		{
+			if ($contact['field_name'] == str_replace('pf_', '', $f_name))
+			{
+				$desc = isset($this->user->lang[$contact['field_contact_desc']]) ? $this->user->lang[$contact['field_contact_desc']] : $contact['field_contact_desc'];
+				return $contact['field_name']  . '^' . $desc . '^' . sprintf($contact['field_contact_url'], $f_value);
+			}
+		}
+		return '';
+		
+	}
 
-		    // They must not be deactivated by the administrator
-		    ($seeking_user['user_type'] != USER_INACTIVE || $seeking_user['user_inactive_reason'] != INACTIVE_MANUAL) &&
+	private function get_url_pm($seeking_user)
+	{
+		if( $this->user->data['user_id'] == ANONYMOUS)
+		{
+			return '';
+		}
+		
+		//$allow_pm = $this->config['allow_privmsg'] && $this->auth->acl_get('u_sendpm') && ($row['user_allow_pm'] || $this->auth->acl_gets('a_', 'm_') || $this->auth->acl_getf_global('m_')) ? 1 :0;
+		$ids[] = $seeking_user['user_id'];
+		// Can this user receive a Private Message?
+		$can_receive_pm = (
+			// They must be a "normal" user
+			$seeking_user['user_type'] != USER_IGNORE &&
 
-		    // They must be able to read PMs
-            $this->auth->acl_get_list($ids, 'u_readpm') &&
+			// They must not be deactivated by the administrator
+			($seeking_user['user_type'] != USER_INACTIVE || $seeking_user['user_inactive_reason'] != INACTIVE_MANUAL) &&
 
-		    // They must not be permanently banned (don't need. we give only active users)
-		    //!in_array($seeking_user['user_id'], $permanently_banned_users = phpbb_get_banned_user_ids(array_keys($user_cache), false)) &&
+			// They must be able to read PMs
+			$this->auth->acl_get_list($ids, 'u_readpm') &&
 
-		    // They must allow users to contact via PM
-		    (($this->auth->acl_gets('a_', 'm_') || $this->auth->acl_getf_global('m_')) || $seeking_user['allow_pm'])
-	    );
+			// They must not be permanently banned (don't need. we give only active users)
+			//!in_array($seeking_user['user_id'], $permanently_banned_users = phpbb_get_banned_user_ids(array_keys($user_cache), false)) &&
+
+			// They must allow users to contact via PM
+			(($this->auth->acl_gets('a_', 'm_') || $this->auth->acl_getf_global('m_')) || $seeking_user['allow_pm'])
+	);
 
 	$u_pm = '';
 
@@ -595,32 +591,30 @@ class live_search_ajax_handler
 	{
 		$u_pm = append_sid("{$this->phpbb_root_path}ucp.$this->php_ext", 'i=pm&amp;mode=compose&amp;u' . $seeking_user['user_id']);
 	}
-    return $u_pm;
-    
-    }
-    
+	return $u_pm;
+
+	}
+
     private function get_url_email($seeking_user)
-    {
-        $seeking_user_id = $seeking_user['user_id'];
-        $url = '';
+	{
+		$seeking_user_id = $seeking_user['user_id'];
+		$url = '';
  		if ( $this->user->data['user_id'] != ANONYMOUS && (!empty($seeking_user['user_allow_viewemail']) && $this->auth->acl_get('u_sendemail')) || $this->auth->acl_get('a_email'))
 		{
 			$url = ($this->config['board_email_form'] && $this->config['email_enable']) ? append_sid("{$this->phpbb_root_path}memberlist.$this->php_ext", "email&amp;u=$seeking_user_id"): (($this->config['board_hide_emails'] && !$this->auth->acl_get('a_email')) ? '' : 'mailto:' . $seeking_user['user_email']);
-			//$url = ($         config['board_email_form'] && $        config['email_enable']) ? append_sid("{$phpbb_root_path}memberlist.$phpEx", "mode=email&amp;u=$poster_id") : (($config['board_hide_emails'] && !$auth->acl_get('a_email')) ? '' : 'mailto:' . $row['user_email']);
-            //append_sid("{$phpbb_root_path}memberlist.$phpEx", "mode=email&amp;u=$poster_id") : (($config['board_hide_emails'] && !$auth->acl_get('a_email')) ? '' : 'mailto:' . $row['user_email']);
 		}
 		return $url;
-   }
-    
-   private function get_url_jabber($seeking_user)
-   {
-        $seeking_user_id = $seeking_user['user_id'];
-        $url = '';
-        if (!$this->user->data['user_id'] != ANONYMOUS && $seeking_user['user_jabber'] && $this->auth->acl_get('u_sendim'))
-        {
-   			$url = append_sid("$this->phpbb_root_path}memberlist.$this->php_ext", "mode=contact&amp;action=jabber&amp;u=$seeking_user_id");
-        }
-        return $url;
-   }
-   
+	}
+
+	private function get_url_jabber($seeking_user)
+	{
+		$seeking_user_id = $seeking_user['user_id'];
+		$url = '';
+		if (!$this->user->data['user_id'] != ANONYMOUS && $seeking_user['user_jabber'] && $this->auth->acl_get('u_sendim'))
+		{
+			$url = append_sid("$this->phpbb_root_path}memberlist.$this->php_ext", "mode=contact&amp;action=jabber&amp;u=$seeking_user_id");
+		}
+		return $url;
+	}
+
 }

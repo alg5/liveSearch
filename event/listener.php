@@ -17,13 +17,14 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class listener implements EventSubscriberInterface
 {
 
-	public function __construct(\phpbb\config\config $config, \phpbb\template\template $template, \phpbb\user $user, $phpbb_root_path, $php_ext)
+	public function __construct(\phpbb\config\config $config, \phpbb\template\template $template, \phpbb\user $user, $phpbb_root_path, $php_ext, \phpbb\auth\auth $auth)
 	{
 		$this->template = $template;
 		$this->user = $user;
 		$this->config = $config;
 		$this->phpbb_root_path = $phpbb_root_path;
 		$this->php_ext = $php_ext;
+		$this->auth = $auth;
 
 	}
 
@@ -87,7 +88,7 @@ class listener implements EventSubscriberInterface
 			'U_PM'			=>   append_sid("{$this->phpbb_root_path}ucp.$this->php_ext", 'i=pm&amp;mode=compose&amp;u' ),
 			'U_MAIL'			=>  ($this->config['board_email_form'] && $this->config['email_enable']) ? append_sid("{$this->phpbb_root_path}memberlist.$this->php_ext", "email&amp;u="): (($this->config['board_hide_emails'] && !$this->auth->acl_get('a_email')) ? '' : 'mailto:' ),
 			'U_JABBER'			=>  append_sid("$this->phpbb_root_path}memberlist.$this->php_ext", "mode=contact&amp;action=jabber&amp;u="),
-            
+
 			'LIVE_SEARCH_ON_OFF_FORUM'	=>  $on_off_forum,
 			'LIVE_SEARCH_ON_OFF_TOPIC'	=>  $on_off_topic,
 			'LIVE_SEARCH_ON_OFF_USER'	=> $on_off_user,

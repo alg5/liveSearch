@@ -214,19 +214,19 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
                 {
                     case 'profile':
                         class_contact =  'leave_search_contact-icon   icon-profile';
-                        contact_url = U_PROFILE + user_id;
+                        contact_url = U_PROFILE_LS_PATH + user_id;
                         break;
                      case 'pm':
                         class_contact =  'leave_search_contact-icon contact-icon ' + arr[0] + '-icon';
-                        contact_url = U_PM + user_id;
+                        contact_url = U_PM_LS_PATH + user_id;
                         break;
                      case 'email':
                         class_contact =  'leave_search_contact-icon contact-icon ' + arr[0] + '-icon';
-                       contact_url = U_MAIL + user_id;
+                       contact_url = U_MAIL_LS_PATH + user_id;
                         break;
                      case 'jabber':
                         class_contact =  'leave_search_contact-icon contact-icon ' + arr[0] + '-icon';
-                       contact_url = U_JABBER + user_id;
+                       contact_url = U_JABBER_LS_PATH + user_id;
                         break;
                    default:
                         class_contact =  'leave_search_contact-icon contact-icon ' + arr[0] + '-icon';
@@ -245,7 +245,7 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
                 //debug
 //                if (contact_name == 'profile')
 //                {
-//                    alert ('listenrer: ' + U_PROFILE + '; controller: ' + contact_url);
+//                    alert ('listenrer: ' + U_PROFILE_LS_PATH + '; controller: ' + contact_url);
 //                }
                 if (contact_name == 'jabber')
                 {

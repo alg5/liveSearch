@@ -36,7 +36,7 @@ if (empty($lang) || !is_array($lang))
 
 $lang = array_merge($lang, array(
 	'INCORRECT_SEARCH'			=> 'Некорректные параметры запрошенного действия',
-	'LIVE_SEARCH_CAPTION'		=> 'Быстрый поиск',
+	'LIVE_SEARCH_CAPTION'		=> 'Live search',
 	'LIVE_SEARCH_FORUM'		=> 'Форумы',
 	'LIVE_SEARCH_FORUM_TXT'		=> 'Название форума...',
 	'LIVE_SEARCH_FORUM_T'			=> 'Для быстрого поиска начните набирать название форума/категории',
@@ -57,5 +57,4 @@ $lang = array_merge($lang, array(
 	'LIVESEARCH_USERTOPIC_RESULT_IN_SUBFORUMS'	=> ' и его подфорумах',
 	'LIVE_SEARCH_EYE_BUTTON_OPEN_T'	=> 'Показать панель поиска',
 	'LIVE_SEARCH_EYE_BUTTON_CLOSE_T'	=> 'Скрыть панель поиска',
-	'VIEW_VK_PROFILE'	=> 'Просмотр профиля ВКонтакте',
 ));

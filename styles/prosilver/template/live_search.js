@@ -9,18 +9,7 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
             id: ['leavesearch_btn', 'leavesearch'],
 	    });
 }
-    //calculate witdh for search panel
-	var leavesearchWidth = 0;
-	if ($('#topic_live_search').length > 0) {leavesearchWidth = $('#topic_live_search').outerWidth() + 75 }
-	if ($('#forum_live_search').length > 0) {leavesearchWidth = leavesearchWidth + $('#forum_live_search').outerWidth() + 90 }
-	if ($('#user_live_search').length > 0) {leavesearchWidth = leavesearchWidth + $('#user_live_search').outerWidth() + 125 }
-
-	if (leavesearchWidth > 300 && leavesearchWidth < 550 ) { leavesearchWidth = leavesearchWidth - 23; }
-	else if (leavesearchWidth > 500 ) { leavesearchWidth = leavesearchWidth - 45; }
-
-	$('#leavesearch').css('width', leavesearchWidth);
     //****show-hide button update*****
-    
     
     $().ready(function () {
 
@@ -261,14 +250,32 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
             }
             $('#ls_contacts').append(new_contact);
    
-            $('#topics_live_search').on('click', function (e) {
+            $('#topics_live_search_board').on('click', function (e) {
                 e.preventDefault();
-                var usertopic_path = U_USERTOPIC_LS_PATH  + S_FORUM_ID + '/' + user_id;
+                var usertopic_path = U_USERTOPIC_LS_PATH  + '0/0/' + user_id;
                window.location = usertopic_path;
             });
-            $('#posts_live_search').on('click', function (e) {
+ 
+             $('#topics_live_search_forum').on('click', function (e) {
                 e.preventDefault();
-                window.location = 'search.php?author_id=' + user_id + '&sr=posts&ls=1&forum_id=' + S_FORUM_ID + '&topic_id=' + S_TOPIC_ID;
+                var usertopic_path = U_USERTOPIC_LS_PATH  + S_FORUM_ID + '/0/' + user_id;
+               window.location = usertopic_path;
+            });
+
+              $('#posts_live_search_board').on('click', function (e) {
+                e.preventDefault();
+                var userpost_path = U_USERPOST_LS_PATH  +  '0/0/' + user_id  ;
+               window.location = userpost_path;
+            });
+             $('#posts_live_search_forum').on('click', function (e) {
+                e.preventDefault();
+                var userpost_path = U_USERPOST_LS_PATH  + + S_FORUM_ID  + '/0/' + user_id;
+               window.location = userpost_path;
+            });
+             $('#posts_live_search_topic').on('click', function (e) {
+                e.preventDefault();
+                var userpost_path = U_USERPOST_LS_PATH  + + S_FORUM_ID  + '/' + S_TOPIC_ID + '/' + user_id;
+               window.location = userpost_path;
             });
 
         }

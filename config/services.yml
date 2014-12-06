@@ -28,3 +28,4 @@ services:
             - @content.visibility
             - %core.table_prefix%
             - @profilefields.manager
+            - @dispatcher

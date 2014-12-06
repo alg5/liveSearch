@@ -72,13 +72,13 @@ class listener implements EventSubscriberInterface
 			$is_live_search = $is_live_search && $this->user->data['is_registered'];
 		}
 		$this->template->assign_vars(array(
-			'U_FORUM_LS_PATH'				=> append_sid("{$this->phpbb_root_path}liveSearch/forum/0/0"),
-			'U_TOPIC_LS_PATH'				=> append_sid("{$this->phpbb_root_path}liveSearch/topic/0/0"),
-			'U_SIMILARTOPIC_LS_PATH'				=> append_sid("{$this->phpbb_root_path}liveSearch/similartopic/0/0"),
-			'U_USER_LS_PATH'				=> append_sid("{$this->phpbb_root_path}liveSearch/user/0/0"),
+			'U_FORUM_LS_PATH'				=> append_sid("{$this->phpbb_root_path}liveSearch/forum/0/0/0"),
+			'U_TOPIC_LS_PATH'				=> append_sid("{$this->phpbb_root_path}liveSearch/topic/0/0/0"),
+			'U_SIMILARTOPIC_LS_PATH'				=> append_sid("{$this->phpbb_root_path}liveSearch/similartopic/0/0/0"),
+			'U_USER_LS_PATH'				=> append_sid("{$this->phpbb_root_path}liveSearch/user/0/0/0"),
 			'U_USERTOPIC_LS_PATH'				=> append_sid("{$this->phpbb_root_path}liveSearch/usertopic/"),
 			'U_USERPOST_LS_PATH'				=> append_sid("{$this->phpbb_root_path}liveSearch/userpost/"),
-			'U_USER_PM_LS_PATH'				=> append_sid("{$this->phpbb_root_path}liveSearch/userpm/0/0"),
+			'U_USER_PM_LS_PATH'				=> append_sid("{$this->phpbb_root_path}liveSearch/userpm/0/0/0"),
 			'U_MEMBERLIST_LS_PATH'			=> append_sid("{$this->phpbb_root_path}memberlist.$this->php_ext", "mode="),
 			'U_UCP_LS_PATH'			=> append_sid("{$this->phpbb_root_path}ucp.$this->php_ext", "mode="),
 			'U_FORUM_REDIRECT'		=> append_sid("{$this->phpbb_root_path}viewforum.$this->php_ext", ""),

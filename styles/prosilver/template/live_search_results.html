@@ -32,7 +32,7 @@
 
 <!-- IF S_SHOW_TOPICS -->
 
-	<!-- IF .searchresults -->
+	<!-- IF .livesearchresults -->
 	<div class="forumbg">
 
 		<div class="inner">
@@ -48,48 +48,48 @@
 		</ul>
 		<ul class="topiclist topics">
 
-		<!-- BEGIN searchresults -->
-			<li class="row<!-- IF searchresults.S_ROW_COUNT is even --> bg1<!-- ELSE --> bg2<!-- ENDIF -->">
-				<dl class="icon {searchresults.TOPIC_IMG_STYLE}">
-					<dt <!-- IF searchresults.TOPIC_ICON_IMG -->style="background-image: url({T_ICONS_PATH}{searchresults.TOPIC_ICON_IMG}); background-repeat: no-repeat;"<!-- ENDIF --> title="{searchresults.TOPIC_FOLDER_IMG_ALT}">
-						<!-- IF searchresults.S_UNREAD_TOPIC and not S_IS_BOT --><a href="{searchresults.U_NEWEST_POST}" class="icon-link"></a><!-- ENDIF -->
+		<!-- BEGIN livesearchresults -->
+			<li class="row<!-- IF livesearchresults.S_ROW_COUNT is even --> bg1<!-- ELSE --> bg2<!-- ENDIF -->">
+				<dl class="icon {livesearchresults.TOPIC_IMG_STYLE}">
+					<dt <!-- IF livesearchresults.TOPIC_ICON_IMG -->style="background-image: url({T_ICONS_PATH}{livesearchresults.TOPIC_ICON_IMG}); background-repeat: no-repeat;"<!-- ENDIF --> title="{livesearchresults.TOPIC_FOLDER_IMG_ALT}">
+						<!-- IF livesearchresults.S_UNREAD_TOPIC and not S_IS_BOT --><a href="{livesearchresults.U_NEWEST_POST}" class="icon-link"></a><!-- ENDIF -->
 						<div class="list-inner">
 
 							<!-- EVENT topiclist_row_prepend -->
-							<!-- IF searchresults.S_UNREAD_TOPIC and not S_IS_BOT --><a href="{searchresults.U_NEWEST_POST}">{NEWEST_POST_IMG}</a> <!-- ENDIF -->
-							<a href="{searchresults.U_VIEW_TOPIC}" class="topictitle">{searchresults.TOPIC_TITLE}</a> {searchresults.ATTACH_ICON_IMG}
-							<!-- IF searchresults.S_TOPIC_UNAPPROVED or searchresults.S_POSTS_UNAPPROVED --><a href="{searchresults.U_MCP_QUEUE}">{searchresults.UNAPPROVED_IMG}</a> <!-- ENDIF -->
-							<!-- IF searchresults.S_TOPIC_DELETED --><a href="{searchresults.U_MCP_QUEUE}">{DELETED_IMG}</a> <!-- ENDIF -->
-							<!-- IF searchresults.S_TOPIC_REPORTED --><a href="{searchresults.U_MCP_REPORT}">{REPORTED_IMG}</a><!-- ENDIF --><br />
-							<!-- IF .searchresults.pagination -->
+							<!-- IF livesearchresults.S_UNREAD_TOPIC and not S_IS_BOT --><a href="{livesearchresults.U_NEWEST_POST}">{NEWEST_POST_IMG}</a> <!-- ENDIF -->
+							<a href="{livesearchresults.U_VIEW_TOPIC}" class="topictitle">{livesearchresults.TOPIC_TITLE}</a> {livesearchresults.ATTACH_ICON_IMG}
+							<!-- IF livesearchresults.S_TOPIC_UNAPPROVED or livesearchresults.S_POSTS_UNAPPROVED --><a href="{livesearchresults.U_MCP_QUEUE}">{livesearchresults.UNAPPROVED_IMG}</a> <!-- ENDIF -->
+							<!-- IF livesearchresults.S_TOPIC_DELETED --><a href="{livesearchresults.U_MCP_QUEUE}">{DELETED_IMG}</a> <!-- ENDIF -->
+							<!-- IF livesearchresults.S_TOPIC_REPORTED --><a href="{livesearchresults.U_MCP_REPORT}">{REPORTED_IMG}</a><!-- ENDIF --><br />
+							<!-- IF .livesearchresults.pagination -->
 							<div class="pagination">
 								<ul>
 								<!-- BEGIN pagination -->
-									<!-- IF searchresults.pagination.S_IS_PREV -->
-									<!-- ELSEIF searchresults.pagination.S_IS_CURRENT --><li class="active"><span>{searchresults.pagination.PAGE_NUMBER}</span></li>
-									<!-- ELSEIF searchresults.pagination.S_IS_ELLIPSIS --><li class="ellipsis"><span>{L_ELLIPSIS}</span></li>
-									<!-- ELSEIF searchresults.pagination.S_IS_NEXT -->
-									<!-- ELSE --><li><a href="{searchresults.pagination.PAGE_URL}">{searchresults.pagination.PAGE_NUMBER}</a></li>
+									<!-- IF livesearchresults.pagination.S_IS_PREV -->
+									<!-- ELSEIF livesearchresults.pagination.S_IS_CURRENT --><li class="active"><span>{livesearchresults.pagination.PAGE_NUMBER}</span></li>
+									<!-- ELSEIF livesearchresults.pagination.S_IS_ELLIPSIS --><li class="ellipsis"><span>{L_ELLIPSIS}</span></li>
+									<!-- ELSEIF livesearchresults.pagination.S_IS_NEXT -->
+									<!-- ELSE --><li><a href="{livesearchresults.pagination.PAGE_URL}">{livesearchresults.pagination.PAGE_NUMBER}</a></li>
 									<!-- ENDIF -->
 								<!-- END pagination -->
 								</ul>
 							</div>
 							<!-- ENDIF -->
-							<!-- IF searchresults.S_HAS_POLL -->{POLL_IMG} <!-- ENDIF -->
-							{L_POST_BY_AUTHOR} {searchresults.TOPIC_AUTHOR_FULL} &raquo; {searchresults.FIRST_POST_TIME} &raquo; {L_IN} <a href="{searchresults.U_VIEW_FORUM}">{searchresults.FORUM_TITLE}</a>
+							<!-- IF livesearchresults.S_HAS_POLL -->{POLL_IMG} <!-- ENDIF -->
+							{L_POST_BY_AUTHOR} {livesearchresults.TOPIC_AUTHOR_FULL} &raquo; {livesearchresults.FIRST_POST_TIME} &raquo; {L_IN} <a href="{livesearchresults.U_VIEW_FORUM}">{livesearchresults.FORUM_TITLE}</a>
 							<!-- EVENT topiclist_row_append -->
 
 						</div>
 					</dt>
-					<dd class="posts">{searchresults.TOPIC_REPLIES}</dd>
-					<dd class="views">{searchresults.TOPIC_VIEWS}</dd>
+					<dd class="posts">{livesearchresults.TOPIC_REPLIES}</dd>
+					<dd class="views">{livesearchresults.TOPIC_VIEWS}</dd>
 					<dd class="lastpost"><span>
-						{L_POST_BY_AUTHOR} {searchresults.LAST_POST_AUTHOR_FULL}
-						<!-- IF not S_IS_BOT --><a href="{searchresults.U_LAST_POST}" title="{L_GOTO_LAST_POST}">{LAST_POST_IMG}</a> <!-- ENDIF --><br />{searchresults.LAST_POST_TIME}<br /> </span>
+						{L_POST_BY_AUTHOR} {livesearchresults.LAST_POST_AUTHOR_FULL}
+						<!-- IF not S_IS_BOT --><a href="{livesearchresults.U_LAST_POST}" title="{L_GOTO_LAST_POST}">{LAST_POST_IMG}</a> <!-- ENDIF --><br />{livesearchresults.LAST_POST_TIME}<br /> </span>
 					</dd>
 				</dl>
 			</li>
-		<!-- END searchresults -->
+		<!-- END livesearchresults -->
 		</ul>
 
 		</div>
@@ -104,36 +104,36 @@
 
 <!-- ELSE -->
 
-	<!-- BEGIN searchresults -->
+	<!-- BEGIN livesearchresults -->
 		<!-- EVENT search_results_post_before -->
-		<div class="search post <!-- IF searchresults.S_ROW_COUNT is odd -->bg1<!-- ELSE -->bg2<!-- ENDIF --><!-- IF searchresults.S_POST_REPORTED --> reported<!-- ENDIF -->">
+		<div class="search post <!-- IF livesearchresults.S_ROW_COUNT is odd -->bg1<!-- ELSE -->bg2<!-- ENDIF --><!-- IF livesearchresults.S_POST_REPORTED --> reported<!-- ENDIF -->">
 			<div class="inner">
 
-	<!-- IF searchresults.S_IGNORE_POST -->
+	<!-- IF livesearchresults.S_IGNORE_POST -->
 		<div class="postbody">
-			{searchresults.L_IGNORE_POST}
+			{livesearchresults.L_IGNORE_POST}
 		</div>
 	<!-- ELSE -->
 		<dl class="postprofile">
 			<!-- EVENT search_results_postprofile_before -->
-			<dt class="author">{L_POST_BY_AUTHOR} {searchresults.POST_AUTHOR_FULL}</dt>
-			<dd class="search-result-date">{searchresults.POST_DATE}</dd>
-			<dd>{L_FORUM}{L_COLON} <a href="{searchresults.U_VIEW_FORUM}">{searchresults.FORUM_TITLE}</a></dd>
-			<dd>{L_TOPIC}{L_COLON} <a href="{searchresults.U_VIEW_TOPIC}">{searchresults.TOPIC_TITLE}</a></dd>
-			<dd>{L_REPLIES}{L_COLON} <strong>{searchresults.TOPIC_REPLIES}</strong></dd>
-			<dd>{L_VIEWS}{L_COLON} <strong>{searchresults.TOPIC_VIEWS}</strong></dd>
+			<dt class="author">{L_POST_BY_AUTHOR} {livesearchresults.POST_AUTHOR_FULL}</dt>
+			<dd class="search-result-date">{livesearchresults.POST_DATE}</dd>
+			<dd>{L_FORUM}{L_COLON} <a href="{livesearchresults.U_VIEW_FORUM}">{livesearchresults.FORUM_TITLE}</a></dd>
+			<dd>{L_TOPIC}{L_COLON} <a href="{livesearchresults.U_VIEW_TOPIC}">{livesearchresults.TOPIC_TITLE}</a></dd>
+			<dd>{L_REPLIES}{L_COLON} <strong>{livesearchresults.TOPIC_REPLIES}</strong></dd>
+			<dd>{L_VIEWS}{L_COLON} <strong>{livesearchresults.TOPIC_VIEWS}</strong></dd>
 			<!-- EVENT search_results_postprofile_after -->
 		</dl>
 
 		<div class="postbody">
-			<h3><a href="{searchresults.U_VIEW_POST}">{searchresults.POST_SUBJECT}</a></h3>
-			<div class="content">{searchresults.MESSAGE}</div>
+			<h3><a href="{livesearchresults.U_VIEW_POST}">{livesearchresults.POST_SUBJECT}</a></h3>
+			<div class="content">{livesearchresults.MESSAGE}</div>
 		</div>
 	<!-- ENDIF -->
 
-	<!-- IF not searchresults.S_IGNORE_POST -->
+	<!-- IF not livesearchresults.S_IGNORE_POST -->
 		<ul class="searchresults">
-			<li ><a href="{searchresults.U_VIEW_POST}" class="arrow-{S_CONTENT_FLOW_END}">{L_JUMP_TO_POST}</a></li>
+			<li ><a href="{livesearchresults.U_VIEW_POST}" class="arrow-{S_CONTENT_FLOW_END}">{L_JUMP_TO_POST}</a></li>
 		</ul>
 	<!-- ENDIF -->
 
@@ -145,10 +145,10 @@
 			<strong>{L_NO_SEARCH_RESULTS}</strong>
 			</div>
 		</div>
-	<!-- END searchresults -->
+	<!-- END livesearchresults -->
 <!-- ENDIF -->
 
-<!-- IF .pagination or .searchresults or S_SELECT_SORT_KEY or S_SELECT_SORT_DAYS -->
+<!-- IF .pagination or .livesearchresults or S_SELECT_SORT_KEY or S_SELECT_SORT_DAYS -->
 	<form method="post" action="{S_SEARCH_ACTION}">
 
 	<fieldset class="display-options">
@@ -164,7 +164,7 @@
 	<hr />
 <!-- ENDIF -->
 
-<!-- IF .pagination or .searchresults or PAGE_NUMBER -->
+<!-- IF .pagination or .livesearchresults or PAGE_NUMBER -->
 <div class="action-bar bottom">
 	<div class="pagination">
 		{SEARCH_MATCHES}

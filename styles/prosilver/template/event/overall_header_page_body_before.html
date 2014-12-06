@@ -1,6 +1,7 @@
  <!-- IF S_LIVE_SEARCH --> 
  <div id='leavesearch_btn'>{L_LIVE_SEARCH_CAPTION}</div>
     <div id='leavesearch' >
+      <span id='leavesearch_btn_close' class="icon-button delete-icon"  title='{L_CLOSE_WINDOW}'></span>
      <!-- IF LIVE_SEARCH_ON_OFF_FORUM --> 
         <span id="forum_live_search_text" style="padding-left:10px;">{L_LIVE_SEARCH_FORUM}: </span><input  class="inputbox search tiny" id="forum_live_search" type=search placeholder="{L_LIVE_SEARCH_FORUM_TXT}"  title="{L_LIVE_SEARCH_FORUM_T}" />
       <!-- ENDIF  -->
@@ -16,22 +17,33 @@
         </div>
     </div>
     <div id='ls_contacts'class="dropdown-contents contact-icons" style='border-bottom-color: White; '></div>
-
-    
+  
     <ul class="dropdown-contents" role="menu" style="margin-left: 0px; left: 0px; max-width: 1281px; ">
-        <li ><a id="topics_live_search" href="javascript:void(0);" 
-            title="<!-- IF S_FORUM_ID -->{L_LIVE_SEARCH_TOOLTIP_BY_FORUM} {FORUM_NAME}<!-- ELSE -->{L_LIVE_SEARCH_TOOLTIP_ALL}<!-- ENDIF -->" 
-            role="menuitem">{L_LIVE_SEARCH_TOPICS_BY_USER}
-        </a></li>
-	    <li class="separator"></li>
-   
-		<li><a id="posts_live_search" href="javascript:void(0);" style=' display:none':
-         title="<!-- IF S_TOPIC_ID -->{L_LIVE_SEARCH_TOOLTIP_BY_TOPIC} {TOPIC_TITLE}<!-- ELSEIF S_FORUM_ID-->{L_LIVE_SEARCH_TOOLTIP_BY_FORUM} {FORUM_NAME}<!-- ELSE -->{L_LIVE_SEARCH_TOOLTIP_ALL}<!-- ENDIF -->"  
-         role="menuitem">{L_LIVE_SEARCH_POSTS_BY_USER}</a></li>
-	</ul>
-				</div>
-          <!-- ENDIF  -->
-    <span id='leavesearch_btn_close' class="icon-button delete-icon"  title='{L_CLOSE_WINDOW}'></span>
+        <li>{L_LIVE_SEARCH_TOPICS_BY_USER}
+            <ul>
+                <li ><a id="topics_live_search_board" href="javascript:void(0);" role = "menuitem" title = "{L_LIVE_SEARCH_TOOLTIP_ALL}"> {L_LIVE_SEARCH_TOPICS_BY_USER_BOARD}</a></li>
+                <!-- IF S_FORUM_ID -->
+                    <li ><a id="topics_live_search_forum" href="javascript:void(0);" role = "menuitem" title = "{L_LIVE_SEARCH_TOOLTIP_BY_FORUM} {FORUM_NAME}"> {L_LIVE_SEARCH_TOPICS_BY_USER_FORUM}</a></li>
+                <!-- ENDIF -->
+            </ul>
+        </li>
+    </ul>
+     <ul class="dropdown-contents" role="menu" style="margin-left: 0px; left: 0px; max-width: 1281px; ">
+        <li>{L_LIVE_SEARCH_POSTS_BY_USER}
+            <ul>
+                <li ><a id="posts_live_search_board" href="javascript:void(0);" role = "menuitem" title = "{L_LIVE_SEARCH_TOOLTIP_ALL}"> {L_LIVE_SEARCH_POSTS_BY_USER_BOARD}</a></li>
+                <!-- IF S_FORUM_ID -->
+                    <li ><a id="posts_live_search_forum" href="javascript:void(0);" role = "menuitem" title = "{L_LIVE_SEARCH_TOOLTIP_BY_FORUM} {FORUM_NAME}"> {L_LIVE_SEARCH_POSTS_BY_USER_FORUM}</a></li>
+                <!-- ENDIF -->
+                <!-- IF S_TOPIC_ID -->
+                    <li ><a id="posts_live_search_topic" href="javascript:void(0);" role = "menuitem" title = "{L_LIVE_SEARCH_TOOLTIP_BY_TOPIC} {TOPIC_TITLE}"> {L_LIVE_SEARCH_POSTS_BY_USER_TOPIC}</a></li>
+                <!-- ENDIF -->
+            </ul>
+	</div>
+ 	    <li class="separator"></li>
+   <!-- ENDIF  -->
+
+  
 
 </div>
 <!-- ENDIF  -->

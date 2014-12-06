@@ -502,17 +502,14 @@ class live_search_ajax_handler
 				* @var	array	tpl_ary		Template block array with topic data
 				* @since 1.0.0
 				*/
-				$vars = array('row', 'tpl_ary');
+				$vars = array(
+	                'row',
+	                'tpl_ary',
+                );
 				extract($this->dispatcher->trigger_event('alg.livesearch.modify_tpl_ary_livesearch_usertopics', compact($vars)));
 
 				$this->template->assign_block_vars('livesearchresults', $tpl_ary);               
-
-                            
-                            
-                            
-                            
-                            
-                            $this->pagination->generate_template_pagination($view_topic_url, 'livesearchresults.pagination', 'start', $replies + 1, $this->config['posts_per_page'], 1, true, true);
+                $this->pagination->generate_template_pagination($view_topic_url, 'livesearchresults.pagination', 'start', $replies + 1, $this->config['posts_per_page'], 1, true, true);
 				}
 			}
 				$this->pagination->generate_template_pagination($u_search, 'pagination', 'start', $total_count, $per_page, $start);

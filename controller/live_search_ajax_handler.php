@@ -495,7 +495,7 @@ class live_search_ajax_handler
 				* @since 1.0.0
 				*/
 				$vars = array('row', 'tpl_ary');
-				extract($this->dispatcher->trigger_event('alg.livesearch.modify_tpl_ary_livesearch_usertopics', compact($vars)));
+				extract($this->dispatcher->trigger_event('alg.livesearch.modify_tpl_ary_livesearch_topics', compact($vars)));
 
 				$this->template->assign_block_vars('livesearchresults', $tpl_ary);					
 
@@ -756,7 +756,7 @@ class live_search_ajax_handler
  				/**
 				* Modify the topic data before it is assigned to the template
 				*
-				* @event alg.livesearch.modify_tpl_ary_livesearch_topics
+				* @event alg.livesearch.modify_tpl_ary_livesearch_userposts
 				* @var	array	row			Array with topic data
 				* @var	array	tpl_ary		Template block array with topic data
 				* @since 1.0.0

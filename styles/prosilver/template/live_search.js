@@ -240,6 +240,10 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
                 {
                     var new_contact = new_contact + ' onclick="popup(this.href, 750, 320); return false;"';
                 }
+                if (contact_url.indexOf('http') > -1)
+                {
+                     var new_contact = new_contact + ' target="_blank"';
+                }
                 var new_contact = new_contact + '>';
                 var new_contact = new_contact + '<span class="';
                 new_contact = new_contact + class_contact + '"></span></a>';

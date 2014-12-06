@@ -451,8 +451,7 @@ class live_search_ajax_handler
 					$u_mcp_queue = ($topic_unapproved || $posts_unapproved) ? append_sid("{$this->phpbb_root_path}mcp.$this->php_exp", 'i=queue&amp;mode=' . (($topic_unapproved) ? 'approve_details' : 'unapproved_posts') . "&amp;t=$result_topic_id", true, $this->user->session_id) : '';
 					$u_mcp_queue = (!$u_mcp_queue && $topic_deleted) ? append_sid("{$this->phpbb_root_path}mcp.$this->php_exp", "i=queue&amp;mode=deleted_topics&amp;t=$result_topic_id", true, $this->user->session_id) : '';
 
-						  //$this->template->assign_block_vars('searchresults', array (
-						  $tpl_ary = array(
+					$tpl_ary = array(
 						'TOPIC_TITLE'		=> censor_text($row['topic_title']),
 						'FORUM_TITLE'		=> $row['forum_name'],
 						'TOPIC_AUTHOR_FULL'			=> get_username_string('full', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
@@ -486,15 +485,15 @@ class live_search_ajax_handler
 						'U_MCP_QUEUE'			=> $u_mcp_queue,
 						'U_LAST_POST'			=> append_sid("{$this->phpbb_root_path}viewtopic.$this->php_ext", $view_topic_url_params . '&amp;p=' . $row['topic_last_post_id']) . '#p' . $row['topic_last_post_id'],
 					);
- 				/**
-				* Modify the topic data before it is assigned to the template
-				*
-				* @event alg.livesearch.modify_tpl_ary_livesearch_topics
-				* @var	array	row			Array with topic data
-				* @var	array	tpl_ary		Template block array with topic data
-				* @since 1.0.0
-				*/
-				$vars = array('row', 'tpl_ary');
+			    /**
+			     * Modify the topic data before it is assigned to the template
+			     *
+			     * @event alg.livesearch.modify_tpl_ary_livesearch_topics
+			     * @var    array    row            Array with topic data
+			     * @var    array    tpl_ary        Template block array with topic data
+			     * @since 2.0.0
+			     */
+			    $vars = array('row', 'tpl_ary');
 				extract($this->dispatcher->trigger_event('alg.livesearch.modify_tpl_ary_livesearch_topics', compact($vars)));
 
 				$this->template->assign_block_vars('livesearchresults', $tpl_ary);					

@@ -29,7 +29,7 @@ class live_search_ajax_handler
 		$this->profilefields_manager = $profilefields_manager;
 		$this->dispatcher = $dispatcher;
 
-        $this->return = array(); // save returned data in here
+		  $this->return = array(); // save returned data in here
 		$this->error = array(); // save errors in here
 
 	}
@@ -38,10 +38,10 @@ class live_search_ajax_handler
 	{
 		// Grab data
 		$q = utf8_strtoupper(utf8_normalize_nfc($this->request->variable('q', '',true)));
-        //if(!$q && $action != 'usertopic'  && $action != 'userpost') 
-        //{
-        //    exit();
-        //}
+		  //if(!$q && $action != 'usertopic'  && $action != 'userpost') 
+		  //{
+		  //	 exit();
+		  //}
 		$this->user->add_lang_ext('alg/liveSearch', 'live_search');
 
 		switch ($action)
@@ -158,7 +158,7 @@ class live_search_ajax_handler
 			$forum_id = $topic_info['forum_id'];
 			$topic_id = ($topic_info['topic_status'] == 2) ? (int) $topic_info['topic_moved_id'] : (int) $topic_info['topic_id'];
 			$topic_info['topic_title'] = str_replace('|', ' ', $topic_info['topic_title']);
-			$key = htmlspecialchars_decode($topic_info['topic_title']   );
+			$key = htmlspecialchars_decode($topic_info['topic_title']	);
 			$forum_name = htmlspecialchars_decode( ' (' . $topic_info['forum_name'] . ')'  );
 			$message .= $key . "|$topic_id|$forum_id|$forum_name\n";
 		}
@@ -289,25 +289,25 @@ class live_search_ajax_handler
 		}
 
 		// Which forums should not be searched? Author searches are also carried out in unindexed forums
-        $ex_fid_ary = array();
+		  $ex_fid_ary = array();
 		$ex_fid_ary = array_keys($this->auth->acl_getf('!f_read', true));
 
-        if ($this->config['livesearch_exclude'])
-        {
-            $exclude_forums = explode(',', $this->config['livesearch_exclude']);
-            if (sizeof($exclude_forums))
-            {
-                $ex_fid_ary = array_merge($ex_fid_ary, $exclude_forums);
-                $ex_fid_ary = array_unique($ex_fid_ary);
-           }
-        }
+		  if ($this->config['livesearch_exclude'])
+		  {
+				$exclude_forums = explode(',', $this->config['livesearch_exclude']);
+				if (sizeof($exclude_forums))
+				{
+					 $ex_fid_ary = array_merge($ex_fid_ary, $exclude_forums);
+					 $ex_fid_ary = array_unique($ex_fid_ary);
+			  }
+		  }
 		$not_in_fid = (sizeof($ex_fid_ary)) ? 'WHERE ' . $this->db->sql_in_set('f.forum_id', $ex_fid_ary, true) . " OR (f.forum_password <> '' AND fa.user_id <> " . (int) $this->user->data['user_id'] . ')' : "";
-        
-        
-        
-        
-        
-        
+		  
+		  
+		  
+		  
+		  
+		  
 		// find out in which forums the user is allowed to view posts
 		$m_approve_posts_fid_sql = $this->content_visibility->get_global_visibility_sql('post', $ex_fid_ary, 'p.');
 		$m_approve_topics_fid_sql = $this->content_visibility->get_global_visibility_sql('topic', $ex_fid_ary, 't.');
@@ -358,15 +358,15 @@ class live_search_ajax_handler
 
 		if ($total_count)
 		{
-            $where =     ' topic_status <> ' . ITEM_MOVED  . '  AND t.topic_visibility = ' .  ITEM_APPROVED  . '  AND t.topic_poster = ' . $author_id  ;
-            if (sizeof($ex_fid_ary))
-            {
-                $where .= ' AND ' . $this->db->sql_in_set('f.forum_id', $ex_fid_ary, true);
-            }
-		    if ($forum_id)
-		    {
-			    $where .= $this->build_subforums_search($forum_id) ;
-		    }
+				$where =	  ' topic_status <> ' . ITEM_MOVED  . '  AND t.topic_visibility = ' .  ITEM_APPROVED  . '  AND t.topic_poster = ' . $author_id  ;
+				if (sizeof($ex_fid_ary))
+				{
+					 $where .= ' AND ' . $this->db->sql_in_set('f.forum_id', $ex_fid_ary, true);
+				}
+			 if ($forum_id)
+			 {
+				 $where .= $this->build_subforums_search($forum_id) ;
+			 }
  			$sql_array = array(
 				//'SELECT'	=> ' t*, u.user_id, u.username, u.user_colour, f.forum_name, tt.mark_time, ft.mark_time as f_mark_time ',
 				'SELECT'	=> 't.*, u.user_id, u.username, u.user_colour, f.forum_id, f.forum_name, tt.mark_time, ft.mark_time as f_mark_time',
@@ -384,11 +384,11 @@ class live_search_ajax_handler
 						'FROM'	=> array(FORUMS_TRACK_TABLE => 'ft'),
 						'ON'	=> 'ft.user_id = ' . $user_id .  ' AND  ft.forum_id = f.forum_id' ,
 					),
-                    array(
-                        'FROM'	=> array(USERS_TABLE => 'u'),
-                        'ON'	=> 't.topic_last_poster_id = u.user_id',
-                    ),
-                ),
+						  array(
+								'FROM'	=> array(USERS_TABLE => 'u'),
+								'ON'	=> 't.topic_last_poster_id = u.user_id',
+						  ),
+					 ),
 				'WHERE'		=> $where , 
 				'ORDER_BY'	=> 't.topic_last_post_time DESC',
 			);
@@ -401,8 +401,8 @@ class live_search_ajax_handler
 			*/
 			$vars = array('sql_array');
 			extract($this->dispatcher->trigger_event('alg.livesearch.sql_livesearch_usertopics', compact($vars)));			
-            
-			$result = $this->db->sql_query_limit($this->db->sql_build_query('SELECT', $sql_array),  $per_page, $start);        
+				
+			$result = $this->db->sql_query_limit($this->db->sql_build_query('SELECT', $sql_array),  $per_page, $start);		  
 			//$result = $this->db->sql_query_limit($sql, $per_page, $start);
 			$row_count = 0;
 			$rowset = array();
@@ -415,7 +415,7 @@ class live_search_ajax_handler
 				{
 					$row_count++;
 					// Get topic tracking info
-					if ($this->user->data['is_registered'] && $this->config['load_db_lastread'] && !$this->config['ls_topics_cache'])   //todo ls_topics_cache
+					if ($this->user->data['is_registered'] && $this->config['load_db_lastread'] && !$this->config['ls_topics_cache'])	//todo ls_topics_cache
 					{
 						$topic_tracking_info = get_topic_tracking($ls_forum_id, $ls_topic_id, $rowset, array($ls_forum_id => $row['f_mark_time']));
 					}
@@ -451,8 +451,8 @@ class live_search_ajax_handler
 					$u_mcp_queue = ($topic_unapproved || $posts_unapproved) ? append_sid("{$this->phpbb_root_path}mcp.$this->php_exp", 'i=queue&amp;mode=' . (($topic_unapproved) ? 'approve_details' : 'unapproved_posts') . "&amp;t=$result_topic_id", true, $this->user->session_id) : '';
 					$u_mcp_queue = (!$u_mcp_queue && $topic_deleted) ? append_sid("{$this->phpbb_root_path}mcp.$this->php_exp", "i=queue&amp;mode=deleted_topics&amp;t=$result_topic_id", true, $this->user->session_id) : '';
 
-                    //$this->template->assign_block_vars('searchresults', array (
-                    $tpl_ary = array(
+						  //$this->template->assign_block_vars('searchresults', array (
+						  $tpl_ary = array(
 						'TOPIC_TITLE'		=> censor_text($row['topic_title']),
 						'FORUM_TITLE'		=> $row['forum_name'],
 						'TOPIC_AUTHOR_FULL'			=> get_username_string('full', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
@@ -482,7 +482,7 @@ class live_search_ajax_handler
 						'U_NEWEST_POST'			=> append_sid("{$this->phpbb_root_path}viewtopic.$this->php_ext", $view_topic_url_params . '&amp;view=unread') . '#unread',
 						'U_VIEW_TOPIC'		=> $view_topic_url,
 						'U_VIEW_FORUM'		=> append_sid("{$this->phpbb_root_path}viewforum.$this->php_ext", 'f=' . $row['forum_id']),
-				        'U_VIEW_POST'		=> (!empty($row['post_id'])) ?  append_sid("{$this->phpbb_root_path}viewtopic.$this->php_ext", "f=" + $row['forum_id'] + "&amp;t=" . $row['topic_id'] . '&amp;p=' . $row['post_id'] ) . '#p' . $row['post_id'] : '',
+						  'U_VIEW_POST'		=> (!empty($row['post_id'])) ?  append_sid("{$this->phpbb_root_path}viewtopic.$this->php_ext", "f=" + $row['forum_id'] + "&amp;t=" . $row['topic_id'] . '&amp;p=' . $row['post_id'] ) . '#p' . $row['post_id'] : '',
 						'U_MCP_QUEUE'			=> $u_mcp_queue,
 						'U_LAST_POST'			=> append_sid("{$this->phpbb_root_path}viewtopic.$this->php_ext", $view_topic_url_params . '&amp;p=' . $row['topic_last_post_id']) . '#p' . $row['topic_last_post_id'],
 					);
@@ -497,7 +497,7 @@ class live_search_ajax_handler
 					$vars = array('row', 'tpl_ary');
 					extract($this->dispatcher->trigger_event('alg.livesearch.modify_tpl_ary_livesearch_usertopics', compact($vars)));
 
-					$this->template->assign_block_vars('livesearchresults', $tpl_ary);               
+					$this->template->assign_block_vars('livesearchresults', $tpl_ary);					
 					$this->pagination->generate_template_pagination($view_topic_url, 'livesearchresults.pagination', 'start', $replies + 1, $this->config['posts_per_page'], 1, true, true);
 				}
 			}
@@ -541,12 +541,12 @@ class live_search_ajax_handler
 		return new Response($this->template->return_display('body'), 200);
 
 	}
-    
-    private function live_search_userpost( $forum, $topic, $user)
-    {
+
+	private function live_search_userpost( $forum, $topic, $user)
+	{
 		include_once($this->phpbb_root_path . 'includes/functions_display.' . $this->php_ext);
 		include_once($this->phpbb_root_path . 'includes/functions_posting.' . $this->php_ext);
-        
+
 		$this->user->add_lang(array( 'search'));
 		$forum_id = $forum;
 		$topic_id = $topic;
@@ -575,7 +575,7 @@ class live_search_ajax_handler
 		$sort_key = $this->request->variable('sk', $default_key);
 		$sort_dir = $this->request->variable('sd', 'desc');
 
-        // clear arrays
+		  // clear arrays
 		$id_ary = array();
 		$author_id_ary[] = $author_id;
 
@@ -589,25 +589,20 @@ class live_search_ajax_handler
 		}
 
 		// Which forums should not be searched? Author searches are also carried out in unindexed forums
-        $ex_fid_ary = array();
+		  $ex_fid_ary = array();
 		$ex_fid_ary = array_keys($this->auth->acl_getf('!f_read', true));
 
-        if ($this->config['livesearch_exclude'])
-        {
-            $exclude_forums = explode(',', $this->config['livesearch_exclude']);
-            if (sizeof($exclude_forums))
-            {
-                $ex_fid_ary = array_merge($ex_fid_ary, $exclude_forums);
-                $ex_fid_ary = array_unique($ex_fid_ary);
-           }
-        }
+		  if ($this->config['livesearch_exclude'])
+		  {
+				$exclude_forums = explode(',', $this->config['livesearch_exclude']);
+				if (sizeof($exclude_forums))
+				{
+					 $ex_fid_ary = array_merge($ex_fid_ary, $exclude_forums);
+					 $ex_fid_ary = array_unique($ex_fid_ary);
+			  }
+		  }
 		$not_in_fid = (sizeof($ex_fid_ary)) ? 'WHERE ' . $this->db->sql_in_set('f.forum_id', $ex_fid_ary, true) . " OR (f.forum_password <> '' AND fa.user_id <> " . (int) $this->user->data['user_id'] . ')' : "";
-        
-        
-        
-        
-        
-        
+
 		// find out in which forums the user is allowed to view posts
 		$m_approve_posts_fid_sql = $this->content_visibility->get_global_visibility_sql('post', $ex_fid_ary, 'p.');
 		$m_approve_topics_fid_sql = $this->content_visibility->get_global_visibility_sql('topic', $ex_fid_ary, 't.');
@@ -625,7 +620,7 @@ class live_search_ajax_handler
 
 		//$l_search_title = $this->user->lang['SEARCH_ACTIVE_TOPICS'];
 		$sql = "SELECT count(t.topic_id) as total_count, t.topic_title, u.username" .
-                    " FROM " . POSTS_TABLE . " p LEFT JOIN  " .TOPICS_TABLE . " t ON (p.topic_id = t.topic_id) ".
+					" FROM " . POSTS_TABLE . " p LEFT JOIN  " .TOPICS_TABLE . " t ON (p.topic_id = t.topic_id) ".
 					" LEFT JOIN " . USERS_TABLE . " u ON p.poster_id = u.user_id" .
 					" WHERE  t.topic_status <> " . ITEM_MOVED .
 					" AND t.topic_visibility = " . ITEM_APPROVED .
@@ -652,10 +647,10 @@ class live_search_ajax_handler
 		$forum_name = '';
 		$topic_name = '';
 		$forum_has_subforums = false;
-        if ($topic_id)
-        {
-            $topic_name = $row['topic_title'];
-        }
+		if ($topic_id)
+		{
+			$topic_name = $row['topic_title'];
+		}
 		if($forum_id)
 		{
 			$sql = 	" SELECT forum_name, left_id, right_id FROM " . FORUMS_TABLE .  " WHERE forum_id=" . $forum_id;
@@ -668,20 +663,20 @@ class live_search_ajax_handler
 //*********************
 		if ($total_count)
 		{//1
-            $where =     ' topic_status <> ' . ITEM_MOVED  . '  AND t.topic_visibility = ' .  ITEM_APPROVED  . '  AND p.poster_id = ' . $author_id  ;
-            if (sizeof($ex_fid_ary))
-            {
-                $where .= ' AND ' . $this->db->sql_in_set('f.forum_id', $ex_fid_ary, true);
-            }
-		    if ($forum_id)
-		    {
-			    $where .= $this->build_subforums_search($forum_id) ;
-		    }
-		    if ($topic_id)
-		    {
-			    $where .= ' AND t.topic_id = ' . $topic_id ;
-		    }
-            $sql_array = array(
+				$where =	  ' topic_status <> ' . ITEM_MOVED  . '  AND t.topic_visibility = ' .  ITEM_APPROVED  . '  AND p.poster_id = ' . $author_id  ;
+				if (sizeof($ex_fid_ary))
+				{
+					$where .= ' AND ' . $this->db->sql_in_set('f.forum_id', $ex_fid_ary, true);
+				}
+				if ($forum_id)
+				{
+					$where .= $this->build_subforums_search($forum_id) ;
+				}
+				if ($topic_id)
+				{
+					$where .= ' AND t.topic_id = ' . $topic_id ;
+				}
+				$sql_array = array(
 				'SELECT'	=> 'p.*, f.forum_id, f.forum_name, t.*, u.username, u.username_clean, u.user_sig, u.user_sig_bbcode_uid, u.user_colour ',
 				'FROM'		=> array(POSTS_TABLE => 'p'),
 				'LEFT_JOIN'	=> array(
@@ -693,19 +688,12 @@ class live_search_ajax_handler
 						'FROM'	=> array(FORUMS_TABLE => 'f'),
 						'ON'	=> 'f.forum_id = p.forum_id',
 					),
-                    //array(
-                    //    'FROM'	=> array(TOPICS_TRACK_TABLE => 'tt'),
-                    //    'ON'	=> 'tt.user_id = ' . $user_id .  ' AND t.topic_id = tt.topic_id' ,
-                    //),
-                    //array(
-                    //    'FROM'	=> array(FORUMS_TRACK_TABLE => 'ft'),
-                    //    'ON'	=> 'ft.user_id = ' . $user_id .  ' AND  ft.forum_id = f.forum_id' ,
-                    //),
-                    array(
-                        'FROM'	=> array(USERS_TABLE => 'u'),
-                        'ON'	=> 'p.poster_id = u.user_id',
-                    ),
-                ),
+
+						array(
+								'FROM'	=> array(USERS_TABLE => 'u'),
+								'ON'	=> 'p.poster_id = u.user_id',
+						),
+					 ),
 				'WHERE'		=> $where , 
 				'ORDER_BY'	=> ' p.post_time DESC  ',
 			);
@@ -717,11 +705,11 @@ class live_search_ajax_handler
 			* @since 1.0.0
 			*/
 			$vars = array('sql_array');
-			extract($this->dispatcher->trigger_event('alg.livesearch.sql_livesearch_userposts', compact($vars)));			
-            
-			$result = $this->db->sql_query_limit($this->db->sql_build_query('SELECT', $sql_array),  $per_page, $start);        
+			extract($this->dispatcher->trigger_event('alg.livesearch.sql_livesearch_userposts', compact($vars)));
 
-            $row_count = 0;
+			$result = $this->db->sql_query_limit($this->db->sql_build_query('SELECT', $sql_array),  $per_page, $start);
+
+				$row_count = 0;
 			$rowset = array();
 			while ($row = $this->db->sql_fetchrow($result))
 			{//2
@@ -740,20 +728,20 @@ class live_search_ajax_handler
 					$parse_flags = ($row['bbcode_bitfield'] ? OPTION_FLAG_BBCODE : 0) | OPTION_FLAG_SMILIES;
 					$row['post_text'] = generate_text_for_display($row['post_text'], $row['bbcode_uid'], $row['bbcode_bitfield'], $parse_flags, false);
 
-                    $tpl_ary = array(
-                        //'TOPIC_AUTHOR'				=> get_username_string('username', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
-                        //'TOPIC_AUTHOR_COLOUR'		=> get_username_string('colour', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
-                        //'TOPIC_AUTHOR_FULL'			=> get_username_string('full', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
-					    'POST_AUTHOR_FULL'		=> get_username_string('full', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
-					    'POST_AUTHOR_COLOUR'	=> get_username_string('colour', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
-					    'POST_AUTHOR'			=> get_username_string('username', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
-					    'U_POST_AUTHOR'			=> get_username_string('profile', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
-				        'U_VIEW_POST'		=> (!empty($row['post_id'])) ?  append_sid("{$this->phpbb_root_path}viewtopic.$this->php_ext", "f=" + $row['forum_id'] + "&amp;t=" . $row['topic_id'] . '&amp;p=' . $row['post_id'] ) . '#p' . $row['post_id'] : '',
+						$tpl_ary = array(
+								//'TOPIC_AUTHOR'				=> get_username_string('username', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
+								//'TOPIC_AUTHOR_COLOUR'		=> get_username_string('colour', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
+								//'TOPIC_AUTHOR_FULL'			=> get_username_string('full', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
+						'POST_AUTHOR_FULL'		=> get_username_string('full', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
+						'POST_AUTHOR_COLOUR'	=> get_username_string('colour', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
+						'POST_AUTHOR'			=> get_username_string('username', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
+						'U_POST_AUTHOR'			=> get_username_string('profile', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
+						'U_VIEW_POST'		=> (!empty($row['post_id'])) ?  append_sid("{$this->phpbb_root_path}viewtopic.$this->php_ext", "f=" + $row['forum_id'] + "&amp;t=" . $row['topic_id'] . '&amp;p=' . $row['post_id'] ) . '#p' . $row['post_id'] : '',
 
-					    'POST_SUBJECT'		=> $row['post_subject'],
-					    'POST_DATE'			=> (!empty($row['post_time'])) ? $this->user->format_date($row['post_time']) : '',
-					    'MESSAGE'			=> $row['post_text'],
-                        'TOPIC_TITLE'		=> censor_text($row['topic_title']),
+						 'POST_SUBJECT'		=> $row['post_subject'],
+						 'POST_DATE'			=> (!empty($row['post_time'])) ? $this->user->format_date($row['post_time']) : '',
+						 'MESSAGE'			=> $row['post_text'],
+								'TOPIC_TITLE'		=> censor_text($row['topic_title']),
 						'FORUM_TITLE'		=> $row['forum_name'],
 						'FIRST_POST_TIME'			=> $this->user->format_date($row['topic_time']),
 						'S_ROW_COUNT'		=> $row,
@@ -776,44 +764,44 @@ class live_search_ajax_handler
 				$vars = array('row', 'tpl_ary');
 				extract($this->dispatcher->trigger_event('alg.livesearch.modify_tpl_ary_livesearch_userposts', compact($vars)));
 
-				$this->template->assign_block_vars('livesearchresults', $tpl_ary);               
+				$this->template->assign_block_vars('livesearchresults', $tpl_ary);					
 				}//3
 			}//2 while
 				$this->pagination->generate_template_pagination($u_search, 'pagination', 'start', $total_count, $per_page, $start);
-        }//1
-                if ($topic_id)
-                {
-                    $res_txt =  sprintf($this->user->lang['LIVESEARCH_USERPOST_RESULT_IN_TOPIC'], $username, $topic_name, $forum_name);
-                }
-                else
-                {
-				    if ($forum_id)
-				    {
-					    $res_txt = sprintf($this->user->lang['LIVESEARCH_USERPOST_RESULT_IN_FORUM'], $username, $forum_name);
-					    if ($forum_has_subforums)
-					    {
-							    $res_txt .= $this->user->lang['LIVESEARCH_USERTOPIC_RESULT_IN_SUBFORUMS'];
-					    }
-				    }
-				    else
-				    {
-					    $res_txt = sprintf($this->user->lang['LIVESEARCH_USERPOST_RESULT'], $username);
-				    }
-                }
-			$l_search_matches =  $this->user->lang('FOUND_SEARCH_MATCHES', $total_count) ;
-			$this->template->assign_vars(array(
-			'S_SHOW_TOPICS'		=> 0,
-			'SEARCH_MATCHES'	=>  $total_count == 0 ? '' : $this->user->lang('FOUND_SEARCH_MATCHES', $total_count) ,
-			'SEARCH_MATCHES_TXT'	=>	$res_txt,
-			'PAGE_NUMBER'		=> $total_count == 0 ?  0 : $this->pagination->on_page($total_count, $this->config['posts_per_page'], $start),
-			'TOTAL_MATCHES'		=> $total_count,
-			'REPORTED_IMG'		=> $this->user->img('icon_topic_reported', 'TOPIC_REPORTED'),
-			'UNAPPROVED_IMG'	=> $this->user->img('icon_topic_unapproved', 'TOPIC_UNAPPROVED'),
-			'DELETED_IMG'			 => $this->user->img('icon_topic_deleted', 'TOPIC_DELETED'),
-			'POLL_IMG'				 => $this->user->img('icon_topic_poll', 'TOPIC_POLL'),
-			'LAST_POST_IMG'		=> $this->user->img('icon_topic_latest', 'VIEW_LATEST_POST'),
+		  }//1
+		if ($topic_id)
+		{
+			$res_txt =  sprintf($this->user->lang['LIVESEARCH_USERPOST_RESULT_IN_TOPIC'], $username, $topic_name, $forum_name);
+		}
+		else
+		{
+			if ($forum_id)
+			{
+				$res_txt = sprintf($this->user->lang['LIVESEARCH_USERPOST_RESULT_IN_FORUM'], $username, $forum_name);
+				if ($forum_has_subforums)
+				{
+				$res_txt .= $this->user->lang['LIVESEARCH_USERTOPIC_RESULT_IN_SUBFORUMS'];
+				}
+			}
+			else
+			{
+				$res_txt = sprintf($this->user->lang['LIVESEARCH_USERPOST_RESULT'], $username);
+			}
+		}
+		$l_search_matches =  $this->user->lang('FOUND_SEARCH_MATCHES', $total_count) ;
+		$this->template->assign_vars(array(
+		'S_SHOW_TOPICS'		=> 0,
+		'SEARCH_MATCHES'	=>  $total_count == 0 ? '' : $this->user->lang('FOUND_SEARCH_MATCHES', $total_count) ,
+		'SEARCH_MATCHES_TXT'	=>	$res_txt,
+		'PAGE_NUMBER'		=> $total_count == 0 ?  0 : $this->pagination->on_page($total_count, $this->config['posts_per_page'], $start),
+		'TOTAL_MATCHES'		=> $total_count,
+		'REPORTED_IMG'		=> $this->user->img('icon_topic_reported', 'TOPIC_REPORTED'),
+		'UNAPPROVED_IMG'	=> $this->user->img('icon_topic_unapproved', 'TOPIC_UNAPPROVED'),
+		'DELETED_IMG'			 => $this->user->img('icon_topic_deleted', 'TOPIC_DELETED'),
+		'POLL_IMG'				 => $this->user->img('icon_topic_poll', 'TOPIC_POLL'),
+		'LAST_POST_IMG'		=> $this->user->img('icon_topic_latest', 'VIEW_LATEST_POST'),
 
-			));
+		));
 
 		page_header($page_title);
 
@@ -824,15 +812,7 @@ class live_search_ajax_handler
 		page_footer();
 		return new Response($this->template->return_display('body'), 200);
 
-        
-        
-        
-//     SELECT p.*, f.forum_id, f.forum_name, t.*, u.username, u.username_clean, u.user_sig, u.user_sig_bbcode_uid, u.user_colour FROM (phpbb_posts p) LEFT JOIN phpbb_topics t ON (p.topic_id = t.topic_id) LEFT JOIN phpbb_forums f ON (p.forum_id = f.forum_id) LEFT JOIN phpbb_users u ON (p.poster_id = u.user_id) WHERE p.post_id IN (78213, 78212, 78211, 78210, 78209, 78208, 78207, 78206, 78205, 78204, 78203, 78202, 78201, 78195, 78194, 78193, 78192, 78191, 78190, 78189, 78188, 78187, 78186, 78157, 78136) AND (f.forum_id NOT IN (57, 169, 181, 200, 226, 262, 312, 339, 355, 365, 366, 368, 378, 379, 381, 383, 387, 423, 433, 440, 446, 453, 464, 465) OR f.forum_id IS NULL) AND ((p.forum_id NOT IN (57, 200, 423, 169, 181, 226, 262, 312, 339, 355, 365, 366, 368, 378, 379, 381, 383, 387, 433, 440, 446, 453, 464, 465)
-//AND p.post_visibility = 1) OR p.forum_id IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 15, 16, 17, 18, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 33, 34, 35, 36, 37, 38, 39, 40, 41, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 75, 76, 77, 78, 79, 80, 81, 82, 84, 89, 90, 91, 92, 93, 94, 95, 100, 101, 102, 103, 104, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 156, 157, 158, 160, 161, 162, 166, 167, 170, 177, 178, 182, 184, 187, 188, 192, 194, 196, 197, 198, 199, 201, 202, 203, 204, 205, 206, 209, 210, 211, 212, 213, 214, 215, 216, 217, 218, 219, 223, 224, 225, 227, 228, 229, 230, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255, 256, 257, 258, 259, 260, 261, 275, 276, 277, 278, 305, 306, 307, 308, 309, 310, 311, 313, 314, 315, 317, 318, 319, 320, 321, 322, 323, 324, 325, 326, 327, 328, 329, 330, 331, 332, 333, 334, 335, 336, 337, 338, 340, 341, 342, 343, 344, 345, 346, 347, 348, 349, 350, 351, 352, 353, 354, 356, 362, 363, 364, 367, 369, 370, 371, 372, 373, 374, 375, 376, 377, 380, 382, 384, 385, 386, 388, 389, 390, 391, 392, 393, 394, 395, 396, 397, 398, 399, 400, 401, 402, 403, 404, 405, 406, 407, 408, 409, 410, 411, 412, 413, 414, 415, 416, 417, 418, 419, 420, 421, 422, 424, 425, 426, 427, 428, 429, 430, 431, 432, 434, 435, 436, 437, 438, 439, 441, 442, 443, 444, 445, 447, 448, 449, 450, 451, 452, 454, 455, 456, 457, 458, 459, 460, 461, 462, 463, 466, 468, 469)) ORDER BY p.post_time DESC   
-        
-        
-        
-    }
+	}
 
 	private function build_subforums_search($forum_id)
 	{

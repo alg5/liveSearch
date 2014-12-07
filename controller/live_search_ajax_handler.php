@@ -700,7 +700,7 @@ class live_search_ajax_handler
 			/**
 			* Event to modify the SQL query before the topics data is retrieved
 			*
-			* @event alg.livesearch.sql_livesearch_usertopics
+			* @event alg.livesearch.sql_livesearch_userposts
 			* @var	array	sql_array		The SQL array
 			* @since 1.0.0
 			*/

@@ -180,9 +180,6 @@ class live_search_ajax_handler
 		}
 		$this->db->sql_freeresult($result);
 
-		// Initialize \phpbb\db\tools object
-		//$this->db_tools = new \phpbb\db\tools($this->db);
-
 		$sql = "SELECT u.user_id, u.username, user_allow_pm, user_allow_viewemail, user_type, user_inactive_reason, user_jabber, user_email " . $fields_list . " FROM " . USERS_TABLE .
 					" u LEFT JOIN " . PROFILE_FIELDS_DATA_TABLE . " pf on u.user_id = pf.user_id" .
 					" WHERE (user_type = " . USER_NORMAL . " OR user_type = " . USER_FOUNDER . ")" .
@@ -406,11 +403,6 @@ class live_search_ajax_handler
 			extract($this->dispatcher->trigger_event('alg.livesearch.sql_livesearch_usertopics', compact($vars)));			
             
 			$result = $this->db->sql_query_limit($this->db->sql_build_query('SELECT', $sql_array),  $per_page, $start);        
-              //**********************************************
-            
-            
-            
-            
 			//$result = $this->db->sql_query_limit($sql, $per_page, $start);
 			$row_count = 0;
 			$rowset = array();
@@ -494,22 +486,19 @@ class live_search_ajax_handler
 						'U_MCP_QUEUE'			=> $u_mcp_queue,
 						'U_LAST_POST'			=> append_sid("{$this->phpbb_root_path}viewtopic.$this->php_ext", $view_topic_url_params . '&amp;p=' . $row['topic_last_post_id']) . '#p' . $row['topic_last_post_id'],
 					);
- 				/**
-				* Modify the topic data before it is assigned to the template
-				*
-				* @event alg.livesearch.modify_tpl_ary_livesearch_usertopics
-				* @var	array	row			Array with topic data
-				* @var	array	tpl_ary		Template block array with topic data
-				* @since 1.0.0
-				*/
-				$vars = array(
-	                'row',
-	                'tpl_ary',
-                );
-				extract($this->dispatcher->trigger_event('alg.livesearch.modify_tpl_ary_livesearch_usertopics', compact($vars)));
+					/**
+					* Modify the topic data before it is assigned to the template
+					*
+					* @event alg.livesearch.modify_tpl_ary_livesearch_usertopics
+					* @var	array	row			Array with topic data
+					* @var	array	tpl_ary		Template block array with topic data
+					* @since 1.0.0
+					*/
+					$vars = array('row', 'tpl_ary');
+					extract($this->dispatcher->trigger_event('alg.livesearch.modify_tpl_ary_livesearch_usertopics', compact($vars)));
 
-				$this->template->assign_block_vars('livesearchresults', $tpl_ary);               
-                $this->pagination->generate_template_pagination($view_topic_url, 'livesearchresults.pagination', 'start', $replies + 1, $this->config['posts_per_page'], 1, true, true);
+					$this->template->assign_block_vars('livesearchresults', $tpl_ary);               
+					$this->pagination->generate_template_pagination($view_topic_url, 'livesearchresults.pagination', 'start', $replies + 1, $this->config['posts_per_page'], 1, true, true);
 				}
 			}
 				$this->pagination->generate_template_pagination($u_search, 'pagination', 'start', $total_count, $per_page, $start);
@@ -881,13 +870,11 @@ class live_search_ajax_handler
 		{
 			if ($contact['field_name'] == str_replace('pf_', '', $f_name))
 			{
-				//$desc = isset($this->user->lang[$contact['field_contact_desc']]) ? $this->user->lang[$contact['field_contact_desc']] : $contact['field_contact_desc'];
-				$desc =  $contact['field_contact_desc'];
+				$desc = isset($this->user->lang[$contact['field_contact_desc']]) ? $this->user->lang[$contact['field_contact_desc']] : $contact['field_contact_desc'];
 				return $contact['field_name']  . '^' . $desc . '^' . sprintf($contact['field_contact_url'], $f_value);
 			}
 		}
 		return '';
-
 	}
 
 	private function get_url_pm($seeking_user)

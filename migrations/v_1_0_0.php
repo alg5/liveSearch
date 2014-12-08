@@ -89,6 +89,10 @@ class v_1_0_0 extends \phpbb\db\migration\migration
 				(isset($this->config['live_search_use_eye_button'])),
 				array('config.remove', array('live_search_use_eye_button')),
 			)),
+			array('if', array(
+				(isset($this->config['live_search_exclude_forums'])),
+				array('config.remove', array('live_search_exclude_forums')),
+			)),
 			// Add new configs
 			array('config.add', array('live_search_on_off_forum', v_1_0_0::ON)),
 			array('config.add', array('live_search_on_off_topic',  v_1_0_0::ON)),
@@ -106,8 +110,9 @@ class v_1_0_0 extends \phpbb\db\migration\migration
 			array('config.add', array('live_search_show_in_new_window', v_1_0_0::OFF)),
 			array('config.add', array('live_search_show_for_guest', v_1_0_0::ON)),
 			array('config.add', array('live_search_use_eye_button', v_1_0_0::ON)),
+			array('config.add', array('live_search_exclude_forums', '')),
 			// Current version
-			array('config.add', array('live_search', '1.0.5')),
+			array('config.add', array('live_search', '1.0.6')),
 
 			// Remove old ACP modules
 			array('if', array(
@@ -158,6 +163,7 @@ class v_1_0_0 extends \phpbb\db\migration\migration
 			array('config.remove', array('live_search_show_in_new_window')),
 			array('config.remove', array('live_search_show_for_guest')),
 			array('config.remove', array('live_search_use_eye_button')),
+			array('config.remove', array('live_search_exclude_forums')),
 			array('config.remove', array('allow_live_searches')),
 			// Current version
 			array('config.remove', array('live_search')),

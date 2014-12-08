@@ -49,6 +49,8 @@ $lang = array_merge($lang, array(
 	'LIVE_SEARCH_MIN_NUM_SYMBLOLS_EXPLAIN'				=> 'Поиск будет начинаться введённого количества символов',
 	'LIVE_SEARCH_MAX_ITEMS_TO_SHOW'				=> 'Число результатов',
 	'LIVE_SEARCH_MAX_ITEMS_TO_SHOW_EXPLAIN'				=> ' Ограничивает число результатов, которые будут показаны в выпадающем списке.. Рекомендованное значение 20.',
+	'LIVE_SEARCH_EXCLUDE_FORUMS'		=> 'Форумы, исключенные из живого поиска',
+	'LIVE_SEARCH_EXCLUDE_FORUMS_EXPLAIN'		=> 'Список разделённых запятыми номеров форумов',
 
 	'LIVE_SEARCH_FORUM_ON'				=> '<strong> Включить быстрый поиск по форумам</strong>',
 	'LIVE_SEARCH_TOPIC_ON'				=> '<strong> Включить быстрый поиск по темам</strong>',

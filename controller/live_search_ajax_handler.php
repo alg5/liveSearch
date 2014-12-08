@@ -38,10 +38,7 @@ class live_search_ajax_handler
 	{
 		// Grab data
 		$q = utf8_strtoupper(utf8_normalize_nfc($this->request->variable('q', '',true)));
-		  //if(!$q && $action != 'usertopic'  && $action != 'userpost') 
-		  //{
-		  //	 exit();
-		  //}
+
 		$this->user->add_lang_ext('alg/liveSearch', 'live_search');
 
 		switch ($action)
@@ -122,14 +119,32 @@ class live_search_ajax_handler
 
 	private function live_search_topic($action, $forum_id, $q)
 	{
+		$ex_fid_ary = array();
+		$ex_fid_ary = array_keys($this->auth->acl_getf('!f_read', true));
+
+		if ($this->config['live_search_exclude_forums'])
+		{
+				$exclude_forums = explode(',', $this->config['live_search_exclude_forums']);
+				if (sizeof($exclude_forums))
+				{
+					$ex_fid_ary = array_merge($ex_fid_ary, $exclude_forums);
+					$ex_fid_ary = array_unique($ex_fid_ary);
+			}
+		}
 		$sql = "SELECT t.topic_id, t.topic_title, t.topic_status, t.topic_moved_id, t.forum_id, f.forum_name " .
 		" FROM " . TOPICS_TABLE .
 		" t JOIN " . FORUMS_TABLE . " f on t.forum_id = f.forum_id " .
 		" WHERE t.topic_status <> " . ITEM_MOVED .
 		" AND t.topic_visibility = " . ITEM_APPROVED .
-		"  AND UPPER(t.topic_title) " . $this->db->sql_like_expression($this->db->get_any_char() .  $this->db->sql_escape($q) . $this->db->get_any_char()) .
+		"  AND UPPER(t.topic_title) " . $this->db->sql_like_expression($this->db->get_any_char() .  $this->db->sql_escape($q) . $this->db->get_any_char());
+		if (sizeof($ex_fid_ary))
+		{
+			$sql .= " AND " . $this->db->sql_in_set('f.forum_id', $ex_fid_ary, true);
+		}
+
 		//$this->build_subforums_search($forum_id) .
-		" ORDER BY topic_title";
+		$sql .= " ORDER BY topic_title";
+		//" ORDER BY topic_last_post_time DESC";
 		$result = $this->db->sql_query($sql);
 		$topic_list = array();
 		$arr_res = $arr_priority1 = $arr_priority2 = array();
@@ -289,25 +304,20 @@ class live_search_ajax_handler
 		}
 
 		// Which forums should not be searched? Author searches are also carried out in unindexed forums
-		  $ex_fid_ary = array();
+		$ex_fid_ary = array();
 		$ex_fid_ary = array_keys($this->auth->acl_getf('!f_read', true));
 
-		  if ($this->config['livesearch_exclude'])
+		  if ($this->config['live_search_exclude_forums'])
 		  {
-				$exclude_forums = explode(',', $this->config['livesearch_exclude']);
+				$exclude_forums = explode(',', $this->config['live_search_exclude_forums']);
 				if (sizeof($exclude_forums))
 				{
 					 $ex_fid_ary = array_merge($ex_fid_ary, $exclude_forums);
 					 $ex_fid_ary = array_unique($ex_fid_ary);
-			  }
-		  }
+			}
+		}
 		$not_in_fid = (sizeof($ex_fid_ary)) ? 'WHERE ' . $this->db->sql_in_set('f.forum_id', $ex_fid_ary, true) . " OR (f.forum_password <> '' AND fa.user_id <> " . (int) $this->user->data['user_id'] . ')' : "";
-		  
-		  
-		  
-		  
-		  
-		  
+
 		// find out in which forums the user is allowed to view posts
 		$m_approve_posts_fid_sql = $this->content_visibility->get_global_visibility_sql('post', $ex_fid_ary, 'p.');
 		$m_approve_topics_fid_sql = $this->content_visibility->get_global_visibility_sql('topic', $ex_fid_ary, 't.');
@@ -451,8 +461,8 @@ class live_search_ajax_handler
 					$u_mcp_queue = ($topic_unapproved || $posts_unapproved) ? append_sid("{$this->phpbb_root_path}mcp.$this->php_exp", 'i=queue&amp;mode=' . (($topic_unapproved) ? 'approve_details' : 'unapproved_posts') . "&amp;t=$result_topic_id", true, $this->user->session_id) : '';
 					$u_mcp_queue = (!$u_mcp_queue && $topic_deleted) ? append_sid("{$this->phpbb_root_path}mcp.$this->php_exp", "i=queue&amp;mode=deleted_topics&amp;t=$result_topic_id", true, $this->user->session_id) : '';
 
-						  //$this->template->assign_block_vars('searchresults', array (
-						  $tpl_ary = array(
+						//$this->template->assign_block_vars('searchresults', array (
+						$tpl_ary = array(
 						'TOPIC_TITLE'		=> censor_text($row['topic_title']),
 						'FORUM_TITLE'		=> $row['forum_name'],
 						'TOPIC_AUTHOR_FULL'			=> get_username_string('full', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
@@ -497,7 +507,7 @@ class live_search_ajax_handler
 					$vars = array('row', 'tpl_ary');
 					extract($this->dispatcher->trigger_event('alg.livesearch.modify_tpl_ary_livesearch_usertopics', compact($vars)));
 
-					$this->template->assign_block_vars('livesearchresults', $tpl_ary);					
+					$this->template->assign_block_vars('livesearchresults', $tpl_ary);
 					$this->pagination->generate_template_pagination($view_topic_url, 'livesearchresults.pagination', 'start', $replies + 1, $this->config['posts_per_page'], 1, true, true);
 				}
 			}
@@ -592,16 +602,16 @@ class live_search_ajax_handler
 		  $ex_fid_ary = array();
 		$ex_fid_ary = array_keys($this->auth->acl_getf('!f_read', true));
 
-		  if ($this->config['livesearch_exclude'])
-		  {
-				$exclude_forums = explode(',', $this->config['livesearch_exclude']);
-				if (sizeof($exclude_forums))
-				{
-					 $ex_fid_ary = array_merge($ex_fid_ary, $exclude_forums);
-					 $ex_fid_ary = array_unique($ex_fid_ary);
-			  }
-		  }
-		$not_in_fid = (sizeof($ex_fid_ary)) ? 'WHERE ' . $this->db->sql_in_set('f.forum_id', $ex_fid_ary, true) . " OR (f.forum_password <> '' AND fa.user_id <> " . (int) $this->user->data['user_id'] . ')' : "";
+		if ($this->config['live_search_exclude_forums'])
+		{
+			$exclude_forums = explode(',', $this->config['live_search_exclude_forums']);
+			if (sizeof($exclude_forums))
+			{
+					$ex_fid_ary = array_merge($ex_fid_ary, $exclude_forums);
+					$ex_fid_ary = array_unique($ex_fid_ary);
+			}
+		}
+			 $not_in_fid = (sizeof($ex_fid_ary)) ? 'WHERE ' . $this->db->sql_in_set('f.forum_id', $ex_fid_ary, true) . " OR (f.forum_password <> '' AND fa.user_id <> " . (int) $this->user->data['user_id'] . ')' : "";
 
 		// find out in which forums the user is allowed to view posts
 		$m_approve_posts_fid_sql = $this->content_visibility->get_global_visibility_sql('post', $ex_fid_ary, 'p.');
@@ -638,7 +648,7 @@ class live_search_ajax_handler
 		{
 			$sql .= " AND p.topic_id = " .  $topic_id;
 		}
- 
+
 		$result = $this->db->sql_query($sql);
 		$row = $this->db->sql_fetchrow($result);
 		$total_count = (int) $row['total_count'];
@@ -753,15 +763,15 @@ class live_search_ajax_handler
 						'U_VIEW_FORUM'		=> append_sid("{$this->phpbb_root_path}viewforum.$this->php_ext", 'f=' . $row['forum_id']),
 //						'U_LAST_POST'			=> append_sid("{$this->phpbb_root_path}viewtopic.$this->php_ext", $view_topic_url_params . '&amp;p=' . $row['topic_last_post_id']) . '#p' . $row['topic_last_post_id'],
 					);
- 				/**
-				* Modify the topic data before it is assigned to the template
-				*
-				* @event alg.livesearch.modify_tpl_ary_livesearch_userposts
-				* @var	array	row			Array with topic data
-				* @var	array	tpl_ary		Template block array with topic data
-				* @since 1.0.0
-				*/
-				$vars = array('row', 'tpl_ary');
+					/**
+					* Modify the topic data before it is assigned to the template
+					*
+					* @event alg.livesearch.modify_tpl_ary_livesearch_userposts
+					* @var	array	row			Array with topic data
+					* @var	array	tpl_ary		Template block array with topic data
+					* @since 1.0.0
+					*/
+					$vars = array('row', 'tpl_ary');
 				extract($this->dispatcher->trigger_event('alg.livesearch.modify_tpl_ary_livesearch_userposts', compact($vars)));
 
 				$this->template->assign_block_vars('livesearchresults', $tpl_ary);					

@@ -107,7 +107,14 @@
        <dl>
 			<dt><label for="live_search_use_eye_button">{L_LIVE_SEARCH_USE_EYE_BUTTON}:</label></dt>
 			<dd><label><input type="radio" name="live_search_use_eye_button" value="1" <!-- IF LIVE_SEARCH_USE_EYE_BUTTON -->checked<!-- ENDIF --> class="radio"> {L_YES}</label><label><input type="radio" name="live_search_use_eye_button" value="0" <!-- IF !LIVE_SEARCH_USE_EYE_BUTTON -->checked<!-- ENDIF --> class="radio"> {L_NO}</label></dd>
-		</dl>    </fieldset>
+		</dl>    
+        <dl>
+		    <dt><label for="live_search_exclude_forums">{L_LIVE_SEARCH_EXCLUDE_FORUMS}:</label><br /> 
+                <span>{L_LIVE_SEARCH_EXCLUDE_FORUMS_EXPLAIN}</span>
+            </dt>
+		    <dd><input type="txt" id="live_search_exclude_forums" name="live_search_exclude_forums"   value='{LIVE_SEARCH_EXCLUDE_FORUMS}'  style='width:200px;'  /></dd>
+	    </dl>        
+    </fieldset>
 	<p class="submit-buttons">
 		<input class="button1" type="submit" id="submit" name="submit" value="{L_SUBMIT}" />&nbsp;
 		<input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />

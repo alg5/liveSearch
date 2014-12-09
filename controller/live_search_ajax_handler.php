@@ -1,16 +1,71 @@
 <?php
 /**
 *
-* @author Alg
+ * @package livesearch
+ * @copyright (c) 2014 Alg
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
 
 namespace alg\liveSearch\controller;
+/**
+ * @ignore
+ */
+if (!defined('IN_PHPBB'))
+{
+	exit;
+}
 
 class live_search_ajax_handler
 {
+	/** @var \phpbb\config\config */
+	protected $config;
+
+	/** @var \phpbb\db\driver\driver_interface */
+	protected $db;
+
+	/** @var \phpbb\auth\auth */
+	protected $auth;
+
+	/** @var \phpbb\template\template */
+	protected $template;
+
+	/** @var \phpbb\user */
+	protected $user;
+
+	/** @var \phpbb\cache\service */
+	protected $cache;
+
+	/** @var string phpBB root path */
+	protected $root_path;
+
+	/** @var string PHP extension */
+	protected $php_ext;
+
+	/** @var \phpbb\request\request_interface */
+	protected $request;
+
+	/** @var string PHP extension */
+	protected $phpbb_container;
+
+	/** @var \phpbb\pagination */
+	protected $pagination;
+
+	/** @var \phpbb\content_visibility */
+	protected $content_visibility;
+
+	/** @var string PHP extension */
+	protected $table_prefix;
+
+	/** @var \phpbb\profilefields\manager */
+	protected $profilefields_manager;
+
+	/** @var \phpbb\event\dispatcher_interface */
+	protected $dispatcher;
+
+	/** @var array */
 	protected $thankers = array();
+    
 	public function __construct(\phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \phpbb\auth\auth $auth, \phpbb\template\template $template, \phpbb\user $user, \phpbb\cache\service $cache, $phpbb_root_path, $php_ext, \phpbb\request\request_interface $request, $table_prefix, $phpbb_container, \phpbb\pagination $pagination, \phpbb\content_visibility $content_visibility, $table_prefix, \phpbb\profilefields\manager $profilefields_manager, \phpbb\event\dispatcher_interface $dispatcher)
 	{
 		$this->config = $config;
@@ -141,10 +196,7 @@ class live_search_ajax_handler
 		{
 			$sql .= " AND " . $this->db->sql_in_set('f.forum_id', $ex_fid_ary, true);
 		}
-
-		//$this->build_subforums_search($forum_id) .
 		$sql .= " ORDER BY topic_title";
-		//" ORDER BY topic_last_post_time DESC";
 		$result = $this->db->sql_query($sql);
 		$topic_list = array();
 		$arr_res = $arr_priority1 = $arr_priority2 = array();
@@ -269,12 +321,12 @@ class live_search_ajax_handler
 		$icons = $this->cache->obtain_icons();
 
 		// define some vars for urls
-		// A single wildcard will make the search results look ugly
-		$limit_days		= array(0 => $this->user->lang['ALL_RESULTS'], 1 => $this->user->lang['1_DAY'], 7 => $this->user->lang['7_DAYS'], 14 => $this->user->lang['2_WEEKS'], 30 => $this->user->lang['1_MONTH'], 90 => $this->user->lang['3_MONTHS'], 180 => $this->user->lang['6_MONTHS'], 365 => $this->user->lang['1_YEAR']);
-		$sort_by_text	= array('a' => $this->user->lang['SORT_AUTHOR'], 't' => $this->user->lang['SORT_TIME'], 'f' => $this->user->lang['SORT_FORUM'], 'i' => $this->user->lang['SORT_TOPIC_TITLE'], 's' => $this->user->lang['SORT_POST_SUBJECT']);
+        //// A single wildcard will make the search results look ugly
+        //$limit_days		= array(0 => $this->user->lang['ALL_RESULTS'], 1 => $this->user->lang['1_DAY'], 7 => $this->user->lang['7_DAYS'], 14 => $this->user->lang['2_WEEKS'], 30 => $this->user->lang['1_MONTH'], 90 => $this->user->lang['3_MONTHS'], 180 => $this->user->lang['6_MONTHS'], 365 => $this->user->lang['1_YEAR']);
+        //$sort_by_text	= array('a' => $this->user->lang['SORT_AUTHOR'], 't' => $this->user->lang['SORT_TIME'], 'f' => $this->user->lang['SORT_FORUM'], 'i' => $this->user->lang['SORT_TOPIC_TITLE'], 's' => $this->user->lang['SORT_POST_SUBJECT']);
 
-		$s_limit_days = $s_sort_key = $s_sort_dir = $u_sort_param = '';
-		gen_sort_selects($limit_days, $sort_by_text, $sort_days, $sort_key, $sort_dir, $s_limit_days, $s_sort_key, $s_sort_dir, $u_sort_param);
+        //$s_limit_days = $s_sort_key = $s_sort_dir = $u_sort_param = '';
+        //gen_sort_selects($limit_days, $sort_by_text, $sort_days, $sort_key, $sort_dir, $s_limit_days, $s_sort_key, $s_sort_dir, $u_sort_param);
 
 		$show_results	= 'topics';
 		$u_search = append_sid("{$this->phpbb_root_path}liveSearch/usertopic/$forum_id/$topic_id/$author_id");
@@ -287,8 +339,6 @@ class live_search_ajax_handler
 		$default_key = 't.topic_last_post_time';
 		$sort_key = $this->request->variable('sk', $default_key);
 		$sort_dir = $this->request->variable('sd', 'desc');
-		$forum_id = $forum;
-		$author_id = $user;
 
 		// clear arrays
 		$id_ary = array();

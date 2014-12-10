@@ -1,0 +1,39 @@
+{
+    "name": "alg/ForumSponsor",
+    "type": "phpbb-extension",
+    "description": "Add sponsor logo and link for some forums on  Board Index ",
+    "homepage": "http://www.phpbbguru.net",
+    "version": "1.0.1",
+    "time": "2014-07-10",
+    "license": "GPL-2.0",
+    "authors": [
+        {
+            "name": "Палыч",
+            "homepage": "http://www.phpbbguru.net",
+            "role": "Developer"
+        },
+        {
+            "name": "Алг",
+            "homepage": "http://www.chugunok.net",
+            "role": "Converting to extension"
+        }
+       
+    ],
+    "require": {
+        "php": ">=5.3.3"
+    },
+	"require-dev": {
+      "phpbb/epv": "dev-master"
+   },
+    "extra": {
+        "display-name": "Forum Sponsor",
+		"soft-require": {
+           "phpbb/phpbb": "3.1.*@dev"
+        },
+        "version-check": {
+            "host": "alg5.github.io",
+            "directory": "/versions",
+            "filename": "ForumSponsor.json"
+        }
+    }
+}

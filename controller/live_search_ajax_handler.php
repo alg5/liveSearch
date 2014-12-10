@@ -8,6 +8,7 @@
 */
 
 namespace alg\liveSearch\controller;
+
 /**
  * @ignore
  */
@@ -65,7 +66,7 @@ class live_search_ajax_handler
 
 	/** @var array */
 	protected $thankers = array();
-    
+
 	public function __construct(\phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \phpbb\auth\auth $auth, \phpbb\template\template $template, \phpbb\user $user, \phpbb\cache\service $cache, $phpbb_root_path, $php_ext, \phpbb\request\request_interface $request, $table_prefix, $phpbb_container, \phpbb\pagination $pagination, \phpbb\content_visibility $content_visibility, $table_prefix, \phpbb\profilefields\manager $profilefields_manager, \phpbb\event\dispatcher_interface $dispatcher)
 	{
 		$this->config = $config;
@@ -320,14 +321,6 @@ class live_search_ajax_handler
 		// Grab icons
 		$icons = $this->cache->obtain_icons();
 
-		// define some vars for urls
-        //// A single wildcard will make the search results look ugly
-        //$limit_days		= array(0 => $this->user->lang['ALL_RESULTS'], 1 => $this->user->lang['1_DAY'], 7 => $this->user->lang['7_DAYS'], 14 => $this->user->lang['2_WEEKS'], 30 => $this->user->lang['1_MONTH'], 90 => $this->user->lang['3_MONTHS'], 180 => $this->user->lang['6_MONTHS'], 365 => $this->user->lang['1_YEAR']);
-        //$sort_by_text	= array('a' => $this->user->lang['SORT_AUTHOR'], 't' => $this->user->lang['SORT_TIME'], 'f' => $this->user->lang['SORT_FORUM'], 'i' => $this->user->lang['SORT_TOPIC_TITLE'], 's' => $this->user->lang['SORT_POST_SUBJECT']);
-
-        //$s_limit_days = $s_sort_key = $s_sort_dir = $u_sort_param = '';
-        //gen_sort_selects($limit_days, $sort_by_text, $sort_days, $sort_key, $sort_dir, $s_limit_days, $s_sort_key, $s_sort_dir, $u_sort_param);
-
 		$show_results	= 'topics';
 		$u_search = append_sid("{$this->phpbb_root_path}liveSearch/usertopic/$forum_id/$topic_id/$author_id");
 
@@ -383,7 +376,6 @@ class live_search_ajax_handler
 		sort($ex_fid_ary);
 		sort($author_id_ary);
 
-		//$l_search_title = $this->user->lang['SEARCH_ACTIVE_TOPICS'];
 		$sql = "SELECT count(t.topic_id) as total_count, u.username" .
 					" FROM " .TOPICS_TABLE . " t LEFT JOIN " . FORUMS_TABLE . " f ON (f.forum_id = t.forum_id)" .
 					" LEFT JOIN " . USERS_TABLE . " u ON t.topic_poster = u.user_id" .
@@ -398,7 +390,6 @@ class live_search_ajax_handler
 		{
 			$sql .= $this->build_subforums_search($forum_id) ;
 		}
-
 		$result = $this->db->sql_query($sql);
 		$row = $this->db->sql_fetchrow($result);
 		$total_count = (int) $row['total_count'];
@@ -428,7 +419,6 @@ class live_search_ajax_handler
 					$where .= $this->build_subforums_search($forum_id) ;
 				}
 				$sql_array = array(
-				//'SELECT'	=> ' t*, u.user_id, u.username, u.user_colour, f.forum_name, tt.mark_time, ft.mark_time as f_mark_time ',
 				'SELECT'	=> 't.*, u.user_id, u.username, u.user_colour, f.forum_id, f.forum_name, tt.mark_time, ft.mark_time as f_mark_time',
 				'FROM'		=> array(TOPICS_TABLE => 't'),
 				'LEFT_JOIN'	=> array(
@@ -463,7 +453,6 @@ class live_search_ajax_handler
 			extract($this->dispatcher->trigger_event('alg.livesearch.sql_livesearch_usertopics', compact($vars)));
 
 			$result = $this->db->sql_query_limit($this->db->sql_build_query('SELECT', $sql_array),  $per_page, $start);
-			//$result = $this->db->sql_query_limit($sql, $per_page, $start);
 			$row_count = 0;
 			$rowset = array();
 			while ($row = $this->db->sql_fetchrow($result))
@@ -494,13 +483,8 @@ class live_search_ajax_handler
 					$unread_topic = (isset($topic_tracking_info[$row['topic_id']]) && $row['topic_last_post_time'] > $topic_tracking_info[$row['topic_id']]) ? true : false;
 
 					topic_status($row, $replies, $unread_topic, $folder_img, $folder_alt, $topic_type);
-					//topic_status($row, $replies, (isset($topic_tracking_info[$forum_id][$row['topic_id']]) && $row['topic_last_post_time'] > $topic_tracking_info[$forum_id][$row['topic_id']]) ? true : false, $folder_img, $folder_alt, $topic_type);
-
 					$topic_unapproved = ($row['topic_visibility'] == ITEM_UNAPPROVED && $this->auth->acl_get('m_approve', $ls_forum_id)) ? true : false;
-					//$topic_unapproved = (($row['topic_visibility'] == ITEM_UNAPPROVED || $row['topic_visibility'] == ITEM_REAPPROVE) && $this->auth->acl_get('m_approve', $ls_forum_id)) ? true : false;
-
 					$posts_unapproved = ($row['topic_visibility'] == ITEM_APPROVED && $row['topic_posts_unapproved'] && $this->auth->acl_get('m_approve', $ls_forum_id)) ? true : false;
-					//$posts_unapproved = ($row['topic_visibility'] == ITEM_APPROVED && $row['topic_posts_unapproved'] && $this->auth->acl_get('m_approve', $forum_id)) ? true : false;
 
 					$result_topic_id = $row['topic_id'];
 					$view_topic_url_params = "f=$forum_id&amp;t=$result_topic_id" ;
@@ -511,8 +495,7 @@ class live_search_ajax_handler
 					$u_mcp_queue = ($topic_unapproved || $posts_unapproved) ? append_sid("{$this->phpbb_root_path}mcp.$this->php_exp", 'i=queue&amp;mode=' . (($topic_unapproved) ? 'approve_details' : 'unapproved_posts') . "&amp;t=$result_topic_id", true, $this->user->session_id) : '';
 					$u_mcp_queue = (!$u_mcp_queue && $topic_deleted) ? append_sid("{$this->phpbb_root_path}mcp.$this->php_exp", "i=queue&amp;mode=deleted_topics&amp;t=$result_topic_id", true, $this->user->session_id) : '';
 
-						//$this->template->assign_block_vars('searchresults', array (
-						$tpl_ary = array(
+					$tpl_ary = array(
 						'TOPIC_TITLE'		=> censor_text($row['topic_title']),
 						'FORUM_TITLE'		=> $row['forum_name'],
 						'TOPIC_AUTHOR_FULL'			=> get_username_string('full', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
@@ -561,34 +544,33 @@ class live_search_ajax_handler
 					$this->pagination->generate_template_pagination($view_topic_url, 'livesearchresults.pagination', 'start', $replies + 1, $this->config['posts_per_page'], 1, true, true);
 				}
 			}
-				$this->pagination->generate_template_pagination($u_search, 'pagination', 'start', $total_count, $per_page, $start);
+			$this->pagination->generate_template_pagination($u_search, 'pagination', 'start', $total_count, $per_page, $start);
 
-				}
-				if ($forum_id)
+			}
+			if ($forum_id)
+			{
+				$res_txt = sprintf($this->user->lang['LIVESEARCH_USERTOPIC_RESULT_IN_FORUM'], $username, $forum_name);
+				if ($forum_has_subforums)
 				{
-					$res_txt = sprintf($this->user->lang['LIVESEARCH_USERTOPIC_RESULT_IN_FORUM'], $username, $forum_name);
-					if ($forum_has_subforums)
-					{
-							$res_txt .= $this->user->lang['LIVESEARCH_USERTOPIC_RESULT_IN_SUBFORUMS'];
-					}
+						$res_txt .= $this->user->lang['LIVESEARCH_USERTOPIC_RESULT_IN_SUBFORUMS'];
 				}
-				else
-				{
-					$res_txt = sprintf($this->user->lang['LIVESEARCH_USERTOPIC_RESULT'], $username);
-				}
+			}
+			else
+			{
+				$res_txt = sprintf($this->user->lang['LIVESEARCH_USERTOPIC_RESULT'], $username);
+			}
 			$l_search_matches =  $this->user->lang('FOUND_SEARCH_MATCHES', $total_count) ;
-			$this->template->assign_vars(array(
-			'S_SHOW_TOPICS'		=> 1,
-			'SEARCH_MATCHES'	=>  $total_count == 0 ? '' : $this->user->lang('FOUND_SEARCH_MATCHES', $total_count) ,
-			'SEARCH_MATCHES_TXT'	=>	$res_txt,
-			'PAGE_NUMBER'		=> $total_count == 0 ?  0 : $this->pagination->on_page($total_count, $this->config['posts_per_page'], $start),
-			'TOTAL_MATCHES'		=> $total_count,
-			'REPORTED_IMG'		=> $this->user->img('icon_topic_reported', 'TOPIC_REPORTED'),
-			'UNAPPROVED_IMG'	=> $this->user->img('icon_topic_unapproved', 'TOPIC_UNAPPROVED'),
-			'DELETED_IMG'			 => $this->user->img('icon_topic_deleted', 'TOPIC_DELETED'),
-			'POLL_IMG'				 => $this->user->img('icon_topic_poll', 'TOPIC_POLL'),
-			'LAST_POST_IMG'		=> $this->user->img('icon_topic_latest', 'VIEW_LATEST_POST'),
-
+            $this->template->assign_vars(array(
+			    'S_SHOW_TOPICS'		=> 1,
+			    'SEARCH_MATCHES'	=>  $total_count == 0 ? '' : $this->user->lang('FOUND_SEARCH_MATCHES', $total_count) ,
+			    'SEARCH_MATCHES_TXT'	=>	$res_txt,
+			    'PAGE_NUMBER'		=> $total_count == 0 ?  0 : $this->pagination->on_page($total_count, $this->config['posts_per_page'], $start),
+			    'TOTAL_MATCHES'		=> $total_count,
+			    'REPORTED_IMG'		=> $this->user->img('icon_topic_reported', 'TOPIC_REPORTED'),
+			    'UNAPPROVED_IMG'	=> $this->user->img('icon_topic_unapproved', 'TOPIC_UNAPPROVED'),
+			    'DELETED_IMG'			 => $this->user->img('icon_topic_deleted', 'TOPIC_DELETED'),
+			    'POLL_IMG'				 => $this->user->img('icon_topic_poll', 'TOPIC_POLL'),
+			    'LAST_POST_IMG'		=> $this->user->img('icon_topic_latest', 'VIEW_LATEST_POST'),
 			));
 
 		page_header($page_title);

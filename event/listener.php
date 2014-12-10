@@ -61,6 +61,8 @@ class listener implements EventSubscriberInterface
 
 	public function page_header_after($event)
 	{
+		global $forum_id;
+		$forum_exclude = $forum_id && isset($this->config['live_search_exclude_forums']) &&  strrpos($this->config['live_search_exclude_forums'], (string) $forum_id) !== false;
 		$this->user->add_lang_ext('alg/liveSearch', 'live_search');
 		$on_off_forum = isset($this->config['live_search_on_off_forum']) ? (bool) $this->config['live_search_on_off_forum'] : false;
 		$on_off_topic = isset($this->config['live_search_on_off_topic']) ? (bool) $this->config['live_search_on_off_topic'] : false;
@@ -91,6 +93,7 @@ class listener implements EventSubscriberInterface
 			'LIVE_SEARCH_ON_OFF_FORUM'	=>  $on_off_forum,
 			'LIVE_SEARCH_ON_OFF_TOPIC'	=>  $on_off_topic,
 			'LIVE_SEARCH_ON_OFF_USER'	=> $on_off_user,
+			'S_FORUM_EXCLUDE'	=> (bool) $forum_exclude ,
 			'S_LIVE_SEARCH'	=> $is_live_search ,
 			'MIN_CHARS_FORUM'	=>isset($this->config['live_search_min_num_symblols_forum']) ? $this->config['live_search_min_num_symblols_forum'] : 1,
 			'MIN_CHARS_TOPIC'	=>isset($this->config['live_search_min_num_symblols_topic']) ? $this->config['live_search_min_num_symblols_topic'] : 1,

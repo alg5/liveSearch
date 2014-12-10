@@ -23,7 +23,13 @@
             <ul>
                 <li ><a id="topics_live_search_board" href="javascript:void(0);" role = "menuitem" title = "{L_LIVE_SEARCH_TOOLTIP_ALL}"> {L_LIVE_SEARCH_TOPICS_BY_USER_BOARD}</a></li>
                 <!-- IF S_FORUM_ID -->
-                    <li ><a id="topics_live_search_forum" href="javascript:void(0);" role = "menuitem" title = "{L_LIVE_SEARCH_TOOLTIP_BY_FORUM} {FORUM_NAME}"> {L_LIVE_SEARCH_TOPICS_BY_USER_FORUM}</a></li>
+                    <li >
+                        <!-- IF S_FORUM_EXCLUDE -->
+                            <span  title='{L_LIVESEARCH_USERTOPIC_DISABLED}' class='livesearch-disable'>{L_LIVE_SEARCH_TOPICS_BY_USER_FORUM}</span>
+                        <!-- ELSE -->
+                            <a id="topics_live_search_forum" href="javascript:void(0);" role = "menuitem" title = "{L_LIVE_SEARCH_TOOLTIP_BY_FORUM} {FORUM_NAME}"> {L_LIVE_SEARCH_TOPICS_BY_USER_FORUM}</a>
+                        <!-- ENDIF -->
+                    </li>
                 <!-- ENDIF -->
             </ul>
         </li>
@@ -33,10 +39,22 @@
             <ul>
                 <li ><a id="posts_live_search_board" href="javascript:void(0);" role = "menuitem" title = "{L_LIVE_SEARCH_TOOLTIP_ALL}"> {L_LIVE_SEARCH_POSTS_BY_USER_BOARD}</a></li>
                 <!-- IF S_FORUM_ID -->
-                    <li ><a id="posts_live_search_forum" href="javascript:void(0);" role = "menuitem" title = "{L_LIVE_SEARCH_TOOLTIP_BY_FORUM} {FORUM_NAME}"> {L_LIVE_SEARCH_POSTS_BY_USER_FORUM}</a></li>
+                     <li >
+                        <!-- IF S_FORUM_EXCLUDE -->
+                            <span  title='{L_LIVESEARCH_USERTOPIC_DISABLED}' class='livesearch-disable'>{L_LIVE_SEARCH_TOPICS_BY_USER_FORUM}</span>
+                        <!-- ELSE -->
+                            <a id="posts_live_search_forum1" href="javascript:void(0);" role = "menuitem" title = "{L_LIVE_SEARCH_TOOLTIP_BY_FORUM} {FORUM_NAME}"> {L_LIVE_SEARCH_POSTS_BY_USER_FORUM}</a>
+                        <!-- ENDIF -->
+                    </li>
                 <!-- ENDIF -->
                 <!-- IF S_TOPIC_ID -->
-                    <li ><a id="posts_live_search_topic" href="javascript:void(0);" role = "menuitem" title = "{L_LIVE_SEARCH_TOOLTIP_BY_TOPIC} {TOPIC_TITLE}"> {L_LIVE_SEARCH_POSTS_BY_USER_TOPIC}</a></li>
+                      <li >
+                        <!-- IF S_FORUM_EXCLUDE -->
+                            <span  title='{L_LIVESEARCH_USERPOST_DISABLED}' class='livesearch-disable'>{L_LIVE_SEARCH_POSTS_BY_USER_TOPIC}</span>
+                        <!-- ELSE -->
+                            <a id="posts_live_search_topic" href="javascript:void(0);" role = "menuitem" title = "{L_LIVE_SEARCH_TOOLTIP_BY_TOPIC} {TOPIC_TITLE}"> {L_LIVE_SEARCH_POSTS_BY_USER_TOPIC}</a>
+                        <!-- ENDIF -->
+                    </li>
                 <!-- ENDIF -->
             </ul>
 	</div>

@@ -9,14 +9,6 @@
 
 namespace alg\liveSearch\controller;
 
-/**
- * @ignore
- */
-if (!defined('IN_PHPBB'))
-{
-	exit;
-}
-
 class live_search_ajax_handler
 {
 	/** @var \phpbb\config\config */

@@ -560,17 +560,17 @@ class live_search_ajax_handler
 				$res_txt = sprintf($this->user->lang['LIVESEARCH_USERTOPIC_RESULT'], $username);
 			}
 			$l_search_matches =  $this->user->lang('FOUND_SEARCH_MATCHES', $total_count) ;
-            $this->template->assign_vars(array(
-			    'S_SHOW_TOPICS'		=> 1,
-			    'SEARCH_MATCHES'	=>  $total_count == 0 ? '' : $this->user->lang('FOUND_SEARCH_MATCHES', $total_count) ,
-			    'SEARCH_MATCHES_TXT'	=>	$res_txt,
-			    'PAGE_NUMBER'		=> $total_count == 0 ?  0 : $this->pagination->on_page($total_count, $this->config['posts_per_page'], $start),
-			    'TOTAL_MATCHES'		=> $total_count,
-			    'REPORTED_IMG'		=> $this->user->img('icon_topic_reported', 'TOPIC_REPORTED'),
-			    'UNAPPROVED_IMG'	=> $this->user->img('icon_topic_unapproved', 'TOPIC_UNAPPROVED'),
-			    'DELETED_IMG'			 => $this->user->img('icon_topic_deleted', 'TOPIC_DELETED'),
-			    'POLL_IMG'				 => $this->user->img('icon_topic_poll', 'TOPIC_POLL'),
-			    'LAST_POST_IMG'		=> $this->user->img('icon_topic_latest', 'VIEW_LATEST_POST'),
+			$this->template->assign_vars(array(
+				'S_SHOW_TOPICS'		=> 1,
+				'SEARCH_MATCHES'	=>  $total_count == 0 ? '' : $this->user->lang('FOUND_SEARCH_MATCHES', $total_count) ,
+				'SEARCH_MATCHES_TXT'	=>	$res_txt,
+				'PAGE_NUMBER'		=> $total_count == 0 ?  0 : $this->pagination->on_page($total_count, $this->config['posts_per_page'], $start),
+				'TOTAL_MATCHES'		=> $total_count,
+				'REPORTED_IMG'		=> $this->user->img('icon_topic_reported', 'TOPIC_REPORTED'),
+				'UNAPPROVED_IMG'	=> $this->user->img('icon_topic_unapproved', 'TOPIC_UNAPPROVED'),
+				'DELETED_IMG'			 => $this->user->img('icon_topic_deleted', 'TOPIC_DELETED'),
+				'POLL_IMG'				 => $this->user->img('icon_topic_poll', 'TOPIC_POLL'),
+				'LAST_POST_IMG'		=> $this->user->img('icon_topic_latest', 'VIEW_LATEST_POST'),
 			));
 
 		page_header($page_title);

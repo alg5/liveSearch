@@ -11,7 +11,7 @@ services:
         tags:
             - { name: event.listener }
     alg.liveSearch.liveSearch_ajax_handler:
-        class: alg\liveSearch\controller\liveSearch_ajax_handler
+        class: alg\liveSearch\controller\livesearch_ajax_handler
         arguments:
             - @config
             - @dbal.conn

@@ -1,5 +1,5 @@
-live_search_controller:
+liveSearch_controller:
     path: /liveSearch/{action}/{forum}/{topic}/{user}
-    defaults: { _controller: alg.liveSearch.live_search_ajax_handler:main }
+    defaults: { _controller: alg.liveSearch.liveSearch_ajax_handler:main }
     requirements:
         forum: \d+

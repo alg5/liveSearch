@@ -9,7 +9,7 @@
 
 namespace alg\liveSearch\controller;
 
-class live_search_ajax_handler
+class liveSearch_ajax_handler
 {
 	/** @var \phpbb\config\config */
 	protected $config;

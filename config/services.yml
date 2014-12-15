@@ -10,8 +10,8 @@ services:
             - @auth
         tags:
             - { name: event.listener }
-    alg.liveSearch.live_search_ajax_handler:
-        class: alg\liveSearch\controller\live_search_ajax_handler
+    alg.liveSearch.liveSearch_ajax_handler:
+        class: alg\liveSearch\controller\liveSearch_ajax_handler
         arguments:
             - @config
             - @dbal.conn

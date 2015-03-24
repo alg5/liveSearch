@@ -649,13 +649,13 @@
     /**
     * autocomplete plugin
     */
-    $.fn.autocomplete = function (options) {
+    $.fn.autocomplete_ls = function (options) {
         if (typeof options === 'string') {
             options = {
                 url: options
             };
         }
-        var o = $.extend({}, $.fn.autocomplete.defaults, options);
+        var o = $.extend({}, $.fn.autocomplete_ls.defaults, options);
         return this.each(function () {
             var $this = $(this);
             var ac = new $.Autocompleter($this, o);
@@ -667,7 +667,7 @@
     /**
     * Default options for autocomplete plugin
     */
-    $.fn.autocomplete.defaults = {
+    $.fn.autocomplete_ls.defaults = {
         paramName: 'q',
         minChars: 1,
         loadingClass: 'acLoading',

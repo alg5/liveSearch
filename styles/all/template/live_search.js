@@ -28,15 +28,6 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
             $('#leavesearch').fadeOut("slow");
         });
 
-//        $('#pmheader-postingbox').find('input[name=add_to]').on('click', function (e) {
-//                e.preventDefault();
-//                if ($('#group_list :selected').length >0)
-//               $('#postform').submit();
-//               alert('3');
-
-//       });
-
-
         $(document).click(function (event) {
             if ($(event.target).closest("#user_handle").length || $(event.target).closest(".acResults").length || $(event.target).closest("#user_live_search").length || $(event.target).closest("#leavesearch").length ) return;
             $("#user_handle").hide("slow");
@@ -49,7 +40,7 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
         });
         
         //live search forum
-        $("#forum_live_search").autocomplete(
+        $("#forum_live_search").autocomplete_ls(
 		    {
 		        //url: topic_path,
 		        url: U_FORUM_LS_PATH,
@@ -69,7 +60,7 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
 		    });
 
         //live search topic
-        $("#topic_live_search").autocomplete(
+        $("#topic_live_search").autocomplete_ls(
 		    {
 		        url: U_TOPIC_LS_PATH,
 		        sortResults: false,
@@ -87,7 +78,7 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
 		    });
 
         //Leave search user
-        $("#user_live_search").autocomplete({
+        $("#user_live_search").autocomplete_ls({
             url: U_USER_LS_PATH,
             selectFirst: true,
             minChars: minChars_user,
@@ -101,7 +92,7 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
         });
 
         //Leave search user pm
-        $("#user_live_search_pm").autocomplete({
+        $("#user_live_search_pm").autocomplete_ls({
             url: U_USER_PM_LS_PATH,
             selectFirst: true,
             minChars: minChars_user,
@@ -121,7 +112,7 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
         {
             var new_topic = $('.ls_similartopics').next().find('input[name=subject]');
             $(new_topic).attr('autocomplete', 'off').css('padding-left', '2px');
-            $('.ls_similartopics').next().find('input[name=subject]').autocomplete({
+            $('.ls_similartopics').next().find('input[name=subject]').autocomplete_ls({
  		            url: U_SIMILARTOPIC_LS_PATH,
 		            sortResults: false,
 		            width: 600,

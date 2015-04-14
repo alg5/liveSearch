@@ -86,7 +86,7 @@ class listener implements EventSubscriberInterface
 			'U_FORUM_REDIRECT'		=> append_sid("{$this->phpbb_root_path}viewforum.$this->php_ext", ""),
 			'U_TOPIC_REDIRECT'			=> append_sid("{$this->phpbb_root_path}viewtopic.$this->php_ext", ""),
 			'U_PROFILE_LS_PATH'			=>  append_sid("{$this->phpbb_root_path}memberlist.$this->php_ext", 'mode=viewprofile&amp;u='),
-			'U_PM_LS_PATH'			=>   append_sid("{$this->phpbb_root_path}ucp.$this->php_ext", 'i=pm&amp;mode=compose&amp;u' ),
+			'U_PM_LS_PATH'			=>   append_sid("{$this->phpbb_root_path}ucp.$this->php_ext", 'i=pm&amp;mode=compose&amp;u=' ),
 			'U_MAIL_LS_PATH'			=>  ($this->config['board_email_form'] && $this->config['email_enable']) ? append_sid("{$this->phpbb_root_path}memberlist.$this->php_ext", "email&amp;u="): (($this->config['board_hide_emails'] && !$this->auth->acl_get('a_email')) ? '' : 'mailto:' ),
 			'U_JABBER_LS_PATH'			=>  append_sid("$this->phpbb_root_path}memberlist.$this->php_ext", "mode=contact&amp;action=jabber&amp;u="),
 

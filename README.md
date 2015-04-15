@@ -24,6 +24,7 @@ Go to the administrator panel: ACP -> Personalisation -> Extension manage
 Turn the "liveSearch" extension on
 Supported languages:
 - English
+- French
 - Russian
 
 ### License
@@ -52,6 +53,7 @@ Supported languages:
 Поддерживаемые языки:
 - Английский
 - Русский
+- Французский
 
 ### Лицензия
 [GNU General Public License v2](http://opensource.org/licenses/GPL-2.0)

@@ -272,7 +272,6 @@ class liveSearch_ajax_handler
 				$message .= '|pm^' . $this->user->lang['SEND_PRIVATE_MESSAGE'] . '^' . $url ;
 			}
 			$url = $this->get_url_email($row);
-
 			if($url)
 			{
 				$message .= '|email^' . $this->user->lang['SEND_EMAIL'] . '^' . $url ;
@@ -280,7 +279,7 @@ class liveSearch_ajax_handler
 			$url = $this->get_url_jabber($row);
 			if($url)
 			{
-				$message .= '|jabber^' . $this->user->lang['SEND_EMAIL'] . '^' . $url ;
+				$message .= '|jabber^' . $this->user->lang['JABBER'] . '^' . $url ;
 			}
 
 			foreach ($row as $f_name => $f_value)

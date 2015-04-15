@@ -202,7 +202,7 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
                         break;
                      case 'email':
                         class_contact =  'leave_search_contact-icon contact-icon ' + arr[0] + '-icon';
-                       contact_url = U_MAIL_LS_PATH + user_id;
+                       contact_url =  arr[2];
                         break;
                      case 'jabber':
                         class_contact =  'leave_search_contact-icon contact-icon ' + arr[0] + '-icon';

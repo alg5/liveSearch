@@ -948,5 +948,4 @@ class liveSearch_ajax_handler
 		}
 		return $url;
 	}
-
 }

@@ -328,15 +328,6 @@ class liveSearch_ajax_handler
 		$id_ary = array();
 		$author_id_ary[] = $author_id;
 
-		// Select which method we'll use to obtain the post_id or topic_id information
-		$error = false;
-		$search_type = $this->config['search_type'];
-		$search = new $search_type($error, $this->phpbb_root_path, $this->php_ext, $this->auth, $this->config, $this->db, $author_id);
-		if ($error)
-		{
-			trigger_error($error);
-		}
-
 		// Which forums should not be searched? Author searches are also carried out in unindexed forums
 		$ex_fid_ary = array();
 		$ex_fid_ary = array_keys($this->auth->acl_getf('!f_read', true));
@@ -611,15 +602,6 @@ class liveSearch_ajax_handler
 		// clear arrays
 		$id_ary = array();
 		$author_id_ary[] = $author_id;
-
-		// Select which method we'll use to obtain the post_id or topic_id information
-		$error = false;
-		$search_type = $this->config['search_type'];
-		$search = new $search_type($error, $this->phpbb_root_path, $this->php_ext, $this->auth, $this->config, $this->db, $author_id);
-		if ($error)
-		{
-			trigger_error($error);
-		}
 
 		// Which forums should not be searched? Author searches are also carried out in unindexed forums
 		$ex_fid_ary = array();

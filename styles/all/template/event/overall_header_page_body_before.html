@@ -1,6 +1,6 @@
  <!-- IF S_LIVE_SEARCH --> 
  <div id='leavesearch_btn'>{L_LIVE_SEARCH_CAPTION}</div>
-    <div id='leavesearch' >
+    <div id='leavesearch'  class="dropdown-container dropdown-left">
       <span id='leavesearch_btn_close' class="icon-button delete-icon"  title='{L_CLOSE_WINDOW}'></span>
      <!-- IF LIVE_SEARCH_ON_OFF_FORUM --> 
         <span id="forum_live_search_text" style="padding-left:10px;">{L_LIVE_SEARCH_FORUM}{L_COLON} </span><input  class="inputbox search tiny" id="forum_live_search" type=search placeholder="{L_LIVE_SEARCH_FORUM_TXT}"  title="{L_LIVE_SEARCH_FORUM_T}" />
@@ -16,7 +16,7 @@
             <div class="pointer-inner">
         </div>
     </div>
-    <div id='ls_contacts'class="dropdown-contents contact-icons" style='border-bottom-color: White; '></div>
+    <div id='ls_contacts' class="dropdown-contents contact-icons" style='border-bottom-color: White; '></div>
   
     <ul class="dropdown-contents" role="menu" style="margin-left: 0px; left: 0px; max-width: 1281px; ">
         <li>{L_LIVE_SEARCH_TOPICS_BY_USER}
@@ -57,6 +57,7 @@
                     </li>
                 <!-- ENDIF -->
             </ul>
+        </ul>
 	</div>
    <!-- ENDIF  -->
 

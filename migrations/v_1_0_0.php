@@ -19,7 +19,7 @@ class v_1_0_0 extends \phpbb\db\migration\migration
 
 	public function effectively_installed()
 	{
-		return true;
+		return isset($this->config['live_search']) && version_compare($this->config['live_search'], '1.0.*', '>=');
 	}
 
 	static public function depends_on()
@@ -112,7 +112,7 @@ class v_1_0_0 extends \phpbb\db\migration\migration
 			array('config.add', array('live_search_use_eye_button', v_1_0_0::ON)),
 			array('config.add', array('live_search_exclude_forums', '')),
 			// Current version
-			array('config.add', array('live_search', '1.0.6')),
+			array('config.add', array('live_search', '1.0.*')),
 
 			// Remove old ACP modules
 			array('if', array(

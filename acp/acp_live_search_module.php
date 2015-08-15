@@ -99,8 +99,6 @@ class acp_live_search_module
 		}
 
 		$template->assign_vars(array(
-			'L_ACP_LIVE_SEARCH_MOD_VER'	=> $user->lang['ACP_LIVE_SEARCH_MOD_VER'],
-			'LIVE_SEARCH_MOD_VERSION'	=> isset($config['live_search']) ? $config['live_search'] : false,
 			'CHECKED_FORUM'	=>  isset($config['live_search_on_off_forum']) & $config['live_search_on_off_forum'] ? 'checked' : '',
 			'CHECKED_TOPIC'	=>  isset($config['live_search_on_off_topic']) & $config['live_search_on_off_topic'] ? 'checked' : '',
 			'CHECKED_USER'	=>  isset($config['live_search_on_off_user']) & $config['live_search_on_off_user'] ? 'checked' : '',

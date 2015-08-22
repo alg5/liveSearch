@@ -36,7 +36,6 @@ if (empty($lang) || !is_array($lang))
 
 $lang = array_merge($lang, array(
 	'ACP_LIVE_SEARCH'		=> 'Quick search',
-	'ACP_LIVE_SEARCH_MOD_VER'				=> 'Mod version: ',
 	'ACP_LIVE_SEARCH_SETTINGS'				=> 'Quick search settings',
 	'ACP_LIVE_SEARCH_SETTINGS_FORUMS'				=> 'Quick search of forums',
 	'ACP_LIVE_SEARCH_SETTINGS_TOPICS'				=> 'Quick search of topics',

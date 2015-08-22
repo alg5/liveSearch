@@ -468,10 +468,10 @@ class liveSearch_ajax_handler
 					$topic_unapproved = ($row['topic_visibility'] == ITEM_UNAPPROVED && $this->auth->acl_get('m_approve', $ls_forum_id)) ? true : false;
 					$posts_unapproved = ($row['topic_visibility'] == ITEM_APPROVED && $row['topic_posts_unapproved'] && $this->auth->acl_get('m_approve', $ls_forum_id)) ? true : false;
 
+					$result_forum_id = $row['forum_id'];
 					$result_topic_id = $row['topic_id'];
-					$view_topic_url_params = "f=$forum_id&amp;t=$result_topic_id" ;
+					$view_topic_url_params = "f=$result_forum_id&amp;t=$result_topic_id" ;
 					$view_topic_url = append_sid("{$this->phpbb_root_path}viewtopic.$this->php_ext", $view_topic_url_params);
-
 					$unread_topic = (isset($topic_tracking_info[$forum_id][$row['topic_id']]) && $row['topic_last_post_time'] > $topic_tracking_info[$forum_id][$row['topic_id']]) ? true : false;
 					$topic_deleted = $row['topic_visibility'] == ITEM_DELETED;
 					$u_mcp_queue = ($topic_unapproved || $posts_unapproved) ? append_sid("{$this->phpbb_root_path}mcp.$this->php_exp", 'i=queue&amp;mode=' . (($topic_unapproved) ? 'approve_details' : 'unapproved_posts') . "&amp;t=$result_topic_id", true, $this->user->session_id) : '';

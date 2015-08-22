@@ -41,7 +41,6 @@ if (empty($lang) || !is_array($lang))
 
 $lang = array_merge($lang, array(
 	'ACP_LIVE_SEARCH'		=> 'Recherche rapide',
-	'ACP_LIVE_SEARCH_MOD_VER'				=> 'Version de l’extension : ',
 	'ACP_LIVE_SEARCH_SETTINGS'				=> 'Paramètres',
 	'ACP_LIVE_SEARCH_SETTINGS_FORUMS'				=> 'Recherche rapide de forums',
 	'ACP_LIVE_SEARCH_SETTINGS_TOPICS'				=> 'Recherche rapide de sujets',

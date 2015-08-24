@@ -245,8 +245,7 @@ class liveSearch_ajax_handler
 					" WHERE (user_type = " . USER_NORMAL . " OR user_type = " . USER_FOUNDER . ")" .
 					" AND username_clean " . $this->db->sql_like_expression(utf8_clean_string( $this->db->sql_escape($q)) . $this->db->get_any_char());
 					" ORDER BY username";
-                    
-//print_r($sql);
+
 		$result = $this->db->sql_query($sql);
 		$user_info = array();
 		$id_cache = array();
@@ -924,7 +923,7 @@ class liveSearch_ajax_handler
 		if (!$this->user->data['user_id'] != ANONYMOUS && $seeking_user['user_jabber'] && $this->auth->acl_get('u_sendim'))
 		{
 			$url = append_sid("{$this->phpbb_root_path}memberlist.$this->php_ext", "mode=contact&amp;action=jabber&amp;u=$seeking_user_id");
-        }
+		}
 		return $url;
 	}
 }

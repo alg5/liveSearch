@@ -22,9 +22,10 @@
 	padding: 0 15px;
 	background-color: white;
 	position: fixed;
+	line-height:normal;
 }
 #leavesearch {
-	line-height: 25px;
+	/*line-height: 25px;*/
 	background-color: white;
 	/*width: 680px;*/
 	width:auto;

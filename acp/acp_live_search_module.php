@@ -49,8 +49,10 @@ class acp_live_search_module
 			$live_search_on_off_topic = $request->variable('live_search_on_off_topic', false);
 			$live_search_on_off_user = $request->variable('live_search_on_off_user', false);
 			$live_search_on_off_similartopic = $request->variable('live_search_on_off_similartopic', false);
+			$live_search_on_off_acp = $request->variable('live_search_on_off_acp', false);
 			$live_search_show_in_new_window = $request->variable('live_search_show_in_new_window', 0);
 			$live_search_show_for_guest = $request->variable('live_search_show_for_guest', 1);
+			$live_search_topic_link_type = $request->variable('live_search_topic_link_type', 1);
 			$live_search_use_eye_button = $request->variable('live_search_use_eye_button', 1);
 			$live_search_exclude_forums = $request->variable('live_search_exclude_forums', '');
 
@@ -58,8 +60,10 @@ class acp_live_search_module
 			$config->set('live_search_on_off_topic', $live_search_on_off_topic);
 			$config->set('live_search_on_off_user', $live_search_on_off_user);
 			$config->set('live_search_on_off_similartopic', $live_search_on_off_similartopic);
+			$config->set('live_search_on_off_acp', $live_search_on_off_acp);
 			$config->set('live_search_show_in_new_window', $live_search_show_in_new_window);
 			$config->set('live_search_show_for_guest', $live_search_show_for_guest);
+			$config->set('live_search_topic_link_type', $live_search_topic_link_type);
 			$config->set('live_search_use_eye_button', $live_search_use_eye_button);
 			$config->set('live_search_exclude_forums', $live_search_exclude_forums);
 
@@ -94,6 +98,17 @@ class acp_live_search_module
 				$config->set('live_search_min_num_symblols_similartopic', $live_search_min_num_symblols_similartopic);
 				$config->set('live_search_max_items_to_show_similartopic', $live_search_max_items_to_show_similartopic);
 			}
+			if($live_search_on_off_acp)
+			{
+				$live_search_min_num_symblols_acp_user= $request->variable('live_search_min_num_symblols_acp_user', 1);
+				$live_search_min_num_symblols_acp_forum= $request->variable('live_search_min_num_symblols_acp_forum', 1);
+				$live_search_min_num_symblols_acp_group= $request->variable('live_search_min_num_symblols_acp_group', 1);
+				$live_search_max_items_to_show_acp= $request->variable('live_search_max_items_to_show_acp', 20);
+				$config->set('live_search_min_num_symblols_acp_user', $live_search_min_num_symblols_acp_user);
+				$config->set('live_search_min_num_symblols_acp_forum', $live_search_min_num_symblols_acp_forum);
+				$config->set('live_search_min_num_symblols_acp_group', $live_search_min_num_symblols_acp_group);
+				$config->set('live_search_max_items_to_show_acp', $live_search_max_items_to_show_acp);
+			}
 
 			trigger_error($user->lang['CONFIG_UPDATED'] . adm_back_link($this->u_action));
 		}
@@ -103,23 +118,35 @@ class acp_live_search_module
 			'CHECKED_TOPIC'	=>  isset($config['live_search_on_off_topic']) & $config['live_search_on_off_topic'] ? 'checked' : '',
 			'CHECKED_USER'	=>  isset($config['live_search_on_off_user']) & $config['live_search_on_off_user'] ? 'checked' : '',
 			'CHECKED_SIMILARTOPIC'	=>  isset($config['live_search_on_off_similartopic']) & $config['live_search_on_off_similartopic'] ? 'checked' : '',
+			'CHECKED_ACP'	=>  isset($config['live_search_on_off_acp']) & $config['live_search_on_off_acp'] ? 'checked' : '',
+
 			'LIVE_SEARCH_MIN_NUM_SYMBLOLS_FORUM'	=>  isset($config['live_search_min_num_symblols_forum']) ? $config['live_search_min_num_symblols_forum'] : 0,
 			'LIVE_SEARCH_MAX_ITEMS_TO_SHOW_FORUM'	=>  isset($config['live_search_max_items_to_show_forum']) ? $config['live_search_max_items_to_show_forum'] : 0,
+
 			'LIVE_SEARCH_MIN_NUM_SYMBLOLS_TOPIC'	=>  isset($config['live_search_min_num_symblols_topic']) ? $config['live_search_min_num_symblols_topic'] : 0,
 			'LIVE_SEARCH_MAX_ITEMS_TO_SHOW_TOPIC'	=>  isset($config['live_search_max_items_to_show_topic']) ? $config['live_search_max_items_to_show_topic'] : 0,
+
 			'LIVE_SEARCH_MIN_NUM_SYMBLOLS_USER'	=>  isset($config['live_search_min_num_symblols_user']) ? $config['live_search_min_num_symblols_user'] : 0,
 			'LIVE_SEARCH_MAX_ITEMS_TO_SHOW_USER'	=>  isset($config['live_search_max_items_to_show_user']) ? $config['live_search_max_items_to_show_user'] : 0,
+
 			'LIVE_SEARCH_MIN_NUM_SYMBLOLS_SIMILARTOPIC'	=>  isset($config['live_search_min_num_symblols_similartopic']) ? $config['live_search_min_num_symblols_similartopic'] : 0,
 			'LIVE_SEARCH_MAX_ITEMS_TO_SHOW_SIMILARTOPIC'	=>  isset($config['live_search_max_items_to_show_similartopic']) ? $config['live_search_max_items_to_show_similartopic'] : 0,
+
+			'LIVE_SEARCH_MIN_NUM_SYMBLOLS_USER_ACP'		 =>  isset($config['live_search_min_num_symblols_acp_user'])	  ? $config['live_search_min_num_symblols_acp_user'] : 0,
+			'LIVE_SEARCH_MIN_NUM_SYMBLOLS_FORUM_ACP'	=>  isset($config['live_search_min_num_symblols_acp_forum']) ? $config['live_search_min_num_symblols_acp_forum'] : 0,
+			'LIVE_SEARCH_MIN_NUM_SYMBLOLS_GROUP_ACP'	=>  isset($config['live_search_min_num_symblols_acp_group']) ? $config['live_search_min_num_symblols_acp_group'] : 0,
+			'LIVE_SEARCH_MAX_ITEMS_TO_SHOW_ACP'					=>  isset($config['live_search_max_items_to_show_acp'])			? $config['live_search_max_items_to_show_acp'] : 0,
+
 			'LIVE_SEARCH_SHOW_IN_NEW_WINDOW'	=>  isset($config['live_search_show_in_new_window']) ? $config['live_search_show_in_new_window'] : 0,
 			'LIVE_SEARCH_SHOW_FOR_GUEST'	=>  isset($config['live_search_show_for_guest']) ? $config['live_search_show_for_guest'] : 1,
+			'LIVE_SEARCH_TOPIC_LINK_TYPE'	=>  isset($config['live_search_topic_link_type']) ? $config['live_search_topic_link_type'] : 1,
 			'LIVE_SEARCH_USE_EYE_BUTTON'	=>  isset($config['live_search_use_eye_button']) ? $config['live_search_use_eye_button'] : 1,
 			'LIVE_SEARCH_EXCLUDE_FORUMS'	=>  isset($config['live_search_exclude_forums']) ? $config['live_search_exclude_forums'] : '',
 
 			'S_ERROR'			=> (sizeof($error)) ? true : false,
 			'ERROR_MSG'			=> implode('<br />', $error),
-
-			'U_ACTION'			=> $this->u_action)
+			'U_ACTION'			=> $this->u_action,
+				)
 		);
 
 	}

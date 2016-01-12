@@ -67,4 +67,9 @@ $lang = array_merge($lang, array(
 	'LIVESEARCH_USERPOST_RESULT_IN_TOPIC'	=> 'Posts of the user %1$s in the topic %2$s of the forum  %3$s',
 	'LIVE_SEARCH_EYE_BUTTON_OPEN_T'	=> 'Show search panel',
 	'LIVE_SEARCH_EYE_BUTTON_CLOSE_T'	=> 'Hide search panel',
+	//*******version 2.0.*******
+	'LIVE_SEARCH_GROUP'		=> 'Group',
+	'LIVE_SEARCH_GROUP_TXT'		=> 'Group name...',
+	'LIVESEARCH_GROUP_T'	=> 'For quick search start typing the group name',
+
 ));

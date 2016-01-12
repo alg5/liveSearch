@@ -1,4 +1,4 @@
-﻿(function ($) {  
+(function ($) {  
 if (LIVE_SEARCH_USE_EYE_BUTTON)
 {
     var obj = { };
@@ -156,7 +156,8 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
         if (t) {
             $("#live_search").val('');
             var wnd = LIVE_SEARCH_SHOW_IN_NEW_WINDOW ? '_blank' : '_parent';
-            window.open(U_TOPIC_REDIRECT + '?f=' + f + '&t=' + t, wnd);
+            var topicLink = S_CANONICAL_TOPIC_TYPE ? '?f=' + f + '&t=' + t :  '?t=' + t;
+            window.open(U_TOPIC_REDIRECT + topicLink, wnd);
         }
         return false;
     }

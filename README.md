@@ -15,6 +15,8 @@ The extension allows to navigate quikly to the forum/topic/user by typing a part
 - quick add the user to the recipient list in the private message composing page 
 4. Quick search for similar names while creating a new topic
 5. The 'eye' plugin controls the viibility of search block
+6. Displays a link to the topic in the canonical or  SEO-compatible view
+7. Quick search of forums, groups, users in ACP
 
 On the settings page there is an option to turn on/off any search.
 Repository: https://github.com/alg5/liveSearch
@@ -41,8 +43,10 @@ Supported languages:
 - найти все темы пользователя ( в конференции или в конкретном форуме и его подфорумах)
 - найти все посты пользователя ( в конференции или в конкретном форуме и его подфорумах или в конкретной теме) 
 - на странице создания нового ЛС позволяет быстро добавить пользователя в список получателей
-- с помощью плагина "глаз" можно управлять видимостью блока поиска
 4. Быстрый поиск при создании новых тем
+5. Управление видимостью блока поиска с помощью плагина "глаз" 
+6. Отображение ссылки на тему в кноническом или СЕО-совместимом виде
+7. Поиск форумов, групп, пользователей в панели администратора
 
 На странице настроек можно включить/отключить любой из поисков, а также настроить параметры, с какого введённого символа начинать поиск и сколько результатов отображать
 Репозиторий: https://github.com/alg5/liveSearch

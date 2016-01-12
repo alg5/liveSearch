@@ -36,6 +36,7 @@ if (empty($lang) || !is_array($lang))
 
 $lang = array_merge($lang, array(
 	'ACP_LIVE_SEARCH'		=> 'Быстрый (живой) поиск',
+	//'ACP_LIVE_SEARCH_MOD_VER'				=> 'Версия МОДа: ',
 	'ACP_LIVE_SEARCH_SETTINGS'				=> 'Настройки быстрого поиска',
 	'ACP_LIVE_SEARCH_SETTINGS_FORUMS'				=> 'Быстрый поиск по форумам',
 	'ACP_LIVE_SEARCH_SETTINGS_TOPICS'				=> 'Быстрый поиск по темам',
@@ -58,4 +59,12 @@ $lang = array_merge($lang, array(
 	'LIVE_SEARCH_SHOW_IN_NEW_WINDOW'				=> 'Отображать результаты в новом окне ',
 	'LIVE_SEARCH_SHOW_FOR_GUEST'				=> 'Показывать для гостей ',
 	'LIVE_SEARCH_USE_EYE_BUTTON'				=> 'Использовать кнопку "глаз" для временного сокрытия панели поиска ',
+	//*******version 2.0.*******
+	'LIVE_SEARCH_TOPIC_LINK_TYPE'				=> 'Отображать ссылку на тему в каноническом виде ',
+	'LIVE_SEARCH_TOPIC_LINK_TYPE_EXPLAIN'		=> 'Канонический вид ссылки: "forum/viewtopic.php?f=N1&t=N2", неканонический(СЕО-совместимый) вид:"forum/viewtopic.php?t=N2"',
+	'LIVE_SEARCH_ACP_ON'				=> '<strong> Включить быстрый поиск в панели администратора</strong>',
+	'ACP_LIVE_SEARCH_SETTINGS_ACP'				=> 'Быстрый поиск форумов, пользователей, групп в панели администратора',
+	'LIVE_SEARCH_MIN_NUM_SYMBLOLS_USERS'				=> 'Минимальное число символов для поиска пользователей',
+	'LIVE_SEARCH_MIN_NUM_SYMBLOLS_GROUPS'				=> 'Минимальное число символов для поиска групп',
+	'LIVE_SEARCH_MIN_NUM_SYMBLOLS_FORUMS'				=> 'Минимальное число символов для поиска форумов',
 ));

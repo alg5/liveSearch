@@ -92,6 +92,37 @@
         </fieldset>
     </div>   
 
+    <input type="checkbox" id= "live_search_on_off_acp" name="live_search_on_off_acp"  class="radio" {CHECKED_ACP}  />&nbsp;{L_LIVE_SEARCH_ACP_ON}
+    <div id='setting_acp'>
+        <fieldset>
+	        <legend>{L_ACP_LIVE_SEARCH_SETTINGS_ACP}</legend>
+            <dl>
+		        <dt><label for="live_search_min_num_symblols_user_acp">{L_LIVE_SEARCH_MIN_NUM_SYMBLOLS_USERS}{L_COLON}</label><br /> 
+                    <span>{L_LIVE_SEARCH_MIN_NUM_SYMBLOLS_EXPLAIN}</span>
+                </dt>
+		        <dd><input type="number" id="live_search_min_num_symblols_acp_user" name="live_search_min_num_symblols_acp_user"  min="1" max="5" value='{LIVE_SEARCH_MIN_NUM_SYMBLOLS_USER_ACP}'   /></dd>
+	        </dl>        
+            <dl>
+		        <dt><label for="live_search_min_num_symblols_acp_forum">{L_LIVE_SEARCH_MIN_NUM_SYMBLOLS_FORUMS}{L_COLON}</label><br /> 
+                    <span>{L_LIVE_SEARCH_MIN_NUM_SYMBLOLS_EXPLAIN}</span>
+                </dt>
+		        <dd><input type="number" id="live_search_min_num_symblols_acp_forum" name="live_search_min_num_symblols_acp_forum"  min="1" max="5" value='{LIVE_SEARCH_MIN_NUM_SYMBLOLS_FORUM_ACP}'   /></dd>
+	        </dl>        
+            <dl>
+		        <dt><label for="live_search_min_num_symblols_acp_group">{L_LIVE_SEARCH_MIN_NUM_SYMBLOLS_GROUPS}{L_COLON}</label><br /> 
+                    <span>{L_LIVE_SEARCH_MIN_NUM_SYMBLOLS_EXPLAIN}</span>
+                </dt>
+		        <dd><input type="number" id="live_search_min_num_symblols_acp_group" name="live_search_min_num_symblols_acp_group"  min="1" max="5" value='{LIVE_SEARCH_MIN_NUM_SYMBLOLS_GROUP_ACP}'   /></dd>
+	        </dl>        
+
+            <dl>
+		        <dt><label for="live_search_max_items_to_show_acp">{L_LIVE_SEARCH_MAX_ITEMS_TO_SHOW}{L_COLON}</label><br /> 
+                    <span>{L_LIVE_SEARCH_MAX_ITEMS_TO_SHOW_EXPLAIN}</span>
+                </dt>
+		        <dd><input type="number" id="live_search_max_items_to_show_acp" name="live_search_max_items_to_show_acp"  min="1" max="50" value='{LIVE_SEARCH_MAX_ITEMS_TO_SHOW_ACP}'   /></dd>
+	        </dl>        
+        </fieldset>
+    </div>   
 
     <fieldset>
         <legend></legend>
@@ -103,6 +134,13 @@
 			<dt><label for="live_search_show_for_guest">{L_LIVE_SEARCH_SHOW_FOR_GUEST}{L_COLON}</label></dt>
 			<dd><label><input type="radio" name="live_search_show_for_guest" value="1" <!-- IF LIVE_SEARCH_SHOW_FOR_GUEST -->checked<!-- ENDIF --> class="radio"> {L_YES}</label><label><input type="radio" name="live_search_show_for_guest" value="0" <!-- IF !LIVE_SEARCH_SHOW_FOR_GUEST -->checked<!-- ENDIF --> class="radio"> {L_NO}</label></dd>
 		</dl>
+        <dl>
+			<dt><label for="live_search_topic_link_type">{L_LIVE_SEARCH_TOPIC_LINK_TYPE}{L_COLON}</label><br />
+                <span>{L_LIVE_SEARCH_TOPIC_LINK_TYPE_EXPLAIN}</span>
+            </dt>
+			<dd><label><input type="radio" name="live_search_topic_link_type" value="1" <!-- IF LIVE_SEARCH_TOPIC_LINK_TYPE -->checked<!-- ENDIF --> class="radio"> {L_YES}</label><label><input type="radio" name="live_search_topic_link_type" value="0" <!-- IF !LIVE_SEARCH_TOPIC_LINK_TYPE -->checked<!-- ENDIF --> class="radio"> {L_NO}</label></dd>
+		</dl>
+
        <dl>
 			<dt><label for="live_search_use_eye_button">{L_LIVE_SEARCH_USE_EYE_BUTTON}{L_COLON}</label></dt>
 			<dd><label><input type="radio" name="live_search_use_eye_button" value="1" <!-- IF LIVE_SEARCH_USE_EYE_BUTTON -->checked<!-- ENDIF --> class="radio"> {L_YES}</label><label><input type="radio" name="live_search_use_eye_button" value="0" <!-- IF !LIVE_SEARCH_USE_EYE_BUTTON -->checked<!-- ENDIF --> class="radio"> {L_NO}</label></dd>

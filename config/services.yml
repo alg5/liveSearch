@@ -1,3 +1,5 @@
+imports:
+    - { resource: tables.yml }
 services:
     alg.liveSearch.listener:
         class: alg\liveSearch\event\listener
@@ -8,6 +10,7 @@ services:
             - %core.root_path%
             - %core.php_ext%
             - @auth
+            - @request
         tags:
             - { name: event.listener }
     alg.liveSearch.liveSearch_ajax_handler:
@@ -29,3 +32,4 @@ services:
             - %core.table_prefix%
             - @profilefields.manager
             - @dispatcher
+            - %tables.groups%

@@ -59,7 +59,7 @@ class liveSearch_ajax_handler
 	/** @var array */
 	protected $thankers = array();
 
-	public function __construct(\phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \phpbb\auth\auth $auth, \phpbb\template\template $template, \phpbb\user $user, \phpbb\cache\service $cache, $phpbb_root_path, $php_ext, \phpbb\request\request_interface $request, $table_prefix, $phpbb_container, \phpbb\pagination $pagination, \phpbb\content_visibility $content_visibility, $table_prefix, \phpbb\profilefields\manager $profilefields_manager, \phpbb\event\dispatcher_interface $dispatcher)
+	public function __construct(\phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \phpbb\auth\auth $auth, \phpbb\template\template $template, \phpbb\user $user, \phpbb\cache\service $cache, $phpbb_root_path, $php_ext, \phpbb\request\request_interface $request, $table_prefix, $phpbb_container, \phpbb\pagination $pagination, \phpbb\content_visibility $content_visibility, $table_prefix, \phpbb\profilefields\manager $profilefields_manager, \phpbb\event\dispatcher_interface $dispatcher, $groups_table)
 	{
 		$this->config = $config;
 		$this->db = $db;
@@ -76,6 +76,7 @@ class liveSearch_ajax_handler
 		$this->table_prefix = $table_prefix;
 		$this->profilefields_manager = $profilefields_manager;
 		$this->dispatcher = $dispatcher;
+		$this->groups_table = $groups_table;
 
 		$this->return = array(); // save returned data in here
 		$this->error = array(); // save errors in here
@@ -108,6 +109,8 @@ class liveSearch_ajax_handler
 			case 'userpost':
 				$this->live_search_userpost( $forum, $topic, $user);
 			break;
+			case 'group':
+				$this->live_search_group($action, $q);
 
 			default:
 				$this->error[] = array('error' => $this->user->lang['INCORRECT_SEARCH']);
@@ -154,10 +157,10 @@ class liveSearch_ajax_handler
 		foreach ($arr_res as $forum_info)
 		{
 			$forum_id = $forum_info['forum_id'];
-			$key = htmlspecialchars_decode($forum_info['forum_name']) ;
+			$key = htmlspecialchars($forum_info['forum_name']) ;
 			if ($forum_info['forum_parent_name'] )
 			{
-				$key .= ' (' . htmlspecialchars_decode($forum_info['forum_parent_name']) . ')'  ;
+				$key .= ' (' . htmlspecialchars($forum_info['forum_parent_name']) . ')'  ;
 			}
 			$message .=  $key . "|$forum_id\n";
 		}
@@ -195,19 +198,22 @@ class liveSearch_ajax_handler
 		$arr_res = $arr_priority1 = $arr_priority2 = array();
 		while ($row = $this->db->sql_fetchrow($result))
 		{
-			$pos = strpos(utf8_strtoupper($row['topic_title']), $q);
-			if ($pos !== false && $this->auth->acl_get('f_read', $row['forum_id']) )
-			{
-				$row['pos'] = $pos;
-				if($pos == 0)
+				if (isset($row['topic_title']) && strlen($row['topic_title']) >0) 
 				{
-					$arr_priority1[] = $row;
+				 $pos = strpos(utf8_strtoupper($row['topic_title']), $q);
+				 if ($pos !== false && $this->auth->acl_get('f_read', $row['forum_id']) )
+				 {
+					 $row['pos'] = $pos;
+					 if($pos == 0)
+					 {
+						 $arr_priority1[] = $row;
+					 }
+					 else
+					 {
+						 $arr_priority2[] = $row;
+					 }
+				 }
 				}
-				else
-				{
-					$arr_priority2[] = $row;
-				}
-			}
 		}
 		$this->db->sql_freeresult($result);
 
@@ -218,9 +224,28 @@ class liveSearch_ajax_handler
 			$forum_id = $topic_info['forum_id'];
 			$topic_id = ($topic_info['topic_status'] == 2) ? (int) $topic_info['topic_moved_id'] : (int) $topic_info['topic_id'];
 			$topic_info['topic_title'] = str_replace('|', ' ', $topic_info['topic_title']);
-			$key = htmlspecialchars_decode($topic_info['topic_title']	);
-			$forum_name = htmlspecialchars_decode( ' (' . $topic_info['forum_name'] . ')'  );
+			$key = htmlspecialchars($topic_info['topic_title']	);
+			$forum_name = htmlspecialchars( ' (' . $topic_info['forum_name'] . ')'  );
 			$message .= $key . "|$topic_id|$forum_id|$forum_name\n";
+		}
+		$json_response = new \phpbb\json_response;
+		$json_response->send($message);
+
+	}
+	private function live_search_group($action, $q)
+	{
+		$sql = "SELECT group_id, group_name, group_type  FROM " . $this->groups_table .
+					" ORDER BY group_type DESC, group_name ASC";
+		$result = $this->db->sql_query($sql);
+		$message='';
+		while ($row = $this->db->sql_fetchrow($result))
+		{
+			$key = $row['group_type'] == GROUP_SPECIAL ?  $this->user->lang['G_' . $row['group_name']] : htmlspecialchars($row['group_name']	);
+			if(strpos(utf8_strtoupper($key), $q) == 0)
+			{
+				$group_id=$row['group_id'];
+				$message .= $key . "|$group_id\n";
+			}
 		}
 		$json_response = new \phpbb\json_response;
 		$json_response->send($message);
@@ -470,7 +495,9 @@ class liveSearch_ajax_handler
 
 					$result_forum_id = $row['forum_id'];
 					$result_topic_id = $row['topic_id'];
-					$view_topic_url_params = "f=$result_forum_id&amp;t=$result_topic_id" ;
+						$live_search_topic_link_type = isset($this->config['live_search_topic_link_type']) ? (bool) $this->config['live_search_topic_link_type'] : true;
+						  
+					$view_topic_url_params = $live_search_topic_link_type ?  "f=$result_forum_id&amp;t=$result_topic_id" :  "t=$result_topic_id";
 					$view_topic_url = append_sid("{$this->phpbb_root_path}viewtopic.$this->php_ext", $view_topic_url_params);
 					$unread_topic = (isset($topic_tracking_info[$forum_id][$row['topic_id']]) && $row['topic_last_post_time'] > $topic_tracking_info[$forum_id][$row['topic_id']]) ? true : false;
 					$topic_deleted = $row['topic_visibility'] == ITEM_DELETED;

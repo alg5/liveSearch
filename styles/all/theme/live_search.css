@@ -79,3 +79,12 @@
 	opacity:0.3;
     filter:alpha(opacity=30); 
 }
+
+@media only screen and (max-width: 700px)
+, only screen and (max-device-width: 700px) 
+{
+    #leavesearch_btn
+	{
+		display:none;
+    }
+}

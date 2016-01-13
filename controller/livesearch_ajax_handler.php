@@ -198,22 +198,22 @@ class liveSearch_ajax_handler
 		$arr_res = $arr_priority1 = $arr_priority2 = array();
 		while ($row = $this->db->sql_fetchrow($result))
 		{
-				if (isset($row['topic_title']) && strlen($row['topic_title']) >0) 
+			if (isset($row['topic_title']) && strlen($row['topic_title']) >0)
+			{
+				$pos = strpos(utf8_strtoupper($row['topic_title']), $q);
+				if ($pos !== false && $this->auth->acl_get('f_read', $row['forum_id']) )
 				{
-				 $pos = strpos(utf8_strtoupper($row['topic_title']), $q);
-				 if ($pos !== false && $this->auth->acl_get('f_read', $row['forum_id']) )
-				 {
-					 $row['pos'] = $pos;
-					 if($pos == 0)
-					 {
-						 $arr_priority1[] = $row;
-					 }
-					 else
-					 {
-						 $arr_priority2[] = $row;
-					 }
-				 }
+					$row['pos'] = $pos;
+					if($pos == 0)
+					{
+						$arr_priority1[] = $row;
+					}
+					else
+					{
+						$arr_priority2[] = $row;
+					}
 				}
+			}
 		}
 		$this->db->sql_freeresult($result);
 
@@ -496,7 +496,7 @@ class liveSearch_ajax_handler
 					$result_forum_id = $row['forum_id'];
 					$result_topic_id = $row['topic_id'];
 						$live_search_topic_link_type = isset($this->config['live_search_topic_link_type']) ? (bool) $this->config['live_search_topic_link_type'] : true;
-						  
+
 					$view_topic_url_params = $live_search_topic_link_type ?  "f=$result_forum_id&amp;t=$result_topic_id" :  "t=$result_topic_id";
 					$view_topic_url = append_sid("{$this->phpbb_root_path}viewtopic.$this->php_ext", $view_topic_url_params);
 					$unread_topic = (isset($topic_tracking_info[$forum_id][$row['topic_id']]) && $row['topic_last_post_time'] > $topic_tracking_info[$forum_id][$row['topic_id']]) ? true : false;

@@ -26,7 +26,7 @@ class listener implements EventSubscriberInterface
 		$this->php_ext = $php_ext;
 		$this->auth = $auth;
 		$this->request = $request;
-		  
+
 			if (!defined('TAB_FORUMS'))
 		{
 			define('TAB_FORUMS', 6);
@@ -67,11 +67,11 @@ class listener implements EventSubscriberInterface
 			switch ($tab)
 			{
 				case TAB_FORUMS:
-				  $tab = 'acp_forums';
-				  break;
+					$tab = 'acp_forums';
+					break;
 				case TAB_USERGROUP:
-				  $tab = 'acp_users';
-				  break;
+					$tab = 'acp_users';
+					break;
 			}
 		}
 		$page_title = $event['page_title'];
@@ -109,8 +109,8 @@ class listener implements EventSubscriberInterface
 							$this->template->assign_vars(array('S_GROUP_MANAGE'		 => true));
 								break;
 							case 'position':
-							 $this->template->assign_vars(array('S_GROUP_POSITION'		 => true));
-								 break;						  
+								$this->template->assign_vars(array('S_GROUP_POSITION'		 => true));
+								break;
 						}
 					break;
 					case 'acp_forums':
@@ -119,18 +119,18 @@ class listener implements EventSubscriberInterface
 							case 'manage':
 							case '':
 								$this->template->assign_vars(array('S_FORUM_MANAGE'		 => true));
-								 break;
+								break;
 						}
 					break;
 					case 'acp_prune':
 						switch ($mode)
 						{
 								case 'forums':
-								 $this->template->assign_vars(array('S_FORUM_PRUNE'		 => true));
-									 break;
+									$this->template->assign_vars(array('S_FORUM_PRUNE'		 => true));
+									break;
 								case 'users':
-								 $this->template->assign_vars(array('S_USER_PRUNE'		 => true));
-									 break;
+									$this->template->assign_vars(array('S_USER_PRUNE'		 => true));
+									break;
 						}
 					break;
 					case 'acp_logs':
@@ -152,7 +152,7 @@ class listener implements EventSubscriberInterface
 									break;
 								case 'setting_forum_copy':
 									$this->template->assign_vars(array('S_FORUM_PERMISSIONS_COPY'		 => true));
-									break;						  
+									break;
 								case 'setting_user_local':
 									$this->template->assign_vars(array('S_SETTING_USER_LOCAL'		 => true));
 									break;
@@ -165,12 +165,12 @@ class listener implements EventSubscriberInterface
 									break;
 								case 'view_mod_local':
 								case 'view_forum_local':
-								 //$this->template->assign_vars(array('S_FORUM_MULTIPLE'		 => true));  already exists
+								//$this->template->assign_vars(array('S_FORUM_MULTIPLE'		 => true));  already exists
 									break;
 								case 'view_admin_global':
 								case 'view_user_global':
 								case 'view_mod_global':
-								 $this->template->assign_vars(array('S_ADMIN_GLOBAL'		 => true));
+									$this->template->assign_vars(array('S_ADMIN_GLOBAL'		 => true));
 									break;
 						}
 						break;
@@ -182,20 +182,20 @@ class listener implements EventSubscriberInterface
 								break;
 						}
 						break;
-					 case 'acp_email':
+					case 'acp_email':
 						switch ($mode)
 						{
 								case 'email':
-								 $this->template->assign_vars(array('S_EMAIL'		 => true));
-									 break;
+									$this->template->assign_vars(array('S_EMAIL'		 => true));
+									break;
 						}
 						break;
 				}
 	}
-	 public function acp_manage_forums_display_form($event)
-	 {
+	public function acp_manage_forums_display_form($event)
+	{
 		$action = $event['action'];
-	 }
+	}
 	 
 	public function posting_modify_template_vars($event)
 	{

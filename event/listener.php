@@ -196,7 +196,7 @@ class listener implements EventSubscriberInterface
 	{
 		$action = $event['action'];
 	}
-	 
+
 	public function posting_modify_template_vars($event)
 	{
 		if($this->config['live_search_on_off_similartopic'] )

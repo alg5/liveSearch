@@ -182,15 +182,6 @@ class liveSearch_ajax_handler
 					$ex_fid_ary = array_unique($ex_fid_ary);
 			}
 		}
-		////************
-		if($action == 'similartopic')
-		{
-			//$ex_fid_ary_add = array();
-			//$ex_fid_ary_add[] = 76;	//id forum 
-			//$ex_fid_ary = array_merge($ex_fid_ary, $ex_fid_ary_add);
-			//$ex_fid_ary = array_unique($ex_fid_ary);
-		}
-		////************
 		$sql = "SELECT t.topic_id, t.topic_title, t.topic_status, t.topic_moved_id, t.forum_id, f.forum_name " .
 		" FROM " . TOPICS_TABLE .
 		" t JOIN " . FORUMS_TABLE . " f on t.forum_id = f.forum_id " .

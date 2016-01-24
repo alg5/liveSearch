@@ -25,8 +25,6 @@ class listener implements EventSubscriberInterface
 		$this->php_ext = $php_ext;
 		$this->auth = $auth;
 		$this->request = $request;
-		
-		
 
 		if (!defined('TAB_FORUMS'))
 		{
@@ -86,7 +84,6 @@ class listener implements EventSubscriberInterface
 				'LIVE_SEARCH_MIN_NUM_SYMBLOLS_GROUP_MCP'	=>  isset($this->config['live_search_min_num_symblols_mcp_group']) ? $this->config['live_search_min_num_symblols_mcp_group'] : 0,
 				'LIVE_SEARCH_MAX_ITEMS_TO_SHOW_MCP'					=>  isset($this->config['live_search_max_items_to_show_mcp'])			? $this->config['live_search_max_items_to_show_mcp'] : 0,
 			));
-		
 	}
 
 	public function adm_page_header($event)
@@ -104,8 +101,6 @@ class listener implements EventSubscriberInterface
 		$mode = utf8_normalize_nfc($this->request->variable('mode', '',true));
 		$tab = utf8_normalize_nfc($this->request->variable('i', '',true));
 		$action = utf8_normalize_nfc($this->request->variable('action', '',true));
-		
-		//print_r('mode = ' . $mode . '; tab = ' . $tab . '; action = ' . $action);
 		if(is_numeric ($tab))
 		{
 			switch ($tab)

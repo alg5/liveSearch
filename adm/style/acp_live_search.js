@@ -16,6 +16,7 @@
             changeEnable($('#live_search_on_off_user'), 'setting_u');
             changeEnable($('#live_search_on_off_similartopic'), 'setting_st');
             changeEnable($('#live_search_on_off_acp'), 'setting_acp');
+            changeEnable($('#live_search_on_off_acp'), 'setting_mcp');
 
             $('#live_search_on_off_forum').on('change', function () {
                 changeEnable(this, 'setting_f');
@@ -31,6 +32,9 @@
             });
             $('#live_search_on_off_acp').on('change', function () {
                 changeEnable(this, 'setting_acp');
+            });
+            $('#live_search_on_off_mcp').on('change', function () {
+                changeEnable(this, 'setting_mcp');
             });
 
             if (S_LIVESEARCH_ACP)
@@ -68,6 +72,13 @@
                 var cbo = $("#fselect").find ("select[name='parent_id']");
                 forum_search(elem, cbo);
             }
+            if (S_FORUM_PARENT_MANAGE)
+            {
+                var elem =  $("#forumsearch_ls");
+                var cbo = $("#forumedit").find ("select[name='forum_parent_id']");
+                forum_search(elem, cbo);
+            }
+
             if (S_FORUM_LOG)
             {
                var elem =  $("#forumsearch_ls");

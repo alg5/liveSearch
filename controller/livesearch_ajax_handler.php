@@ -157,10 +157,10 @@ class liveSearch_ajax_handler
 		foreach ($arr_res as $forum_info)
 		{
 			$forum_id = $forum_info['forum_id'];
-			$key = htmlspecialchars($forum_info['forum_name']) ;
+			$key = $forum_info['forum_name'] ;
 			if ($forum_info['forum_parent_name'] )
 			{
-				$key .= ' (' . htmlspecialchars($forum_info['forum_parent_name']) . ')'  ;
+				$key .= ' (' . $forum_info['forum_parent_name'] . ')'  ;
 			}
 			$message .=  $key . "|$forum_id\n";
 		}
@@ -182,6 +182,15 @@ class liveSearch_ajax_handler
 					$ex_fid_ary = array_unique($ex_fid_ary);
 			}
 		}
+		////************
+		if($action == 'similartopic')
+		{
+			//$ex_fid_ary_add = array();
+			//$ex_fid_ary_add[] = 76;	//id forum 
+			//$ex_fid_ary = array_merge($ex_fid_ary, $ex_fid_ary_add);
+			//$ex_fid_ary = array_unique($ex_fid_ary);
+		}
+		////************
 		$sql = "SELECT t.topic_id, t.topic_title, t.topic_status, t.topic_moved_id, t.forum_id, f.forum_name " .
 		" FROM " . TOPICS_TABLE .
 		" t JOIN " . FORUMS_TABLE . " f on t.forum_id = f.forum_id " .
@@ -224,8 +233,8 @@ class liveSearch_ajax_handler
 			$forum_id = $topic_info['forum_id'];
 			$topic_id = ($topic_info['topic_status'] == 2) ? (int) $topic_info['topic_moved_id'] : (int) $topic_info['topic_id'];
 			$topic_info['topic_title'] = str_replace('|', ' ', $topic_info['topic_title']);
-			$key = htmlspecialchars($topic_info['topic_title']	);
-			$forum_name = htmlspecialchars( ' (' . $topic_info['forum_name'] . ')'  );
+			$key = censor_text($topic_info['topic_title']	);
+			$forum_name =  ' (' . $topic_info['forum_name'] . ')'  ;
 			$message .= $key . "|$topic_id|$forum_id|$forum_name\n";
 		}
 		$json_response = new \phpbb\json_response;
@@ -240,7 +249,7 @@ class liveSearch_ajax_handler
 		$message='';
 		while ($row = $this->db->sql_fetchrow($result))
 		{
-			$key = $row['group_type'] == GROUP_SPECIAL ?  $this->user->lang['G_' . $row['group_name']] : htmlspecialchars($row['group_name']	);
+			$key = $row['group_type'] == GROUP_SPECIAL ?  $this->user->lang['G_' . $row['group_name']] : $row['group_name']	;
 			if(strpos(utf8_strtoupper($key), $q) == 0)
 			{
 				$group_id=$row['group_id'];
@@ -691,7 +700,7 @@ class liveSearch_ajax_handler
 		$forum_has_subforums = false;
 		if ($topic_id)
 		{
-			$topic_name = $row['topic_title'];
+			$topic_name = censor_text($row['topic_title']);
 		}
 		if($forum_id)
 		{

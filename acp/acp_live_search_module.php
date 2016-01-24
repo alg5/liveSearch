@@ -50,8 +50,10 @@ class acp_live_search_module
 			$live_search_on_off_user = $request->variable('live_search_on_off_user', false);
 			$live_search_on_off_similartopic = $request->variable('live_search_on_off_similartopic', false);
 			$live_search_on_off_acp = $request->variable('live_search_on_off_acp', false);
+			$live_search_on_off_mcp = $request->variable('live_search_on_off_mcp', false);
 			$live_search_show_in_new_window = $request->variable('live_search_show_in_new_window', 0);
 			$live_search_show_for_guest = $request->variable('live_search_show_for_guest', 1);
+			$live_search_hide_after_select = $request->variable('live_search_hide_after_select', 1);
 			$live_search_topic_link_type = $request->variable('live_search_topic_link_type', 1);
 			$live_search_use_eye_button = $request->variable('live_search_use_eye_button', 1);
 			$live_search_exclude_forums = $request->variable('live_search_exclude_forums', '');
@@ -61,8 +63,9 @@ class acp_live_search_module
 			$config->set('live_search_on_off_user', $live_search_on_off_user);
 			$config->set('live_search_on_off_similartopic', $live_search_on_off_similartopic);
 			$config->set('live_search_on_off_acp', $live_search_on_off_acp);
+			$config->set('live_search_on_off_mcp', $live_search_on_off_mcp);
 			$config->set('live_search_show_in_new_window', $live_search_show_in_new_window);
-			$config->set('live_search_show_for_guest', $live_search_show_for_guest);
+			$config->set('live_search_hide_after_select', $live_search_hide_after_select);
 			$config->set('live_search_topic_link_type', $live_search_topic_link_type);
 			$config->set('live_search_use_eye_button', $live_search_use_eye_button);
 			$config->set('live_search_exclude_forums', $live_search_exclude_forums);
@@ -109,6 +112,17 @@ class acp_live_search_module
 				$config->set('live_search_min_num_symblols_acp_group', $live_search_min_num_symblols_acp_group);
 				$config->set('live_search_max_items_to_show_acp', $live_search_max_items_to_show_acp);
 			}
+			if($live_search_on_off_mcp)
+			{
+				$live_search_min_num_symblols_mcp_user= $request->variable('live_search_min_num_symblols_mcp_user', 1);
+				$live_search_min_num_symblols_mcp_forum= $request->variable('live_search_min_num_symblols_mcp_forum', 1);
+				$live_search_min_num_symblols_mcp_group= $request->variable('live_search_min_num_symblols_mcp_group', 1);
+				$live_search_max_items_to_show_mcp= $request->variable('live_search_max_items_to_show_mcp', 20);
+				$config->set('live_search_min_num_symblols_mcp_user', $live_search_min_num_symblols_mcp_user);
+				$config->set('live_search_min_num_symblols_mcp_forum', $live_search_min_num_symblols_mcp_forum);
+				$config->set('live_search_min_num_symblols_mcp_group', $live_search_min_num_symblols_mcp_group);
+				$config->set('live_search_max_items_to_show_mcp', $live_search_max_items_to_show_mcp);
+			}
 
 			trigger_error($user->lang['CONFIG_UPDATED'] . adm_back_link($this->u_action));
 		}
@@ -119,6 +133,7 @@ class acp_live_search_module
 			'CHECKED_USER'	=>  isset($config['live_search_on_off_user']) & $config['live_search_on_off_user'] ? 'checked' : '',
 			'CHECKED_SIMILARTOPIC'	=>  isset($config['live_search_on_off_similartopic']) & $config['live_search_on_off_similartopic'] ? 'checked' : '',
 			'CHECKED_ACP'	=>  isset($config['live_search_on_off_acp']) & $config['live_search_on_off_acp'] ? 'checked' : '',
+			'CHECKED_MCP'	=>  isset($config['live_search_on_off_mcp']) & $config['live_search_on_off_mcp'] ? 'checked' : '',
 
 			'LIVE_SEARCH_MIN_NUM_SYMBLOLS_FORUM'	=>  isset($config['live_search_min_num_symblols_forum']) ? $config['live_search_min_num_symblols_forum'] : 0,
 			'LIVE_SEARCH_MAX_ITEMS_TO_SHOW_FORUM'	=>  isset($config['live_search_max_items_to_show_forum']) ? $config['live_search_max_items_to_show_forum'] : 0,
@@ -137,8 +152,14 @@ class acp_live_search_module
 			'LIVE_SEARCH_MIN_NUM_SYMBLOLS_GROUP_ACP'	=>  isset($config['live_search_min_num_symblols_acp_group']) ? $config['live_search_min_num_symblols_acp_group'] : 0,
 			'LIVE_SEARCH_MAX_ITEMS_TO_SHOW_ACP'					=>  isset($config['live_search_max_items_to_show_acp'])			? $config['live_search_max_items_to_show_acp'] : 0,
 
+			'LIVE_SEARCH_MIN_NUM_SYMBLOLS_USER_MCP'		 =>  isset($config['live_search_min_num_symblols_mcp_user'])	  ? $config['live_search_min_num_symblols_mcp_user'] : 0,
+			'LIVE_SEARCH_MIN_NUM_SYMBLOLS_FORUM_MCP'	=>  isset($config['live_search_min_num_symblols_mcp_forum']) ? $config['live_search_min_num_symblols_mcp_forum'] : 0,
+			'LIVE_SEARCH_MIN_NUM_SYMBLOLS_GROUP_MCP'	=>  isset($config['live_search_min_num_symblols_mcp_group']) ? $config['live_search_min_num_symblols_mcp_group'] : 0,
+			'LIVE_SEARCH_MAX_ITEMS_TO_SHOW_MCP'					=>  isset($config['live_search_max_items_to_show_mcp'])			? $config['live_search_max_items_to_show_mcp'] : 0,
+
 			'LIVE_SEARCH_SHOW_IN_NEW_WINDOW'	=>  isset($config['live_search_show_in_new_window']) ? $config['live_search_show_in_new_window'] : 0,
 			'LIVE_SEARCH_SHOW_FOR_GUEST'	=>  isset($config['live_search_show_for_guest']) ? $config['live_search_show_for_guest'] : 1,
+			'LIVE_SEARCH_HIDE_AFTER_SELECT'	=>  isset($config['live_search_hide_after_select']) ? $config['live_search_hide_after_select'] : 1,
 			'LIVE_SEARCH_TOPIC_LINK_TYPE'	=>  isset($config['live_search_topic_link_type']) ? $config['live_search_topic_link_type'] : 1,
 			'LIVE_SEARCH_USE_EYE_BUTTON'	=>  isset($config['live_search_use_eye_button']) ? $config['live_search_use_eye_button'] : 1,
 			'LIVE_SEARCH_EXCLUDE_FORUMS'	=>  isset($config['live_search_exclude_forums']) ? $config['live_search_exclude_forums'] : '',

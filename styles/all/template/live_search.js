@@ -26,11 +26,13 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
             $('#user_live_search').val("");
             $('#leavesearch_btn').fadeIn("slow");
             $('#leavesearch').fadeOut("slow");
+            $('.acResults').fadeOut("slow");
         });
 
         $(document).click(function (event) {
             if ($(event.target).closest("#user_handle").length || $(event.target).closest(".acResults").length || $(event.target).closest("#user_live_search").length || $(event.target).closest("#leavesearch").length ) return;
             $("#user_handle").hide("slow");
+            $(".acResults").hide("slow");
             event.stopPropagation();
         });
 
@@ -49,6 +51,7 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
 		        maxItemsToShow: maxItemsToShow_forum,
 		        selectFirst: true,
 		        minChars: minChars_forum,
+                hideAfterSelect:LIVE_SEARCH_HIDE_AFTER_SELECT,
 
 		        showResult: function (value, data) {
 		            return '<span style="">' + hilight(value, $("#forum_live_search").val()) + '</span>';
@@ -68,6 +71,7 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
 		        maxItemsToShow: maxItemsToShow_topic,
 		        selectFirst: true,
 		        minChars: minChars_topic,
+                hideAfterSelect:LIVE_SEARCH_HIDE_AFTER_SELECT,
 
 		        showResult: function (value, data) {
 		            return '<span style="">' + hilight(value, $("#topic_live_search").val()) + data[2] + '</span>';
@@ -120,6 +124,7 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
 		            selectFirst: true,
 		            minChars: minChars_topic,
                     fixedPos:false,
+                    hideAfterSelect:LIVE_SEARCH_HIDE_AFTER_SELECT,
 
 		            showResult: function (value, data) {
 		                return '<span style="">' + hilight(value, $("#topic_live_search").val()) + '</span>';
@@ -129,6 +134,11 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
 		            }
             });
 
+        }
+
+        if (S_LIVESEARCH_MCP)
+        {   
+            initMcpLiveSearch();
         }
 
 
@@ -300,6 +310,62 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
             return arr1;
         }
     }
+
+    //MCP Livesearch
+
+    function initMcpLiveSearch()
+    {
+            if(MCP_POST_DETAILS)
+            {
+              $("input[name='username']").addClass("inputbox search").attr({type: "search", placeholder: L_LIVESEARCH_USER_TXT, title: L_LIVESEARCH_USER_T, autocomplete:"off"});
+                var elem = $("input[name='username']");
+                var txtArea = null;
+                mcp_user_search(elem, txtArea)
+            }
+    }
+
+    function mcp_user_search(elem, txtarea)
+    {
+        $(elem).autocomplete_ls(
+        {
+            url: U_USER_LS_PATH,
+            sortResults: false,
+            width: 600,
+            maxItemsToShow: LIVE_SEARCH_MAX_ITEMS_TO_SHOW_MCP,
+            selectFirst: true,
+            fixedPos:false,
+            minChars: LIVE_SEARCH_MIN_NUM_SYMBLOLS_USER_MCP,
+            showResult: function (value, data) {
+                return '<span style="">' + hilight(value, $(elem).val()) + '</span>';
+            },
+            onItemSelect: function (item) {
+                if(txtarea !=null)
+                    add_user_to_textarea(item, txtarea);
+            },
+    
+        });
+    
+    }
+
+
+        function select_combo(item, cbo)
+    {
+       $(cbo).find("option[value='" + item.data[0] + "']").attr("selected","selected");
+    }
+
+    function add_user_to_textarea(item, txtarea)
+    {
+        var user = item.value;
+        var new_val = $.trim( $(txtarea).val());
+        if (new_val.indexOf(user) <0)
+        {
+            if (new_val != ''  ) 
+                new_val = new_val + '\n';
+            new_val = new_val + item.value;
+        }
+        $(txtarea).val(new_val);
+    }
+
 
 
 })(jQuery);                                                                 // Avoid conflicts with other libraries

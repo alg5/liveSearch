@@ -16,7 +16,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class listener implements EventSubscriberInterface
 {
-
 	public function __construct(\phpbb\config\config $config, \phpbb\template\template $template, \phpbb\user $user, $phpbb_root_path, $php_ext, \phpbb\auth\auth $auth, \phpbb\request\request_interface $request)
 	{
 		$this->template = $template;
@@ -26,8 +25,10 @@ class listener implements EventSubscriberInterface
 		$this->php_ext = $php_ext;
 		$this->auth = $auth;
 		$this->request = $request;
+		
+		
 
-			if (!defined('TAB_FORUMS'))
+		if (!defined('TAB_FORUMS'))
 		{
 			define('TAB_FORUMS', 6);
 		}
@@ -45,7 +46,47 @@ class listener implements EventSubscriberInterface
 			'core.posting_modify_template_vars'		=> 'posting_modify_template_vars',
 			'core.adm_page_header'		=> 'adm_page_header',
 			'core.acp_manage_forums_display_form'		=> 'acp_manage_forums_display_form',
+			'core.modify_mcp_modules_display_option'		=> 'modify_mcp_modules_display_option',
 		);
+	}
+	public function modify_mcp_modules_display_option($event)
+	{
+		$this->user->add_lang_ext('alg/liveSearch', 'live_search');
+		$is_livesearch_mcp = isset($this->config['live_search_on_off_mcp']) & $this->config['live_search_on_off_mcp'] ? true : false;
+
+		$this->template->assign_vars(array(
+				'S_LIVESEARCH_MCP'	=>  $is_livesearch_mcp,
+		));
+		if(!$is_livesearch_mcp)
+		{
+			return;
+		}
+		$module = $event['module'];
+		$mode = $event['mode'];
+		$id = $event['id'];
+		$module_name = $module->p_name;
+		//print_r($module );
+		//print_r($module->p_name );
+		//print_r('$module_name = ' . $module_name . '; $mode=' . $mode . '; $id=' . $id);
+		$mcp_action = '';
+		switch($module_name)
+		{
+			case 'mcp_main':
+				switch($mode)
+				{
+					case post_details:
+						$this->template->assign_vars(array('MCP_POST_DETAILS'		 => true));
+					break;
+				}
+			break;
+		}
+			$this->template->assign_vars(array(
+				'LIVE_SEARCH_MIN_NUM_SYMBLOLS_USER_MCP'	=>  isset($this->config['live_search_min_num_symblols_mcp_user']) ? $this->config['live_search_min_num_symblols_mcp_user'] : 0,
+				'LIVE_SEARCH_MIN_NUM_SYMBLOLS_FORUM_MCP'	=>  isset($this->config['live_search_min_num_symblols_mcp_forum']) ? $this->config['live_search_min_num_symblols_mcp_forum'] : 0,
+				'LIVE_SEARCH_MIN_NUM_SYMBLOLS_GROUP_MCP'	=>  isset($this->config['live_search_min_num_symblols_mcp_group']) ? $this->config['live_search_min_num_symblols_mcp_group'] : 0,
+				'LIVE_SEARCH_MAX_ITEMS_TO_SHOW_MCP'					=>  isset($this->config['live_search_max_items_to_show_mcp'])			? $this->config['live_search_max_items_to_show_mcp'] : 0,
+			));
+		
 	}
 
 	public function adm_page_header($event)
@@ -62,6 +103,9 @@ class listener implements EventSubscriberInterface
 		}
 		$mode = utf8_normalize_nfc($this->request->variable('mode', '',true));
 		$tab = utf8_normalize_nfc($this->request->variable('i', '',true));
+		$action = utf8_normalize_nfc($this->request->variable('action', '',true));
+		
+		//print_r('mode = ' . $mode . '; tab = ' . $tab . '; action = ' . $action);
 		if(is_numeric ($tab))
 		{
 			switch ($tab)
@@ -118,7 +162,14 @@ class listener implements EventSubscriberInterface
 						{
 							case 'manage':
 							case '':
-								$this->template->assign_vars(array('S_FORUM_MANAGE'		 => true));
+								if($action == 'edit')
+								{
+									$this->template->assign_vars(array('S_FORUM_PARENT_MANAGE'		 => true));
+								}
+								else
+								{
+									$this->template->assign_vars(array('S_FORUM_MANAGE'		 => true));
+								}
 								break;
 						}
 					break;
@@ -222,6 +273,7 @@ class listener implements EventSubscriberInterface
 		$on_off_post = isset($this->config['live_search_on_off_post']) ? (bool) $this->config['live_search_on_off_post'] : false;
 		$on_off_user = isset($this->config['live_search_on_off_user']) ? (bool) $this->config['live_search_on_off_user'] : false;
 		$live_search_show_for_guest = isset($this->config['live_search_show_for_guest']) ? (bool) $this->config['live_search_show_for_guest'] : true;
+		$live_search_hide_after_select = isset($this->config['live_search_hide_after_select']) ? (bool) $this->config['live_search_hide_after_select'] : true;
 		$live_search_topic_link_type = isset($this->config['live_search_topic_link_type']) ? (bool) $this->config['live_search_topic_link_type'] : true;
 		$is_live_search = $on_off_forum || $on_off_topic || $on_off_user;
 		if (!$live_search_show_for_guest)
@@ -259,6 +311,7 @@ class listener implements EventSubscriberInterface
 			'MAX_ITEMS_TO_SHOW_TOPIC'	=>isset($this->config['live_search_max_items_to_show_topic']) ?$this->config['live_search_max_items_to_show_topic'] : 20,
 			'MAX_ITEMS_TO_SHOW_USER'	=>isset($this->config['live_search_max_items_to_show_user']) ?$this->config['live_search_max_items_to_show_user'] : 20,
 			'LIVE_SEARCH_SHOW_IN_NEW_WINDOW'	=>isset($this->config['live_search_show_in_new_window']) ?(bool) $this->config['live_search_show_in_new_window'] : false,
+			'LIVE_SEARCH_HIDE_AFTER_SELECT'	=>$live_search_hide_after_select,
 			'LIVE_SEARCH_USE_EYE_BUTTON'	=>  isset($this->config['live_search_use_eye_button']) ? (bool) $this->config['live_search_use_eye_button'] : false,
 			'LIVE_SEARCH_EYE_BUTTON_OPEN_T'	=>  $this->user->lang['LIVE_SEARCH_EYE_BUTTON_OPEN_T'],
 			'LIVE_SEARCH_EYE_BUTTON_CLOSE_T'	=>  $this->user->lang['LIVE_SEARCH_EYE_BUTTON_CLOSE_T'],

@@ -67,4 +67,9 @@ $lang = array_merge($lang, array(
 	'LIVE_SEARCH_MIN_NUM_SYMBLOLS_USERS'				=> 'Минимальное число символов для поиска пользователей',
 	'LIVE_SEARCH_MIN_NUM_SYMBLOLS_GROUPS'				=> 'Минимальное число символов для поиска групп',
 	'LIVE_SEARCH_MIN_NUM_SYMBLOLS_FORUMS'				=> 'Минимальное число символов для поиска форумов',
+	//*******version 2.1.*******
+	'LIVE_SEARCH_MCP_ON'				=> '<strong> Включить быстрый поиск в панели модератора</strong>',
+	'MCP_LIVE_SEARCH_SETTINGS_MCP'				=> 'Быстрый поиск форумов, пользователей, групп в панели модератора',
+	//*******version 2.2.*******
+	'LIVE_SEARCH_HIDE_AFTER_SELECT'				=> 'Скрывать блок результатов поиска после выборки ',
 ));

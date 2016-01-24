@@ -66,4 +66,9 @@ $lang = array_merge($lang, array(
 	'LIVE_SEARCH_MIN_NUM_SYMBLOLS_USERS'				=> 'Min number of characters for users search',
 	'LIVE_SEARCH_MIN_NUM_SYMBLOLS_GROUPS'				=> 'Min number of characters for groups search',
 	'LIVE_SEARCH_MIN_NUM_SYMBLOLS_FORUMS'				=> 'Min number of characters for forums search',
+	//*******version 2.1.*******
+	'LIVE_SEARCH_MCP_ON'				=> '<strong> Turn on the quick search in MCP</strong>',
+	'MCP_LIVE_SEARCH_SETTINGS_MCP'				=> 'Quick search of forums, groups, users in MCP',
+	//*******version 2.2.*******
+	'LIVE_SEARCH_HIDE_AFTER_SELECT'				=> 'Hide the results search block after selected an item ',
 ));

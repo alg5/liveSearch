@@ -72,7 +72,7 @@ class listener implements EventSubscriberInterface
 			case 'mcp_main':
 				switch($mode)
 				{
-					case post_details:
+					case 'post_details':
 						$this->template->assign_vars(array('MCP_POST_DETAILS'		 => true));
 					break;
 				}

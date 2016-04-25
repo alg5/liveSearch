@@ -155,7 +155,8 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
         {
             $("#forum_live_search").val('');
             var wnd = LIVE_SEARCH_SHOW_IN_NEW_WINDOW ? '_blank' : '_parent';
-            window.open(U_FORUM_REDIRECT + '?f=' + f, wnd);
+            var forum_link = U_TOPIC_REDIRECT.indexOf("?sid=") >-1  ? "&f=' + f" : "?f=' + f";
+            window.open(U_FORUM_REDIRECT + forum_link, wnd);
         }
         return false;
     }
@@ -166,7 +167,10 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
         if (t) {
             $("#live_search").val('');
             var wnd = LIVE_SEARCH_SHOW_IN_NEW_WINDOW ? '_blank' : '_parent';
-            var topicLink = S_CANONICAL_TOPIC_TYPE ? '?f=' + f + '&t=' + t :  '?t=' + t;
+            //var topicLink = S_CANONICAL_TOPIC_TYPE ? '?f=' + f + '&t=' + t :  '?t=' + t;
+            var topicLink = S_CANONICAL_TOPIC_TYPE ? 'f=' + f + '&t=' + t :  't=' + t;
+            if (U_TOPIC_REDIRECT.indexOf("?sid=") >-1 ) topicLink = "&" + topicLink
+            else topicLink = "?" + topicLink
             window.open(U_TOPIC_REDIRECT + topicLink, wnd);
         }
         return false;
@@ -315,14 +319,49 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
 
     function initMcpLiveSearch()
     {
-            if(MCP_POST_DETAILS)
+            if (MCP_POST_DETAILS)
             {
               $("input[name='username']").addClass("inputbox search").attr({type: "search", placeholder: L_LIVESEARCH_USER_TXT, title: L_LIVESEARCH_USER_T, autocomplete:"off"});
                 var elem = $("input[name='username']");
                 var txtArea = null;
                 mcp_user_search(elem, txtArea)
             }
+            if (MCP_USER_NOTES)
+            {
+              $("#username").addClass("inputbox search").attr({type: "search", placeholder: L_LIVESEARCH_USER_TXT, title: L_LIVESEARCH_USER_T, autocomplete:"off"});
+                var elem = $("input[name='username']");
+                var txtArea = null;
+                mcp_user_search(elem, txtArea)
+            }
+            if (MCP_BAN)
+            {
+                var elem = $("#usersearch_ls");
+                var txtArea = $("#ban");
+                mcp_user_search(elem, txtArea)
+            }
+            if (MCP_TOPIC_VIEW)
+            {
+                var elem = $("#topicsearch_ls");
+                var totopicElem = $("#to_topic_id");
+
+                console.log(elem);
+                mcp_topic_search(elem, totopicElem);
+//                var txtArea = $("#ban");
+//                mcp_user_search(elem, txtArea)
+
+                var elem =  $("#forumsearch_ls");
+                var cbo = $("select[name='to_forum_id']");
+                forum_search(elem, cbo);
+            }
+            if (MCP_TOPIC_MOVE)
+            {
+                var elem =  $("#forumsearch_ls");
+                var cbo = $("select[name='to_forum_id']");
+                forum_search(elem, cbo);
+            
+            }
     }
+
 
     function mcp_user_search(elem, txtarea)
     {
@@ -347,9 +386,69 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
     
     }
 
-
-        function select_combo(item, cbo)
+    function mcp_topic_search(elem, totopicElem)
     {
+        $(elem).autocomplete_ls(
+        {
+		        url: U_TOPIC_LS_PATH,
+		        sortResults: false,
+		        width: 600,
+		        maxItemsToShow: maxItemsToShow_topic,
+		        selectFirst: true,
+                fixedPos:false,
+		        minChars: minChars_topic,
+
+		        showResult: function (value, data) {
+		            return '<span style="">' + hilight(value, $("#topic_live_search").val()) + data[2] + '</span>';
+		        },
+		        onItemSelect: function (item) {
+                    if(totopicElem !=null)
+                    {
+                        $(totopicElem).val(item.data[0]);
+                        var dl = $(totopicElem).parent().parent();
+                        var dds = $(dl).find("dd");
+                        if($(dds).length >1) 
+                        {
+                            $(dds).last().remove();
+
+                        }
+                        var topicLink = S_CANONICAL_TOPIC_TYPE ? '?f=' + item.data[1] + '&t=' + item.data[0] :  '?t=' + item.data[0];
+                        var dd = '<dd>' + L_LIVE_SEARCH_YOU_SELECTED_TOPIC + item.data[0] + ': <a href="./viewtopic.php'  + topicLink +'">' + item.value + '.' + '</a>';
+                        $(dl).append(dd);
+                    }
+		            //goto_topic(item);
+		        }
+    
+        });
+    
+    }
+
+    function forum_search(elem, cbo)
+    {
+                $(elem).autocomplete_ls(
+                {
+		            url: U_FORUM_LS_PATH,
+		            sortResults: false,
+		            width: 600,
+		            maxItemsToShow: maxItemsToShow_forum,
+		            selectFirst: true,
+		            minChars: minChars_forum,
+                    fixedPos:false,
+                    showResult: function (value, data) {
+                        return '<span style="">' + hilight(value, $(elem).val()) + '</span>';
+                    },
+                    onItemSelect: function (item) {
+                        select_combo(item, cbo);
+                    },
+    
+                });    
+    }
+
+
+    function select_combo(item, cbo)
+    {
+    console.log(cbo);
+    console.log($(cbo).find("option[value='" + item.data[0] + "']"));
        $(cbo).find("option[value='" + item.data[0] + "']").attr("selected","selected");
     }
 

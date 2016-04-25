@@ -73,9 +73,9 @@ var prefix = '_eye_';
     else {
         btn = btn + 'class="eye_btn"  ';
         if (this.options.title_open)
+            btn = btn + 'title="' + this.options.title_open + '"';
             btn = btn + '>';
             btn = btn + '<i class=" fa fa-eye-slash" aria-hidden="true"></i>';
-            btn = btn + 'title="' + this.options.title_open + '"';
     }
     btn = btn + ' </div> </div>';
    //var new_content = $('#wrap').html() + btn;

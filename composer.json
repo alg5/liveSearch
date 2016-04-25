@@ -2,9 +2,9 @@
     "name": "alg/liveSearch",
     "type": "phpbb-extension",
     "description": "Live Search (as in Google)",
-    "homepage": "https://github.com/alg5/quicklanguage",
-    "version": "2.0.1",
-    "time": "2015-01-31",
+    "homepage": "https://github.com/alg5/liveSearch/tree/dev_3.2.x",
+    "version": "3.0.0",
+    "time": "2016-04-25",
     "license": "GPL-2.0",
     "authors": [
         {
@@ -15,7 +15,7 @@
        
     ],
     "require": {
-        "php": ">=5.3.3"
+        "php": ">=5.4.2"
     },
       "require-dev": {
       "phpbb/epv": "dev-master"
@@ -23,11 +23,11 @@
     "extra": {
         "display-name": "Live Search (as in google)",
         "soft-require": {
-           "phpbb/phpbb": "3.1.*@dev"
+           "phpbb/phpbb": "3.2.*@dev"
         },
         "version-check": {
             "host": "alg5.github.io",
-            "directory": "/versions",
+            "directory": "/versions_3_2",
             "filename": "liveSearch.json"
         }
     }

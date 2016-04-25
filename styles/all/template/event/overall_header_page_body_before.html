@@ -1,16 +1,19 @@
  <!-- IF S_LIVE_SEARCH --> 
  <div id='leavesearch_btn'>{L_LIVE_SEARCH_CAPTION}</div>
     <div id='leavesearch' >
-      <span id='leavesearch_btn_close' class="icon-button delete-icon"  title='{L_CLOSE_WINDOW}'></span>
+      <span id='leavesearch_btn_close'   title='{L_CLOSE_WINDOW}'><i class="icon fa-times fa-fw"></i></span>
      <!-- IF LIVE_SEARCH_ON_OFF_FORUM --> 
-        <span id="forum_live_search_text" style="padding-left:10px;">{L_LIVE_SEARCH_FORUM}{L_COLON} </span><input  class="inputbox search tiny" id="forum_live_search" type=search placeholder="{L_LIVE_SEARCH_FORUM_TXT}"  title="{L_LIVE_SEARCH_FORUM_T}" />
+        <lable for="forum_live_search">{L_LIVE_SEARCH_FORUM}{L_COLON}</lable>
+        <input  class="inputbox search tiny" id="forum_live_search" type=search placeholder="{L_LIVE_SEARCH_FORUM_TXT}"  title="{L_LIVE_SEARCH_FORUM_T}" />
       <!-- ENDIF  -->
-      <!-- IF LIVE_SEARCH_ON_OFF_TOPIC --> 
-        <span id="topic_live_search_text" style="padding-left:10px;">{L_LIVE_SEARCH_TOPIC}{L_COLON} </span><input class="inputbox search tiny" id="topic_live_search" type=search placeholder="{L_LIVE_SEARCH_TXT}"  title="{L_LIVE_SEARCH_T}" />
+      <!-- IF LIVE_SEARCH_ON_OFF_TOPIC -->
+        <lable for="topic_live_search" >{L_LIVE_SEARCH_TOPIC}{L_COLON}</lable>
+        <input class="inputbox search tiny" id="topic_live_search" type=search placeholder="{L_LIVE_SEARCH_TXT}"  title="{L_LIVE_SEARCH_T}" />
       <!-- ENDIF  -->
 
       <!-- IF LIVE_SEARCH_ON_OFF_USER --> 
-     <span id="user_live_search_text" style="padding-left:10px;">{L_LIVE_SEARCH_USER}{L_COLON} </span><input class="inputbox search tiny" id="user_live_search" type=search placeholder="{L_LIVESEARCH_USER_TXT}"  title="{L_LIVESEARCH_USER_T}" autocomplete="off" /> 
+        <lable for="user_live_search" >{L_LIVE_SEARCH_USER}{L_COLON}</lable>
+        <input class="inputbox search tiny" id="user_live_search" type=search placeholder="{L_LIVESEARCH_USER_TXT}"  title="{L_LIVESEARCH_USER_T}" autocomplete="off" /> 
         <div id="user_handle" class="dropdown hidden" >
 		<div class="pointer">
             <div class="pointer-inner">

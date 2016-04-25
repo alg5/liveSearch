@@ -202,21 +202,25 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
                 var contact_url = arr[2];
                 var REMAINDER =i % 4;
                // var new_contact  = '';
-                var class_contact;        
+                var class_contact;  
+                var class_img_font = '';      
                 //var url_contact;        
                 switch ( contact_name)
                 {
                     case 'profile':
-                        class_contact =  'leave_search_contact-icon   icon-profile';
+                        class_contact =  'leave_search_contact-icon';
                         contact_url = U_PROFILE_LS_PATH + user_id;
+                        class_img_font = 'fa-user';
                         break;
                      case 'pm':
-                        class_contact =  'leave_search_contact-icon contact-icon ' + arr[0] + '-icon';
+                       class_contact =  'leave_search_contact-icon contact-icon ' + arr[0] + '-icon';
+//                         class_contact =  'leave_search_contact-icon;
                         contact_url = U_PM_LS_PATH + user_id;
                         break;
                      case 'email':
                         class_contact =  'leave_search_contact-icon contact-icon ' + arr[0] + '-icon';
                        contact_url =  arr[2];
+                        //class_img_font = 'fa-envelope';
                         break;
                      case 'jabber':
                         class_contact =  'leave_search_contact-icon contact-icon ' + arr[0] + '-icon';
@@ -251,7 +255,13 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
                 }
                 var new_contact = new_contact + '>';
                 var new_contact = new_contact + '<span class="';
-                new_contact = new_contact + class_contact + '"></span></a>';
+                new_contact = new_contact + class_contact + '">';
+                if(class_img_font != '')
+                {
+                    new_contact = new_contact + '<i class="fa ' + class_img_font + '" aria-hidden="true"></i>';
+                }
+                new_contact = new_contact + '</span>';
+                 new_contact = new_contact + '</a>';
                 if ( REMAINDER == 3 || i ==  (contacts_arr.length-1))
                 {
 					new_contact = new_contact + '</div>';

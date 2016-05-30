@@ -1,8 +1,0 @@
-Subject: {POST_SUBJECT}
-
-Здравствуйте, {POSTER_NAME}!
-{POST_CONTENT}
-
-Вы получили это уведомление потому, что следите за уведомлениями команды  «{TEAM_NAME}» на конференции «{SITENAME}».
-
-{EMAIL_SIG}

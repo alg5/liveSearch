@@ -299,9 +299,9 @@ class listener implements EventSubscriberInterface
 
 		//$this->template->assign_vars(array(
 		//        'S_LIVESEARCH_MCP'	=>  $is_livesearch_mcp,
-		//));		
+		//));
 		$quickmod = $this->request->variable('quickmod', 0) ;
-		if(!$is_livesearch_mcp)
+		if (!$is_livesearch_mcp)
 		{
 			$quickmod = 0;
 		}

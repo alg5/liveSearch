@@ -752,10 +752,10 @@ class liveSearch_ajax_handler
 
 				$row_count = 0;
 			$rowset = array();
-            while ($row = $this->db->sql_fetchrow($result))
-            {
-                $rowset[] = $row;
-            }
+			while ($row = $this->db->sql_fetchrow($result))
+			{
+				$rowset[] = $row;
+			}
 		/**
 		* Modify the rowset of posts data
 		*
@@ -763,12 +763,12 @@ class liveSearch_ajax_handler
 		* @var	array	rowset					Array with the search results data
 		* @since 2.0.3
 		*/
-            $vars = array(
+			$vars = array(
 			'rowset',
 		);
 		extract($this->dispatcher->trigger_event('alg.livesearch.search_modify_rowset_userposts', compact($vars)));
 			//while ($row = $this->db->sql_fetchrow($result))
-            foreach($rowset as $row)
+			foreach ($rowset as $row)
 			{//2
 				$ls_forum_id = (int) $row['forum_id'];
 				$ls_topic_id = (int) $row['topic_id'];
@@ -822,7 +822,7 @@ class liveSearch_ajax_handler
 				}//3
 			}//2 while
 				$this->pagination->generate_template_pagination($u_search, 'pagination', 'start', $total_count, $per_page, $start);
-			}//1
+		}//1
 		if ($topic_id)
 		{
 			$res_txt =  sprintf($this->user->lang['LIVESEARCH_USERPOST_RESULT_IN_TOPIC'], $username, $topic_name, $forum_name);
@@ -913,7 +913,7 @@ class liveSearch_ajax_handler
 
 	private function get_url_pm($seeking_user)
 	{
-		if( $this->user->data['user_id'] == ANONYMOUS)
+		if ($this->user->data['user_id'] == ANONYMOUS)
 		{
 			return '';
 		}

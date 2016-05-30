@@ -133,13 +133,12 @@ class liveSearch_ajax_handler
 		while ($row = $this->db->sql_fetchrow($result))
 		{
 			if ($this->auth->acl_get('f_read', $row['forum_id']) )
-
 			{
 				$pos = strpos(utf8_strtoupper($row['forum_name']), $q);
 				if ($pos !== false )
 				{
 					$row['pos'] = $pos;
-					if($pos == 0)
+					if ($pos == 0)
 					{
 						$arr_priority1[] = $row;
 					}
@@ -204,7 +203,7 @@ class liveSearch_ajax_handler
 				if ($pos !== false && $this->auth->acl_get('f_read', $row['forum_id']) )
 				{
 					$row['pos'] = $pos;
-					if($pos == 0)
+					if ($pos == 0)
 					{
 						$arr_priority1[] = $row;
 					}
@@ -241,7 +240,7 @@ class liveSearch_ajax_handler
 		while ($row = $this->db->sql_fetchrow($result))
 		{
 			$key = $row['group_type'] == GROUP_SPECIAL ?  $this->user->lang['G_' . $row['group_name']] : $row['group_name']	;
-			if(strpos(utf8_strtoupper($key), $q) == 0)
+			if (strpos(utf8_strtoupper($key), $q) == 0)
 			{
 				$group_id=$row['group_id'];
 				$message .= $key . "|$group_id\n";
@@ -280,11 +279,11 @@ class liveSearch_ajax_handler
 		}
 
 		$message = '';
-		foreach($user_info as $row)
+		foreach ($user_info as $row)
 		{
 			$user_id = (int) $row['user_id'];
 			$message .= $row['username'] . '|' . $user_id;
-			if( $this->user->data['user_id']!= ANONYMOUS)
+			if ($this->user->data['user_id']!= ANONYMOUS)
 			{
 				//add user profile
 				$url = append_sid("{$this->phpbb_root_path}memberlist.$this->php_ext", 'mode=viewprofile&amp;u=' . $user_id);
@@ -292,17 +291,17 @@ class liveSearch_ajax_handler
 			}
 
 			$url = $this->get_url_pm($row);
-			if($url)
+			if ($url)
 			{
 				$message .= '|pm^' . $this->user->lang['SEND_PRIVATE_MESSAGE'] . '^' . $url ;
 			}
 			$url = $this->get_url_email($row);
-			if($url)
+			if ($url)
 			{
 				$message .= '|email^' . $this->user->lang['SEND_EMAIL'] . '^' . $url ;
 			}
 			$url = $this->get_url_jabber($row);
-			if($url)
+			if ($url)
 			{
 				$message .= '|jabber^' . $this->user->lang['JABBER'] . '^' . $url ;
 			}
@@ -404,7 +403,7 @@ class liveSearch_ajax_handler
 		$this->db->sql_freeresult($result);
 		$forum_name = '';
 		$forum_has_subforums = false;
-		if($forum_id)
+		if ($forum_id)
 		{
 			$sql = 	" SELECT forum_name, left_id, right_id FROM " . FORUMS_TABLE .  " WHERE forum_id=" . $forum_id;
 			$result = $this->db->sql_query($sql);
@@ -693,7 +692,7 @@ class liveSearch_ajax_handler
 		{
 			$topic_name = censor_text($row['topic_title']);
 		}
-		if($forum_id)
+		if ($forum_id)
 		{
 			$sql = 	" SELECT forum_name, left_id, right_id FROM " . FORUMS_TABLE .  " WHERE forum_id=" . $forum_id;
 			$result = $this->db->sql_query($sql);
@@ -702,7 +701,7 @@ class liveSearch_ajax_handler
 			$forum_has_subforums = ($row['right_id'] - $row['left_id'] > 1) ? true : false ;
 			$this->db->sql_freeresult($result);
 		}
-//*********************
+
 		if ($total_count)
 		{//1
 				$where =	  ' topic_status <> ' . ITEM_MOVED  . '  AND t.topic_visibility = ' .  ITEM_APPROVED  . '  AND p.poster_id = ' . $author_id  ;
@@ -753,7 +752,23 @@ class liveSearch_ajax_handler
 
 				$row_count = 0;
 			$rowset = array();
-			while ($row = $this->db->sql_fetchrow($result))
+            while ($row = $this->db->sql_fetchrow($result))
+            {
+                $rowset[] = $row;
+            }
+		/**
+		* Modify the rowset of posts data
+		*
+		* @event alg.livesearch.search_modify_rowset_userposts
+		* @var	array	rowset					Array with the search results data
+		* @since 2.0.3
+		*/
+            $vars = array(
+			'rowset',
+		);
+		extract($this->dispatcher->trigger_event('alg.livesearch.search_modify_rowset_userposts', compact($vars)));
+			//while ($row = $this->db->sql_fetchrow($result))
+            foreach($rowset as $row)
 			{//2
 				$ls_forum_id = (int) $row['forum_id'];
 				$ls_topic_id = (int) $row['topic_id'];

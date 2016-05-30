@@ -49,10 +49,9 @@ class listener implements EventSubscriberInterface
 		);
 	}
 	public function modify_quickmod_options($event)
-    {
-       //print_r('modify_quickmod_options');
-       //print_r($event);
-    }
+	{
+
+	}
 	public function modify_mcp_modules_display_option($event)
 	{
 		$this->user->add_lang_ext  ('alg/liveSearch', 'live_search');
@@ -61,7 +60,7 @@ class listener implements EventSubscriberInterface
 		$this->template->assign_vars(array(
 				'S_LIVESEARCH_MCP'	=>  $is_livesearch_mcp,
 		));
-		if(!$is_livesearch_mcp)
+		if (!$is_livesearch_mcp)
 		{
 			return;
 		}
@@ -73,10 +72,10 @@ class listener implements EventSubscriberInterface
 		//print_r($module->p_name);
 		//print_r('$module_name = ' . $module_name . '; $mode=' . $mode . '; $id=' . $id);
 		$mcp_action = '';
-		switch($module_name)
+		switch ($module_name)
 		{
 			case 'mcp_main':
-				switch($mode)
+				switch ($mode)
 				{
 					case 'post_details':
 						$this->template->assign_vars(array('MCP_POST_DETAILS'		 => true));
@@ -113,14 +112,14 @@ class listener implements EventSubscriberInterface
 		$this->template->assign_vars(array(
 				'S_LIVESEARCH_ACP'	=>  $is_livesearch_acp,
 		));
-		if(!$is_livesearch_acp)
+		if (!$is_livesearch_acp)
 		{
 			return;
 		}
 		$mode = utf8_normalize_nfc($this->request->variable('mode', '',true));
 		$tab = utf8_normalize_nfc($this->request->variable('i', '',true));
 		$action = utf8_normalize_nfc($this->request->variable('action', '',true));
-		if(is_numeric ($tab))
+		if (is_numeric ($tab))
 		{
 			switch ($tab)
 			{
@@ -176,7 +175,7 @@ class listener implements EventSubscriberInterface
 						{
 							case 'manage':
 							case '':
-								if($action == 'edit')
+								if ($action == 'edit')
 								{
 									$this->template->assign_vars(array('S_FORUM_PARENT_MANAGE'		=> true));
 								}
@@ -200,11 +199,11 @@ class listener implements EventSubscriberInterface
 					break;
 					case 'acp_logs':
 						switch ($mode)
-							{
-								case 'mod':
-									$this->template->assign_vars(array('S_FORUM_LOG'		 => true));
-									break;
-							}
+						{
+							case 'mod':
+								$this->template->assign_vars(array('S_FORUM_LOG'	 => true));
+								break;
+						}
 					break;
 					case 'acp_permissions':
 						switch ($mode)
@@ -264,7 +263,7 @@ class listener implements EventSubscriberInterface
 
 	public function posting_modify_template_vars($event)
 	{
-		if($this->config['live_search_on_off_similartopic'] )
+		if ($this->config['live_search_on_off_similartopic'])
 		{
 			$mode = $event['mode'];
 			$this->template->assign_vars(array(
@@ -294,29 +293,29 @@ class listener implements EventSubscriberInterface
 		{
 			$is_live_search = $is_live_search && $this->user->data['is_registered'];
 		}
-        //quick actions in MCP
-        $mcp_topic_move = false;
+		//quick actions in MCP
+		$mcp_topic_move = false;
 		$is_livesearch_mcp = isset($this->config['live_search_on_off_mcp']) & $this->config['live_search_on_off_mcp'] ? true : false;
 
-        //$this->template->assign_vars(array(
-        //        'S_LIVESEARCH_MCP'	=>  $is_livesearch_mcp,
-        //));		
-        $quickmod = $this->request->variable('quickmod', 0) ;
-        if(!$is_livesearch_mcp)
-        {
-            $quickmod = 0;
-        }
+		//$this->template->assign_vars(array(
+		//        'S_LIVESEARCH_MCP'	=>  $is_livesearch_mcp,
+		//));		
+		$quickmod = $this->request->variable('quickmod', 0) ;
+		if(!$is_livesearch_mcp)
+		{
+			$quickmod = 0;
+		}
 		$action = utf8_normalize_nfc($this->request->variable('action', '',true));
-        if($quickmod)
-        {
-            switch ($action)
-            {
-                case 'move':
-                    $mcp_topic_move = true;
-                break;
-            }
-        }
-        
+		if ($quickmod)
+		{
+			switch ($action)
+			{
+				case 'move':
+					$mcp_topic_move = true;
+				break;
+			}
+		}
+
 		$this->template->assign_vars(array(
 			'U_FORUM_LS_PATH'				=> append_sid("{$this->phpbb_root_path}liveSearch/forum/0/0/0"),
 			'U_TOPIC_LS_PATH'				=> append_sid("{$this->phpbb_root_path}liveSearch/topic/0/0/0"),
@@ -352,9 +351,9 @@ class listener implements EventSubscriberInterface
 			'LIVE_SEARCH_USE_EYE_BUTTON'	=>  isset($this->config['live_search_use_eye_button']) ? (bool) $this->config['live_search_use_eye_button'] : false,
 			'LIVE_SEARCH_EYE_BUTTON_OPEN_T'	=>  $this->user->lang['LIVE_SEARCH_EYE_BUTTON_OPEN_T'],
 			'LIVE_SEARCH_EYE_BUTTON_CLOSE_T'	=>  $this->user->lang['LIVE_SEARCH_EYE_BUTTON_CLOSE_T'],
-            //MCP
-            'S_LIVESEARCH_MCP'	=>  $is_livesearch_mcp,
-            'MCP_TOPIC_MOVE'	=>  $mcp_topic_move,
-            ));
+			//MCP
+			'S_LIVESEARCH_MCP'	=>  $is_livesearch_mcp,
+			'MCP_TOPIC_MOVE'	=>  $mcp_topic_move,
+			));
 	}
 }

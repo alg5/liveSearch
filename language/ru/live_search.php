@@ -1,11 +1,11 @@
 <?php
-/** 
+/**
 *
 * liveSearch [Russian]
 *
 * @package liveSearch
 * @copyright (c) 2014 alg
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License 
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
 
@@ -71,5 +71,7 @@ $lang = array_merge($lang, array(
 	'LIVE_SEARCH_GROUP'		=> 'Группы',
 	'LIVE_SEARCH_GROUP_TXT'		=> 'Название группы...',
 	'LIVE_SEARCH_GROUP_T'			=> 'Для быстрого поиска начните набирать название группы',
+	//*******version 2.0.2.*******
+    'LIVE_SEARCH_YOU_SELECTED_TOPIC'	=> 'Вы выбрали тему номер ',
 
 ));

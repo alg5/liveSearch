@@ -9,7 +9,6 @@
 
 namespace alg\liveSearch\migrations;
 
-
 class v_2_2 extends \phpbb\db\migration\migration
 {
 	const ON = 1;

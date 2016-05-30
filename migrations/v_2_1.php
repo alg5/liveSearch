@@ -9,7 +9,6 @@
 
 namespace alg\liveSearch\migrations;
 
-
 class v_2_1 extends \phpbb\db\migration\migration
 {
 	const MIN_CHARS = 1;

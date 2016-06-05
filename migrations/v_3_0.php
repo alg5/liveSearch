@@ -9,7 +9,6 @@
 
 namespace alg\liveSearch\migrations;
 
-
 class v_3_0 extends \phpbb\db\migration\migration
 {
 	/**

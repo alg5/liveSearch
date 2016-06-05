@@ -72,21 +72,21 @@ class acp_live_search_module
 
 			$phpbb_log->add('admin', $user->data['user_id'], $user->ip, 'LOG_CONFIG_' . strtoupper($mode));
 
-			if($live_search_on_off_forum)
+			if ($live_search_on_off_forum)
 			{
 				$live_search_min_num_symblols_forum= $request->variable('live_search_min_num_symblols_forum', 5);
 				$live_search_max_items_to_show_forum= $request->variable('live_search_max_items_to_show_forum', 20);
 				$config->set('live_search_min_num_symblols_forum', $live_search_min_num_symblols_forum);
 				$config->set('live_search_max_items_to_show_forum', $live_search_max_items_to_show_forum);
 			}
-			if($live_search_on_off_topic)
+			if ($live_search_on_off_topic)
 			{
 				$live_search_min_num_symblols_topic= $request->variable('live_search_min_num_symblols_topic', 5);
 				$live_search_max_items_to_show_topic= $request->variable('live_search_max_items_to_show_topic', 20);
 				$config->set('live_search_min_num_symblols_topic', $live_search_min_num_symblols_topic);
 				$config->set('live_search_max_items_to_show_topic', $live_search_max_items_to_show_topic);
 			}
-			if($live_search_on_off_user)
+			if ($live_search_on_off_user)
 			{
 				$live_search_min_num_symblols_user= $request->variable('live_search_min_num_symblols_user', 5);
 				$live_search_max_items_to_show_user= $request->variable('live_search_max_items_to_show_user', 20);
@@ -94,14 +94,14 @@ class acp_live_search_module
 				$config->set('live_search_max_items_to_show_user', $live_search_max_items_to_show_user);
 			}
 
-			if($live_search_on_off_similartopic)
+			if ($live_search_on_off_similartopic)
 			{
 				$live_search_min_num_symblols_similartopic= $request->variable('live_search_min_num_symblols_similartopic', 5);
 				$live_search_max_items_to_show_similartopic= $request->variable('live_search_max_items_to_show_similartopic', 20);
 				$config->set('live_search_min_num_symblols_similartopic', $live_search_min_num_symblols_similartopic);
 				$config->set('live_search_max_items_to_show_similartopic', $live_search_max_items_to_show_similartopic);
 			}
-			if($live_search_on_off_acp)
+			if ($live_search_on_off_acp)
 			{
 				$live_search_min_num_symblols_acp_user= $request->variable('live_search_min_num_symblols_acp_user', 1);
 				$live_search_min_num_symblols_acp_forum= $request->variable('live_search_min_num_symblols_acp_forum', 1);
@@ -112,7 +112,7 @@ class acp_live_search_module
 				$config->set('live_search_min_num_symblols_acp_group', $live_search_min_num_symblols_acp_group);
 				$config->set('live_search_max_items_to_show_acp', $live_search_max_items_to_show_acp);
 			}
-			if($live_search_on_off_mcp)
+			if ($live_search_on_off_mcp)
 			{
 				$live_search_min_num_symblols_mcp_user= $request->variable('live_search_min_num_symblols_mcp_user', 1);
 				$live_search_min_num_symblols_mcp_forum= $request->variable('live_search_min_num_symblols_mcp_forum', 1);

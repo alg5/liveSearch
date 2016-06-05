@@ -155,7 +155,7 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
         {
             $("#forum_live_search").val('');
             var wnd = LIVE_SEARCH_SHOW_IN_NEW_WINDOW ? '_blank' : '_parent';
-            var forum_link = U_TOPIC_REDIRECT.indexOf("?sid=") >-1  ? "&f=' + f" : "?f=' + f";
+            var forum_link = U_FORUM_REDIRECT.indexOf("?sid=") >-1  ? '&f=' + f : '?f=' + f;
             window.open(U_FORUM_REDIRECT + forum_link, wnd);
         }
         return false;

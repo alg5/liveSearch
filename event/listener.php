@@ -2,7 +2,7 @@
 /**
  *
  * @package liveSearch
- * @copyright (c) 2014 alg 
+ * @copyright (c) 2014 alg
  * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
  *
  */
@@ -30,7 +30,7 @@ class listener implements EventSubscriberInterface
 		{
 			define('TAB_FORUMS', 6);
 		}
-			if (!defined('TAB_USERGROUP'))
+		if (!defined('TAB_USERGROUP'))
 		{
 			define('TAB_USERGROUP', 12);
 		}
@@ -45,17 +45,22 @@ class listener implements EventSubscriberInterface
 			'core.adm_page_header'		=> 'adm_page_header',
 			'core.acp_manage_forums_display_form'		=> 'acp_manage_forums_display_form',
 			'core.modify_mcp_modules_display_option'		=> 'modify_mcp_modules_display_option',
+			'core.modify_quickmod_options'		=> 'modify_quickmod_options',
 		);
+	}
+	public function modify_quickmod_options($event)
+	{
+
 	}
 	public function modify_mcp_modules_display_option($event)
 	{
-		$this->user->add_lang_ext('alg/liveSearch', 'live_search');
+		$this->user->add_lang_ext  ('alg/liveSearch', 'live_search');
 		$is_livesearch_mcp = isset($this->config['live_search_on_off_mcp']) & $this->config['live_search_on_off_mcp'] ? true : false;
 
 		$this->template->assign_vars(array(
 				'S_LIVESEARCH_MCP'	=>  $is_livesearch_mcp,
 		));
-		if(!$is_livesearch_mcp)
+		if (!$is_livesearch_mcp)
 		{
 			return;
 		}
@@ -64,25 +69,38 @@ class listener implements EventSubscriberInterface
 		$id = $event['id'];
 		$module_name = $module->p_name;
 		//print_r($module );
-		//print_r($module->p_name );
+		//print_r($module->p_name);
 		//print_r('$module_name = ' . $module_name . '; $mode=' . $mode . '; $id=' . $id);
 		$mcp_action = '';
-		switch($module_name)
+		switch ($module_name)
 		{
 			case 'mcp_main':
-				switch($mode)
+				switch ($mode)
 				{
 					case 'post_details':
 						$this->template->assign_vars(array('MCP_POST_DETAILS'		 => true));
 					break;
+					case 'topic_view':
+						$this->template->assign_vars(array('MCP_TOPIC_VIEW'		 => true));
+					break;
+					case 'quickmod':
+						$this->template->assign_vars(array('MCP_TOPIC_VIEW'		 => true));
+					break;
 				}
+			break;
+			case 'mcp_notes':
+			case 'mcp_warn':
+				$this->template->assign_vars(array('MCP_USER_NOTES'		 => true));
+			break;
+			case 'mcp_ban':
+				$this->template->assign_vars(array('MCP_BAN' => true));
 			break;
 		}
 			$this->template->assign_vars(array(
 				'LIVE_SEARCH_MIN_NUM_SYMBLOLS_USER_MCP'	=>  isset($this->config['live_search_min_num_symblols_mcp_user']) ? $this->config['live_search_min_num_symblols_mcp_user'] : 0,
 				'LIVE_SEARCH_MIN_NUM_SYMBLOLS_FORUM_MCP'	=>  isset($this->config['live_search_min_num_symblols_mcp_forum']) ? $this->config['live_search_min_num_symblols_mcp_forum'] : 0,
 				'LIVE_SEARCH_MIN_NUM_SYMBLOLS_GROUP_MCP'	=>  isset($this->config['live_search_min_num_symblols_mcp_group']) ? $this->config['live_search_min_num_symblols_mcp_group'] : 0,
-				'LIVE_SEARCH_MAX_ITEMS_TO_SHOW_MCP'					=>  isset($this->config['live_search_max_items_to_show_mcp'])			? $this->config['live_search_max_items_to_show_mcp'] : 0,
+				'LIVE_SEARCH_MAX_ITEMS_TO_SHOW_MCP'			=>  isset($this->config['live_search_max_items_to_show_mcp']) ? $this->config['live_search_max_items_to_show_mcp'] : 0,
 			));
 	}
 
@@ -94,14 +112,14 @@ class listener implements EventSubscriberInterface
 		$this->template->assign_vars(array(
 				'S_LIVESEARCH_ACP'	=>  $is_livesearch_acp,
 		));
-		if(!$is_livesearch_acp)
+		if (!$is_livesearch_acp)
 		{
 			return;
 		}
 		$mode = utf8_normalize_nfc($this->request->variable('mode', '',true));
 		$tab = utf8_normalize_nfc($this->request->variable('i', '',true));
 		$action = utf8_normalize_nfc($this->request->variable('action', '',true));
-		if(is_numeric ($tab))
+		if (is_numeric ($tab))
 		{
 			switch ($tab)
 			{
@@ -116,11 +134,11 @@ class listener implements EventSubscriberInterface
 		$page_title = $event['page_title'];
 
 			$this->template->assign_vars(array(
-				'U_ADMIN_LIVESEARCH_PATH'				=> './../liveSearch/',
-				'LIVE_SEARCH_MIN_NUM_SYMBLOLS_USER_ACP'	=>  isset($this->config['live_search_min_num_symblols_acp_user']) ? $this->config['live_search_min_num_symblols_acp_user'] : 0,
+				'U_ADMIN_LIVESEARCH_PATH'					=> './../liveSearch/',
+				'LIVE_SEARCH_MIN_NUM_SYMBLOLS_USER_ACP'		=>  isset($this->config['live_search_min_num_symblols_acp_user']) ? $this->config['live_search_min_num_symblols_acp_user'] : 0,
 				'LIVE_SEARCH_MIN_NUM_SYMBLOLS_FORUM_ACP'	=>  isset($this->config['live_search_min_num_symblols_acp_forum']) ? $this->config['live_search_min_num_symblols_acp_forum'] : 0,
 				'LIVE_SEARCH_MIN_NUM_SYMBLOLS_GROUP_ACP'	=>  isset($this->config['live_search_min_num_symblols_acp_group']) ? $this->config['live_search_min_num_symblols_acp_group'] : 0,
-				'LIVE_SEARCH_MAX_ITEMS_TO_SHOW_ACP'					=>  isset($this->config['live_search_max_items_to_show_acp'])			? $this->config['live_search_max_items_to_show_acp'] : 0,
+				'LIVE_SEARCH_MAX_ITEMS_TO_SHOW_ACP'			=>  isset($this->config['live_search_max_items_to_show_acp'])			? $this->config['live_search_max_items_to_show_acp'] : 0,
 			));
 				switch ($tab)
 				{
@@ -137,7 +155,7 @@ class listener implements EventSubscriberInterface
 						{
 							case 'overview':
 							case '':
-								$this->template->assign_vars(array('S_FIND_USER_ACP'		 => true));
+								$this->template->assign_vars(array('S_FIND_USER_ACP'		=> true));
 								break;
 						}
 					break;
@@ -157,13 +175,13 @@ class listener implements EventSubscriberInterface
 						{
 							case 'manage':
 							case '':
-								if($action == 'edit')
+								if ($action == 'edit')
 								{
-									$this->template->assign_vars(array('S_FORUM_PARENT_MANAGE'		 => true));
+									$this->template->assign_vars(array('S_FORUM_PARENT_MANAGE'		=> true));
 								}
 								else
 								{
-									$this->template->assign_vars(array('S_FORUM_MANAGE'		 => true));
+									$this->template->assign_vars(array('S_FORUM_MANAGE'		=> true));
 								}
 								break;
 						}
@@ -181,11 +199,11 @@ class listener implements EventSubscriberInterface
 					break;
 					case 'acp_logs':
 						switch ($mode)
-							{
-								case 'mod':
-									$this->template->assign_vars(array('S_FORUM_LOG'		 => true));
-									break;
-							}
+						{
+							case 'mod':
+								$this->template->assign_vars(array('S_FORUM_LOG'	 => true));
+								break;
+						}
 					break;
 					case 'acp_permissions':
 						switch ($mode)
@@ -245,7 +263,7 @@ class listener implements EventSubscriberInterface
 
 	public function posting_modify_template_vars($event)
 	{
-		if($this->config['live_search_on_off_similartopic'] )
+		if ($this->config['live_search_on_off_similartopic'])
 		{
 			$mode = $event['mode'];
 			$this->template->assign_vars(array(
@@ -275,6 +293,29 @@ class listener implements EventSubscriberInterface
 		{
 			$is_live_search = $is_live_search && $this->user->data['is_registered'];
 		}
+		//quick actions in MCP
+		$mcp_topic_move = false;
+		$is_livesearch_mcp = isset($this->config['live_search_on_off_mcp']) & $this->config['live_search_on_off_mcp'] ? true : false;
+
+		//$this->template->assign_vars(array(
+		//        'S_LIVESEARCH_MCP'	=>  $is_livesearch_mcp,
+		//));
+		$quickmod = $this->request->variable('quickmod', 0) ;
+		if (!$is_livesearch_mcp)
+		{
+			$quickmod = 0;
+		}
+		$action = utf8_normalize_nfc($this->request->variable('action', '',true));
+		if ($quickmod)
+		{
+			switch ($action)
+			{
+				case 'move':
+					$mcp_topic_move = true;
+				break;
+			}
+		}
+
 		$this->template->assign_vars(array(
 			'U_FORUM_LS_PATH'				=> append_sid("{$this->phpbb_root_path}liveSearch/forum/0/0/0"),
 			'U_TOPIC_LS_PATH'				=> append_sid("{$this->phpbb_root_path}liveSearch/topic/0/0/0"),
@@ -310,6 +351,9 @@ class listener implements EventSubscriberInterface
 			'LIVE_SEARCH_USE_EYE_BUTTON'	=>  isset($this->config['live_search_use_eye_button']) ? (bool) $this->config['live_search_use_eye_button'] : false,
 			'LIVE_SEARCH_EYE_BUTTON_OPEN_T'	=>  $this->user->lang['LIVE_SEARCH_EYE_BUTTON_OPEN_T'],
 			'LIVE_SEARCH_EYE_BUTTON_CLOSE_T'	=>  $this->user->lang['LIVE_SEARCH_EYE_BUTTON_CLOSE_T'],
+			//MCP
+			'S_LIVESEARCH_MCP'	=>  $is_livesearch_mcp,
+			'MCP_TOPIC_MOVE'	=>  $mcp_topic_move,
 			));
 	}
 }

@@ -1,6 +1,6 @@
 
 Live Search (as in Google)
-[![Build Status](https://travis-ci.org/alg5/liveSearch.svg?branch=master)](https://travis-ci.org/alg5/liveSearch)
+[![Build Status](https://travis-ci.org/alg5/liveSearch.svg?branch=dev_3.2.x)](https://travis-ci.org/alg5/liveSearch)
 
 The extension allows to navigate quikly to the forum/topic/user by typing a part of the name:
 1. Quick search for forums shows all the forums in the board that contain the entered text

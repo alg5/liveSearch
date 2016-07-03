@@ -214,7 +214,7 @@ class liveSearch_ajax_handler
 	$sql = $this->db->sql_build_query('SELECT', $sql_array);
 	$result = $this->db->sql_query($sql);
 	$rowset = array();
-	while ($row = $this->db->sql_fetchrow($result))  
+	while ($row = $this->db->sql_fetchrow($result))
 	{
 			$topic_id = (int) $row['topic_id'];
 			$rowset[$topic_id] = $row;
@@ -649,7 +649,7 @@ class liveSearch_ajax_handler
 				'POLL_IMG'				 => $this->user->img('icon_topic_poll', 'TOPIC_POLL'),
 				'LAST_POST_IMG'		=> $this->user->img('icon_topic_latest', 'VIEW_LATEST_POST'),
 			);
-			
+
 		/**
 		* Modify the topic matches data before it is assigned to the template
 		*

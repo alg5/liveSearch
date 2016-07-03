@@ -47,9 +47,6 @@ class liveSearch_ajax_handler
 	/** @var \phpbb\content_visibility */
 	protected $content_visibility;
 
-	/** @var string PHP extension */
-	protected $table_prefix;
-
 	/** @var \phpbb\profilefields\manager */
 	protected $profilefields_manager;
 
@@ -59,7 +56,7 @@ class liveSearch_ajax_handler
 	/** @var array */
 	protected $thankers = array();
 
-	public function __construct(\phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \phpbb\auth\auth $auth, \phpbb\template\template $template, \phpbb\user $user, \phpbb\cache\service $cache, $phpbb_root_path, $php_ext, \phpbb\request\request_interface $request, $table_prefix, $phpbb_container, \phpbb\pagination $pagination, \phpbb\content_visibility $content_visibility, $table_prefix, \phpbb\profilefields\manager $profilefields_manager, \phpbb\event\dispatcher_interface $dispatcher, $groups_table)
+	public function __construct(\phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \phpbb\auth\auth $auth, \phpbb\template\template $template, \phpbb\user $user, \phpbb\cache\service $cache, $phpbb_root_path, $php_ext, \phpbb\request\request_interface $request, $phpbb_container, \phpbb\pagination $pagination, \phpbb\content_visibility $content_visibility, \phpbb\profilefields\manager $profilefields_manager, \phpbb\event\dispatcher_interface $dispatcher, $groups_table)
 	{
 		$this->config = $config;
 		$this->db = $db;
@@ -73,7 +70,7 @@ class liveSearch_ajax_handler
 		$this->phpbb_container = $phpbb_container;
 		$this->pagination =  $pagination;
 		$this->content_visibility = $content_visibility;
-		$this->table_prefix = $table_prefix;
+		//$this->table_prefix = $table_prefix;
 		$this->profilefields_manager = $profilefields_manager;
 		$this->dispatcher = $dispatcher;
 		$this->groups_table = $groups_table;

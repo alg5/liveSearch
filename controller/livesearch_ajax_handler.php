@@ -181,14 +181,14 @@ class liveSearch_ajax_handler
 					$ex_fid_ary = array_unique($ex_fid_ary);
 			}
 		}
-        $where = "t.topic_status <> " . ITEM_MOVED .
-                        " AND t.topic_visibility = " . ITEM_APPROVED .
-		                "  AND UPPER(t.topic_title) " . $this->db->sql_like_expression($this->db->get_any_char() .  $this->db->sql_escape($q) . $this->db->get_any_char());
-		                if (sizeof($ex_fid_ary))
-		                {
-			                $where .= " AND " . $this->db->sql_in_set('f.forum_id', $ex_fid_ary, true);
-		                }
-                        
+		$where = "t.topic_status <> " . ITEM_MOVED .
+						" AND t.topic_visibility = " . ITEM_APPROVED .
+						"  AND UPPER(t.topic_title) " . $this->db->sql_like_expression($this->db->get_any_char() .  $this->db->sql_escape($q) . $this->db->get_any_char());
+		if (sizeof($ex_fid_ary))
+		{
+			$where .= " AND " . $this->db->sql_in_set('f.forum_id', $ex_fid_ary, true);
+		}
+
 		$sql_array = array(
 		'SELECT'	=> 't.topic_id, t.topic_title, t.topic_status, t.topic_moved_id, t.forum_id, f.forum_name',
 		'FROM'		=> array(TOPICS_TABLE => 't'),
@@ -211,14 +211,14 @@ class liveSearch_ajax_handler
 	*/
 	$vars = array('sql_array');
 	extract($this->dispatcher->trigger_event('alg.livesearch.sql_livesearch_topics', compact($vars)));
-    $sql = $this->db->sql_build_query('SELECT', $sql_array);
+	$sql = $this->db->sql_build_query('SELECT', $sql_array);
 	$result = $this->db->sql_query($sql);
-    $rowset = array();    
-    while ($row = $this->db->sql_fetchrow($result))  
-    {
+	$rowset = array();
+	while ($row = $this->db->sql_fetchrow($result))  
+	{
 			$topic_id = (int) $row['topic_id'];
 			$rowset[$topic_id] = $row;
-    }
+	}
 	/**
 	* Modify the rowset data
 	*
@@ -230,10 +230,10 @@ class liveSearch_ajax_handler
 		'rowset',
 	);
 	extract($this->dispatcher->trigger_event('alg.livesearch.topics_modify_rowset', compact($vars)));
-        
+
 	$topic_list = array();
 	$arr_res = $arr_priority1 = $arr_priority2 = array();
-    foreach ($rowset as $key => $row)
+	foreach ($rowset as $key => $row)
 	{
 		if (isset($row['topic_title']) && strlen($row['topic_title']) >0)
 		{
@@ -486,18 +486,18 @@ class liveSearch_ajax_handler
 				'WHERE'		=> $where ,
 				'ORDER_BY'	=> 't.topic_last_post_time DESC',
 			);
-            $total_match_count =$total_count;
-	        // Set limit for the $total_match_count to reduce server load
-	        $total_matches_limit = 1000;
-		    if ($total_match_count)
-		    {
-			    // Limit the number to $total_matches_limit for pre-made searches
-			    if ($total_match_count > $total_matches_limit)
-			    {
-				    $found_more_search_matches = true;
-				    $total_match_count = $total_matches_limit;
-			    }
-            }
+			$total_match_count =$total_count;
+			// Set limit for the $total_match_count to reduce server load
+			$total_matches_limit = 1000;
+			if ($total_match_count)
+			{
+				// Limit the number to $total_matches_limit for pre-made searches
+				if ($total_match_count > $total_matches_limit)
+				{
+					$found_more_search_matches = true;
+					$total_match_count = $total_matches_limit;
+				}
+			}
 			/**
 			* Event to modify the SQL query before the topics data is retrieved
 			*
@@ -512,26 +512,26 @@ class liveSearch_ajax_handler
 			$result = $this->db->sql_query_limit($this->db->sql_build_query('SELECT', $sql_array),  $per_page, $start);
 			$row_count = 0;
 			$rowset = array();
-            while ($row = $this->db->sql_fetchrow($result))  
-            {
-				    $topic_id = (int) $row['topic_id'];
-				    $rowset[$topic_id] = $row;
-            }
-            
-		    /**
-		    * Modify the rowset data
-		    *
-		    * @event alg.livesearch.usertopics_modify_rowset
-		    * @var	array	rowset					Array with topics results data
-		    * @var	int 	total_match_count					Array with topics results data
-		    * @since 2.0.4
-		    */
-		    $vars = array(
-			    'rowset',
-			    'total_match_count',
-		    );
-		    extract($this->dispatcher->trigger_event('alg.livesearch.usertopics_modify_rowset', compact($vars)));
-            foreach ($rowset as $key => $row)
+			while ($row = $this->db->sql_fetchrow($result))
+			{
+					$topic_id = (int) $row['topic_id'];
+					$rowset[$topic_id] = $row;
+			}
+
+			/**
+			* Modify the rowset data
+			*
+			* @event alg.livesearch.usertopics_modify_rowset
+			* @var	array	rowset					Array with topics results data
+			* @var	int 	total_match_count					Array with topics results data
+			* @since 2.0.4
+			*/
+			$vars = array(
+				'rowset',
+				'total_match_count',
+			);
+			extract($this->dispatcher->trigger_event('alg.livesearch.usertopics_modify_rowset', compact($vars)));
+			foreach ($rowset as $key => $row)
 			{
 				$ls_forum_id = (int) $row['forum_id'];
 				$ls_topic_id = (int) $row['topic_id'];
@@ -637,7 +637,7 @@ class liveSearch_ajax_handler
 				$res_txt = sprintf($this->user->lang['LIVESEARCH_USERTOPIC_RESULT'], $username);
 			}
 			$l_search_matches =  $this->user->lang('FOUND_SEARCH_MATCHES', $total_count) ;
-            $tpl_ary = array(
+				$tpl_ary = array(
 				'S_SHOW_TOPICS'		=> 1,
 				'SEARCH_MATCHES'	=>  $total_count == 0 ? '' : $this->user->lang('FOUND_SEARCH_MATCHES', $total_count) ,
 				'SEARCH_MATCHES_TXT'	=>	$res_txt,
@@ -648,20 +648,20 @@ class liveSearch_ajax_handler
 				'DELETED_IMG'			 => $this->user->img('icon_topic_deleted', 'TOPIC_DELETED'),
 				'POLL_IMG'				 => $this->user->img('icon_topic_poll', 'TOPIC_POLL'),
 				'LAST_POST_IMG'		=> $this->user->img('icon_topic_latest', 'VIEW_LATEST_POST'),
-            );
-            
-        /**
-        * Modify the topic matches data before it is assigned to the template
-        *
-        * @event alg.livesearch.modify_tpl_ary_livesearch_usertopics_matches
-        * @var	array	tpl_ary		Template block array with topic data
-        * @var	int start		Template block array with topic data
-        * @var	int total_count		Template block array with topic data
-        * @since 2.0.4
-        */
-        $vars = array( 'tpl_ary', 'start', 'total_count');
-        extract($this->dispatcher->trigger_event('alg.livesearch.modify_tpl_ary_livesearch_usertopics_matches', compact($vars)));
-        $this->template->assign_vars($tpl_ary);
+			);
+			
+		/**
+		* Modify the topic matches data before it is assigned to the template
+		*
+		* @event alg.livesearch.modify_tpl_ary_livesearch_usertopics_matches
+		* @var	array	tpl_ary		Template block array with topic data
+		* @var	int start		Template block array with topic data
+		* @var	int total_count		Template block array with topic data
+		* @since 2.0.4
+		*/
+		$vars = array( 'tpl_ary', 'start', 'total_count');
+		extract($this->dispatcher->trigger_event('alg.livesearch.modify_tpl_ary_livesearch_usertopics_matches', compact($vars)));
+		$this->template->assign_vars($tpl_ary);
 
 		page_header($page_title);
 
@@ -820,18 +820,18 @@ class liveSearch_ajax_handler
 				'WHERE'		=> $where ,
 				'ORDER_BY'	=> ' p.post_time DESC  ',
 			);
-            $total_match_count =$total_count;
-	        // Set limit for the $total_match_count to reduce server load
-	        $total_matches_limit = 1000;
-		    if ($total_match_count)
-		    {
-			    // Limit the number to $total_matches_limit for pre-made searches
-			    if ($total_match_count > $total_matches_limit)
-			    {
-				    $found_more_search_matches = true;
-				    $total_match_count = $total_matches_limit;
-			    }
-            }
+			$total_match_count =$total_count;
+			// Set limit for the $total_match_count to reduce server load
+			$total_matches_limit = 1000;
+			if ($total_match_count)
+			{
+				// Limit the number to $total_matches_limit for pre-made searches
+				if ($total_match_count > $total_matches_limit)
+				{
+					$found_more_search_matches = true;
+					$total_match_count = $total_matches_limit;
+				}
+			}
 			/**
 			* Event to modify the SQL query before the topics data is retrieved
 			*
@@ -942,32 +942,32 @@ class liveSearch_ajax_handler
 			}
 		}
 		$l_search_matches =  $this->user->lang('FOUND_SEARCH_MATCHES', $total_count) ;
-        //$this->template->assign_vars(array(
+		//$this->template->assign_vars(array(
 
-        //));
-        $tpl_ary = array(
-		    'S_SHOW_TOPICS'		=> 0,
-		    'SEARCH_MATCHES'	=>  $total_count == 0 ? '' : $this->user->lang('FOUND_SEARCH_MATCHES', $total_count) ,
-		    'SEARCH_MATCHES_TXT'	=>	$res_txt,
-		    'PAGE_NUMBER'		=> $total_count == 0 ?  0 : $this->pagination->on_page($total_count, $this->config['posts_per_page'], $start),
-		    'TOTAL_MATCHES'		=> $total_count,
-		    'REPORTED_IMG'		=> $this->user->img('icon_topic_reported', 'TOPIC_REPORTED'),
-		    'UNAPPROVED_IMG'	=> $this->user->img('icon_topic_unapproved', 'TOPIC_UNAPPROVED'),
-		    'DELETED_IMG'			 => $this->user->img('icon_topic_deleted', 'TOPIC_DELETED'),
-		    'POLL_IMG'				 => $this->user->img('icon_topic_poll', 'TOPIC_POLL'),
-		    'LAST_POST_IMG'		=> $this->user->img('icon_topic_latest', 'VIEW_LATEST_POST'),
-        );
-        /**
-        * Modify the topic matches data before it is assigned to the template
-        *
-        * @event alg.livesearch.modify_tpl_ary_livesearch_userposts_matches
-        * @var	array	tpl_ary		Template block array with topic data
-        * @var	int total_count		The total number of search matches
-        * @since 2.0.4
-        */
-        $vars = array('tpl_ary', 'total_count');
-        extract($this->dispatcher->trigger_event('alg.livesearch.modify_tpl_ary_livesearch_userposts_matches', compact($vars)));
-        $this->template->assign_vars($tpl_ary);
+		//));
+		$tpl_ary = array(
+			'S_SHOW_TOPICS'		=> 0,
+			'SEARCH_MATCHES'	=>  $total_count == 0 ? '' : $this->user->lang('FOUND_SEARCH_MATCHES', $total_count) ,
+			'SEARCH_MATCHES_TXT'	=>	$res_txt,
+			'PAGE_NUMBER'		=> $total_count == 0 ?  0 : $this->pagination->on_page($total_count, $this->config['posts_per_page'], $start),
+			'TOTAL_MATCHES'		=> $total_count,
+			'REPORTED_IMG'		=> $this->user->img('icon_topic_reported', 'TOPIC_REPORTED'),
+			'UNAPPROVED_IMG'	=> $this->user->img('icon_topic_unapproved', 'TOPIC_UNAPPROVED'),
+			'DELETED_IMG'			 => $this->user->img('icon_topic_deleted', 'TOPIC_DELETED'),
+			'POLL_IMG'				 => $this->user->img('icon_topic_poll', 'TOPIC_POLL'),
+			'LAST_POST_IMG'		=> $this->user->img('icon_topic_latest', 'VIEW_LATEST_POST'),
+		);
+		/**
+		* Modify the topic matches data before it is assigned to the template
+		*
+		* @event alg.livesearch.modify_tpl_ary_livesearch_userposts_matches
+		* @var	array	tpl_ary		Template block array with topic data
+		* @var	int total_count		The total number of search matches
+		* @since 2.0.4
+		*/
+		$vars = array('tpl_ary', 'total_count');
+		extract($this->dispatcher->trigger_event('alg.livesearch.modify_tpl_ary_livesearch_userposts_matches', compact($vars)));
+		$this->template->assign_vars($tpl_ary);
 		page_header($page_title);
 
 		$this->template->set_filenames(array(

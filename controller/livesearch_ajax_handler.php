@@ -656,7 +656,7 @@ class liveSearch_ajax_handler
 		* @var	int total_count		Template block array with topic data
 		* @since 3.0.2
 		*/
-		$vars = array( 'tpl_ary', 'start', 'total_count');
+		$vars = array('tpl_ary', 'start', 'total_count');
 		extract($this->dispatcher->trigger_event('alg.livesearch.modify_tpl_ary_livesearch_usertopics_matches', compact($vars)));
 		$this->template->assign_vars($tpl_ary);
 

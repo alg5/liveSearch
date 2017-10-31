@@ -1,11 +1,11 @@
 <?php
-/** 
+/**
 *
 * liveSearch [Russian]
 *
 * @package liveSearch
 * @copyright (c) 2014 alg
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License 
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
 
@@ -67,4 +67,11 @@ $lang = array_merge($lang, array(
 	'LIVESEARCH_USERPOST_RESULT_IN_TOPIC'	=> 'Сообщения пользователя  %1$s в теме   %2$s форума  %3$s',
 	'LIVE_SEARCH_EYE_BUTTON_OPEN_T'	=> 'Показать панель поиска',
 	'LIVE_SEARCH_EYE_BUTTON_CLOSE_T'	=> 'Скрыть панель поиска',
+	//*******version 2.0.*******
+	'LIVE_SEARCH_GROUP'		=> 'Группы',
+	'LIVE_SEARCH_GROUP_TXT'		=> 'Название группы...',
+	'LIVE_SEARCH_GROUP_T'			=> 'Для быстрого поиска начните набирать название группы',
+	//*******version 2.0.2.*******
+	'LIVE_SEARCH_YOU_SELECTED_TOPIC'	=> 'Вы выбрали тему номер ',
+
 ));

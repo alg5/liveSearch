@@ -202,9 +202,10 @@
     $.Autocompleter.prototype.position = function () {
         var offset = this.dom.$elem.offset();
         var pos = this.dom.$elem.position();
-
-        this.dom.$results.css({
-            top: pos.top + this.dom.$elem.outerHeight(),
+        var el_top = this.dom.$results.css("position") == "absolute" ? offset.top : offset.top;
+       this.dom.$results.css({
+            //top: pos.top + this.dom.$elem.outerHeight(),
+            top: el_top + this.dom.$elem.outerHeight(),
             left: offset.left,
         });
     };
@@ -649,13 +650,13 @@
     /**
     * autocomplete plugin
     */
-    $.fn.autocomplete = function (options) {
+    $.fn.autocomplete_ls = function (options) {
         if (typeof options === 'string') {
             options = {
                 url: options
             };
         }
-        var o = $.extend({}, $.fn.autocomplete.defaults, options);
+        var o = $.extend({}, $.fn.autocomplete_ls.defaults, options);
         return this.each(function () {
             var $this = $(this);
             var ac = new $.Autocompleter($this, o);
@@ -667,7 +668,7 @@
     /**
     * Default options for autocomplete plugin
     */
-    $.fn.autocomplete.defaults = {
+    $.fn.autocomplete_ls.defaults = {
         paramName: 'q',
         minChars: 1,
         loadingClass: 'acLoading',

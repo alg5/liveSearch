@@ -1,4 +1,4 @@
-﻿(function ($) {  
+(function ($) {  
 if (LIVE_SEARCH_USE_EYE_BUTTON)
 {
     var obj = { };
@@ -26,11 +26,13 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
             $('#user_live_search').val("");
             $('#leavesearch_btn').fadeIn("slow");
             $('#leavesearch').fadeOut("slow");
+            $('.acResults').fadeOut("slow");
         });
 
         $(document).click(function (event) {
             if ($(event.target).closest("#user_handle").length || $(event.target).closest(".acResults").length || $(event.target).closest("#user_live_search").length || $(event.target).closest("#leavesearch").length ) return;
             $("#user_handle").hide("slow");
+            $(".acResults").hide("slow");
             event.stopPropagation();
         });
 
@@ -49,6 +51,7 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
 		        maxItemsToShow: maxItemsToShow_forum,
 		        selectFirst: true,
 		        minChars: minChars_forum,
+                hideAfterSelect:LIVE_SEARCH_HIDE_AFTER_SELECT,
 
 		        showResult: function (value, data) {
 		            return '<span style="">' + hilight(value, $("#forum_live_search").val()) + '</span>';
@@ -68,6 +71,7 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
 		        maxItemsToShow: maxItemsToShow_topic,
 		        selectFirst: true,
 		        minChars: minChars_topic,
+                hideAfterSelect:LIVE_SEARCH_HIDE_AFTER_SELECT,
 
 		        showResult: function (value, data) {
 		            return '<span style="">' + hilight(value, $("#topic_live_search").val()) + data[2] + '</span>';
@@ -120,6 +124,7 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
 		            selectFirst: true,
 		            minChars: minChars_topic,
                     fixedPos:false,
+                    hideAfterSelect:LIVE_SEARCH_HIDE_AFTER_SELECT,
 
 		            showResult: function (value, data) {
 		                return '<span style="">' + hilight(value, $("#topic_live_search").val()) + '</span>';
@@ -129,6 +134,11 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
 		            }
             });
 
+        }
+
+        if (S_LIVESEARCH_MCP)
+        {   
+            initMcpLiveSearch();
         }
 
 
@@ -145,7 +155,8 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
         {
             $("#forum_live_search").val('');
             var wnd = LIVE_SEARCH_SHOW_IN_NEW_WINDOW ? '_blank' : '_parent';
-            window.open(U_FORUM_REDIRECT + '?f=' + f, wnd);
+            var forum_link = U_FORUM_REDIRECT.indexOf("?sid=") >-1  ? '&f=' + f : '?f=' + f;
+            window.open(U_FORUM_REDIRECT + forum_link, wnd);
         }
         return false;
     }
@@ -156,7 +167,10 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
         if (t) {
             $("#live_search").val('');
             var wnd = LIVE_SEARCH_SHOW_IN_NEW_WINDOW ? '_blank' : '_parent';
-            window.open(U_TOPIC_REDIRECT + '?f=' + f + '&t=' + t, wnd);
+            var topicLink = S_CANONICAL_TOPIC_TYPE ? 'f=' + f + '&t=' + t :  't=' + t;
+            if (U_TOPIC_REDIRECT.indexOf("?sid=") >-1 ) topicLink = "&" + topicLink
+            else topicLink = "?" + topicLink
+            window.open(U_TOPIC_REDIRECT + topicLink, wnd);
         }
         return false;
     }
@@ -188,21 +202,25 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
                 var contact_url = arr[2];
                 var REMAINDER =i % 4;
                // var new_contact  = '';
-                var class_contact;        
+                var class_contact;  
+                var class_img_font = '';      
                 //var url_contact;        
                 switch ( contact_name)
                 {
                     case 'profile':
-                        class_contact =  'leave_search_contact-icon   icon-profile';
+                        class_contact =  'leave_search_contact-icon';
                         contact_url = U_PROFILE_LS_PATH + user_id;
+                        class_img_font = 'fa-user';
                         break;
                      case 'pm':
-                        class_contact =  'leave_search_contact-icon contact-icon ' + arr[0] + '-icon';
+                       class_contact =  'leave_search_contact-icon contact-icon ' + arr[0] + '-icon';
+//                         class_contact =  'leave_search_contact-icon;
                         contact_url = U_PM_LS_PATH + user_id;
                         break;
                      case 'email':
                         class_contact =  'leave_search_contact-icon contact-icon ' + arr[0] + '-icon';
-                       contact_url = U_MAIL_LS_PATH + user_id;
+                       contact_url =  arr[2];
+                        //class_img_font = 'fa-envelope';
                         break;
                      case 'jabber':
                         class_contact =  'leave_search_contact-icon contact-icon ' + arr[0] + '-icon';
@@ -237,7 +255,13 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
                 }
                 var new_contact = new_contact + '>';
                 var new_contact = new_contact + '<span class="';
-                new_contact = new_contact + class_contact + '"></span></a>';
+                new_contact = new_contact + class_contact + '">';
+                if(class_img_font != '')
+                {
+                    new_contact = new_contact + '<i class="fa ' + class_img_font + '" aria-hidden="true"></i>';
+                }
+                new_contact = new_contact + '</span>';
+                 new_contact = new_contact + '</a>';
                 if ( REMAINDER == 3 || i ==  (contacts_arr.length-1))
                 {
 					new_contact = new_contact + '</div>';
@@ -299,6 +323,157 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
             return arr1;
         }
     }
+
+    //MCP Livesearch
+
+    function initMcpLiveSearch()
+    {
+            if (MCP_POST_DETAILS)
+            {
+              $("input[name='username']").addClass("inputbox search").attr({type: "search", placeholder: L_LIVESEARCH_USER_TXT, title: L_LIVESEARCH_USER_T, autocomplete:"off"});
+                var elem = $("input[name='username']");
+                var txtArea = null;
+                mcp_user_search(elem, txtArea)
+            }
+            if (MCP_USER_NOTES)
+            {
+              $("#username").addClass("inputbox search").attr({type: "search", placeholder: L_LIVESEARCH_USER_TXT, title: L_LIVESEARCH_USER_T, autocomplete:"off"});
+                var elem = $("input[name='username']");
+                var txtArea = null;
+                mcp_user_search(elem, txtArea)
+            }
+            if (MCP_BAN)
+            {
+                var elem = $("#usersearch_ls");
+                var txtArea = $("#ban");
+                mcp_user_search(elem, txtArea)
+            }
+            if (MCP_TOPIC_VIEW)
+            {
+                var elem = $("#topicsearch_ls");
+                var totopicElem = $("#to_topic_id");
+
+                console.log(elem);
+                mcp_topic_search(elem, totopicElem);
+//                var txtArea = $("#ban");
+//                mcp_user_search(elem, txtArea)
+
+                var elem =  $("#forumsearch_ls");
+                var cbo = $("select[name='to_forum_id']");
+                forum_search(elem, cbo);
+            }
+            if (MCP_TOPIC_MOVE)
+            {
+                var elem =  $("#forumsearch_ls");
+                var cbo = $("select[name='to_forum_id']");
+                forum_search(elem, cbo);
+            
+            }
+    }
+
+
+    function mcp_user_search(elem, txtarea)
+    {
+        $(elem).autocomplete_ls(
+        {
+            url: U_USER_LS_PATH,
+            sortResults: false,
+            width: 600,
+            maxItemsToShow: LIVE_SEARCH_MAX_ITEMS_TO_SHOW_MCP,
+            selectFirst: true,
+            fixedPos:false,
+            minChars: LIVE_SEARCH_MIN_NUM_SYMBLOLS_USER_MCP,
+            showResult: function (value, data) {
+                return '<span style="">' + hilight(value, $(elem).val()) + '</span>';
+            },
+            onItemSelect: function (item) {
+                if(txtarea !=null)
+                    add_user_to_textarea(item, txtarea);
+            },
+    
+        });
+    
+    }
+
+    function mcp_topic_search(elem, totopicElem)
+    {
+        $(elem).autocomplete_ls(
+        {
+		        url: U_TOPIC_LS_PATH,
+		        sortResults: false,
+		        width: 600,
+		        maxItemsToShow: maxItemsToShow_topic,
+		        selectFirst: true,
+                fixedPos:false,
+		        minChars: minChars_topic,
+
+		        showResult: function (value, data) {
+		            return '<span style="">' + hilight(value, $("#topic_live_search").val()) + data[2] + '</span>';
+		        },
+		        onItemSelect: function (item) {
+                    if(totopicElem !=null)
+                    {
+                        $(totopicElem).val(item.data[0]);
+                        var dl = $(totopicElem).parent().parent();
+                        var dds = $(dl).find("dd");
+                        if($(dds).length >1) 
+                        {
+                            $(dds).last().remove();
+
+                        }
+                        var topicLink = S_CANONICAL_TOPIC_TYPE ? '?f=' + item.data[1] + '&t=' + item.data[0] :  '?t=' + item.data[0];
+                        var dd = '<dd>' + L_LIVE_SEARCH_YOU_SELECTED_TOPIC + item.data[0] + ': <a href="./viewtopic.php'  + topicLink +'">' + item.value + '.' + '</a>';
+                        $(dl).append(dd);
+                    }
+		            //goto_topic(item);
+		        }
+    
+        });
+    
+    }
+
+    function forum_search(elem, cbo)
+    {
+                $(elem).autocomplete_ls(
+                {
+		            url: U_FORUM_LS_PATH,
+		            sortResults: false,
+		            width: 600,
+		            maxItemsToShow: maxItemsToShow_forum,
+		            selectFirst: true,
+		            minChars: minChars_forum,
+                    fixedPos:false,
+                    showResult: function (value, data) {
+                        return '<span style="">' + hilight(value, $(elem).val()) + '</span>';
+                    },
+                    onItemSelect: function (item) {
+                        select_combo(item, cbo);
+                    },
+    
+                });    
+    }
+
+
+    function select_combo(item, cbo)
+    {
+    console.log(cbo);
+    console.log($(cbo).find("option[value='" + item.data[0] + "']"));
+       $(cbo).find("option[value='" + item.data[0] + "']").attr("selected","selected");
+    }
+
+    function add_user_to_textarea(item, txtarea)
+    {
+        var user = item.value;
+        var new_val = $.trim( $(txtarea).val());
+        if (new_val.indexOf(user) <0)
+        {
+            if (new_val != ''  ) 
+                new_val = new_val + '\n';
+            new_val = new_val + item.value;
+        }
+        $(txtarea).val(new_val);
+    }
+
 
 
 })(jQuery);                                                                 // Avoid conflicts with other libraries

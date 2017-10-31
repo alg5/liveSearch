@@ -10,6 +10,7 @@
 	height: 15px;
 	font-family: Verdana,Helvetica,Arial,sans-serif !important;
 	font-size: 10px !important;
+	line-height:normal;
 }
 
 .acInput:-moz-placeholder {

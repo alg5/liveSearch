@@ -64,18 +64,22 @@ var prefix = '_eye_';
 
     }
     if (this.options.visibleStatus == el_open) {
-        btn = btn + 'class="eye_btn eye_btn_open"  ';
+        btn = btn + 'class="eye_btn"  ';
         if (this.options.title_close)
             btn = btn + 'title="' + this.options.title_close + '"';
+            btn = btn + '>';
+            btn = btn + '<i class=" fa fa-eye" aria-hidden="true"></i>';
     }
     else {
-        btn = btn + 'class="eye_btn eye_btn_close"  ';
+        btn = btn + 'class="eye_btn"  ';
         if (this.options.title_open)
             btn = btn + 'title="' + this.options.title_open + '"';
+            btn = btn + '>';
+            btn = btn + '<i class=" fa fa-eye-slash" aria-hidden="true"></i>';
     }
-    btn = btn + '> </div> </div>';
+    btn = btn + ' </div> </div>';
    //var new_content = $('#wrap').html() + btn;
-  //$('#wrap').html(new_content) ;
+  //$('#wrap').html(new_content) ; 
   $('#wrap').append(btn) ;
    this.dom.$btn_eye = $('#' +  this.options.name);
 
@@ -94,16 +98,18 @@ var prefix = '_eye_';
    $(this.dom.$btn_eye).on('click', function (e) {
     var visibleStatus = localStorage.getItem(self.options.name);
         if (visibleStatus == null || isNaN(visibleStatus)) { visibleStatus = el_open; }
-        if (parseInt(visibleStatus) === parseInt(el_open)) {
+      if (parseInt(visibleStatus) === parseInt(el_open)) 
+      {
             self.options.visibleStatus =  el_close;
             localStorage.setItem(self.options.name, el_close);
-            $(this).removeClass('eye_btn_open').addClass('eye_btn_close');
+            $(this).find("i").removeClass('fa-eye').addClass('fa-eye-slash');
             $(this).attr('title', self.options.title_open);
         }
-        else {
+        else 
+        {
             self.options.visibleStatus = el_open;
             localStorage.setItem(self.options.name, el_open);
-            $(this).removeClass('eye_btn_close').addClass('eye_btn_open');
+            $(this).find("i").removeClass('fa-eye-slash').addClass('fa-eye');
             $(this).attr('title', self.options.title_close);
         }
          self.change_visible();

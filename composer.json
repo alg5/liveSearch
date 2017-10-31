@@ -2,32 +2,32 @@
     "name": "alg/liveSearch",
     "type": "phpbb-extension",
     "description": "Live Search (as in Google)",
-    "homepage": "http://www.phpbbguru.net",
-    "version": "1.0.6",
-    "time": "2014-06-12",
+    "homepage": "https://github.com/alg5/liveSearch/tree/dev_3.2.x",
+    "version": "3.0.2",
+    "time": "2016-05-05",
     "license": "GPL-2.0",
     "authors": [
         {
-            "name": "Алг",
+            "name": "Alg",
             "homepage": "http://www.chugunok.net",
             "role": "Developer"
         }
        
     ],
     "require": {
-        "php": ">=5.3.3"
+        "php": ">=5.4.2"
     },
-	"require-dev": {
+      "require-dev": {
       "phpbb/epv": "dev-master"
    },
     "extra": {
-        "display-name": "Live Search ( as in google)",
-		"soft-require": {
-           "phpbb/phpbb": "3.1.*@dev"
+        "display-name": "Live Search (as in google)",
+        "soft-require": {
+           "phpbb/phpbb": "3.2.*@dev"
         },
         "version-check": {
             "host": "alg5.github.io",
-            "directory": "/versions",
+            "directory": "/versions_3_2",
             "filename": "liveSearch.json"
         }
     }

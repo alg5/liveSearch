@@ -5,6 +5,7 @@
 	display: block;
 	height: 16px;
 	width: 16px;
+	font-size:16px;
 }
 .ls_search_user_pm
 {
@@ -22,9 +23,10 @@
 	padding: 0 15px;
 	background-color: white;
 	position: fixed;
+	line-height:normal;
 }
 #leavesearch {
-	line-height: 25px;
+	/*line-height: 25px;*/
 	background-color: white;
 	/*width: 680px;*/
 	width:auto;
@@ -77,4 +79,21 @@
 .livesearch-disable {
 	opacity:0.3;
     filter:alpha(opacity=30); 
+}
+
+@media 
+only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: 1024px)  
+{   #leavesearch
+    {
+        height:auto;
+    }
+    #leavesearch lable 
+    {
+	    display:block;
+    }
+    #leavesearch input 
+    {
+	    width:140px;
+    }
 }

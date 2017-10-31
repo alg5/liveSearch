@@ -1,0 +1,31 @@
+﻿/* File Created: июля 18, 2015 */
+
+#loader 
+{
+    display:none;
+	position:relative;
+	top:0;
+	left:0;
+	width:32px;
+	height:32px;
+	margin: auto;
+	background-image: url(./images/ajax-loader.gif);
+	
+}
+
+ input.search {
+	background-image: url("./images/icon_textbox_search.gif");
+	
+	background-repeat: no-repeat;
+	background-position: left 1px;
+	padding-left: 17px;
+	height:20px;
+}
+.ls-groupsearch {
+	width:300px;
+}
+.ls-forumsearch {
+	width:300px;
+	
+}
+

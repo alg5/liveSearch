@@ -9,7 +9,6 @@
 
 namespace alg\liveSearch\migrations;
 
-
 class v_1_0_0 extends \phpbb\db\migration\migration
 {
 	const MIN_CHARS = 1;
@@ -82,8 +81,8 @@ class v_1_0_0 extends \phpbb\db\migration\migration
 				array('config.remove', array('live_search')),
 			)),
 			array('if', array(
-				(isset($this->config['allow_live_searches'])),
-				array('config.remove', array('allow_live_searches')),
+				(isset($this->config['live_search_allow_live_searches'])),
+				array('config.remove', array('live_search_allow_live_searches')),
 			)),
 			array('if', array(
 				(isset($this->config['live_search_use_eye_button'])),
@@ -106,13 +105,13 @@ class v_1_0_0 extends \phpbb\db\migration\migration
 			array('config.add', array('live_search_max_items_to_show_user', v_1_0_0::MAX_ITEMS_TO_SHOW)),
 			array('config.add', array('live_search_min_num_symblols_similartopic', v_1_0_0::MIN_CHARS)),
 			array('config.add', array('live_search_max_items_to_show_similartopic', v_1_0_0::MAX_ITEMS_TO_SHOW)),
-			array('config.add', array('allow_live_searches', v_1_0_0::ON)),
+			array('config.add', array('live_search_allow_live_searches', v_1_0_0::ON)),
 			array('config.add', array('live_search_show_in_new_window', v_1_0_0::OFF)),
 			array('config.add', array('live_search_show_for_guest', v_1_0_0::ON)),
 			array('config.add', array('live_search_use_eye_button', v_1_0_0::ON)),
 			array('config.add', array('live_search_exclude_forums', '')),
 			// Current version
-			array('config.add', array('live_search', '1.0.6')),
+			array('config.add', array('live_search', '1.0.*')),
 
 			// Remove old ACP modules
 			array('if', array(
@@ -164,7 +163,7 @@ class v_1_0_0 extends \phpbb\db\migration\migration
 			array('config.remove', array('live_search_show_for_guest')),
 			array('config.remove', array('live_search_use_eye_button')),
 			array('config.remove', array('live_search_exclude_forums')),
-			array('config.remove', array('allow_live_searches')),
+			array('config.remove', array('live_search_allow_live_searches')),
 			// Current version
 			array('config.remove', array('live_search')),
 

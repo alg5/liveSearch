@@ -591,10 +591,12 @@
     $.Autocompleter.prototype.selectItem = function ($li) {
         var value = $li.data('value');
         var data = $li.data('data');
-        var displayValue = this.displayValue(value, data);
+        var displayValue = this.displayValue(value, data).replace(/&quot;/g, '"');;
+        
         this.lastProcessedValue_ = displayValue;
         this.lastSelectedValue_ = displayValue;
-        this.dom.$elem.val(displayValue).focus();
+        console.log('displayValue = ' + displayValue);
+       this.dom.$elem.val(displayValue).focus();
         this.setCaret(displayValue.length);
         this.callHook('onItemSelect', { value: value, data: data });
          this.callHook('onFinish', { value: value, data: data });
@@ -619,7 +621,10 @@
             }
             this.callHook('onNoMatch');
         }
-        this.dom.$results.hide();
+        if(this.options.hideAfterSelect)
+        {
+            this.dom.$results.hide();
+        }
         this.lastKeyPressed_ = null;
         this.lastProcessedValue_ = null;
         if (this.active_) {
@@ -686,7 +691,8 @@
         onItemSelect: false,
         onFinish: false,
         onNoMatch: false,
-        fixedPos: true
+        fixedPos: true,
+        hideAfterSelect:true
     };
 
 })(jQuery);

@@ -1,0 +1,2 @@
+parameters:
+    tables.groups: %core.table_prefix%groups

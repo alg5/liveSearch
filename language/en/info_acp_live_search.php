@@ -1,11 +1,11 @@
 <?php
-/** 
+/**
 *
 * liveSearch [Russian]
 *
 * @package liveSearch
 * @copyright (c) 2014 alg
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License 
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
 
@@ -35,56 +35,40 @@ if (empty($lang) || !is_array($lang))
 // in a url you again do not need to specify an order e.g., 'Click %sHERE%s' is fine
 
 $lang = array_merge($lang, array(
-	'ACP_LIVE_SEARCH'		=> 'Быстрый (живой) поиск',
-	'ACP_LIVE_SEARCH_MOD_VER'				=> 'Версия МОДа: ',
-	'ACP_LIVE_SEARCH_SETTINGS'				=> 'Настройки быстрого поиска',
-	'ACP_LIVE_SEARCH_SETTINGS_FORUMS'				=> 'Быстрый поиск по форумам',
-	'ACP_LIVE_SEARCH_SETTINGS_TOPICS'				=> 'Быстрый поиск по темам',
-	'ACP_LIVE_SEARCH_SETTINGS_SIMILARTOPICS'				=> 'Быстрый поиск похожих тем во время создания новой темы',
-	//'ACP_LIVE_SEARCH_SETTINGS_TOPICS_EXPLAIN'				=> 'Быстрый(живой) поиск по названию темы, если включено, поиск осуществляется либо по всей конференции с главной страницы, либо по конкретному форуму и всем содержашимся в нём подфорумам <br /><strong>Важно: Для корректной работы настроек расширения требуется MySQL версии 4.1 или выше!</strong><br />',
-	'ACP_LIVE_SEARCH_SETTINGS_TOPICS_EXPLAIN'				=>'<strong>Важно: Для корректной работы настроек расширения требуется MySQL версии 4.1 или выше!</strong><br />',
-	'ACP_LIVE_SEARCH_SETTINGS_USERS'				=> 'Быстрый поиск по пользователям',
-
-	'LIVE_SEARCH_MIN_NUM_SYMBLOLS'				=> 'Минимальное число символов для поиска',
-	'LIVE_SEARCH_MIN_NUM_SYMBLOLS_EXPLAIN'				=> 'Поиск будет начинаться введённого количества символов',
-	'LIVE_SEARCH_MAX_ITEMS_TO_SHOW'				=> 'Число результатов',
-	'LIVE_SEARCH_MAX_ITEMS_TO_SHOW_EXPLAIN'				=> ' Ограничивает число результатов, которые будут показаны в выпадающем списке.. Рекомендованное значение 20.',
-	'LIVE_SEARCH_EXCLUDE_FORUMS'		=> 'Форумы, исключенные из живого поиска',
-	'LIVE_SEARCH_EXCLUDE_FORUMS_EXPLAIN'		=> 'Список разделённых запятыми номеров форумов',
-
-	'LIVE_SEARCH_FORUM_ON'				=> '<strong> Включить быстрый поиск по форумам</strong>',
-	'LIVE_SEARCH_TOPIC_ON'				=> '<strong> Включить быстрый поиск по темам</strong>',
-	'LIVE_SEARCH_USER_ON'				=> '<strong> Включить быстрый поиск по пользователям</strong>',
-	'LIVE_SEARCH_SIMILARTOPIC_ON'				=> '<strong> Включить быстрый поиск похожих тем</strong>',
-	'LIVE_SEARCH_SHOW_IN_NEW_WINDOW'				=> 'Отображать результаты в новом окне ',
-	'LIVE_SEARCH_SHOW_FOR_GUEST'				=> 'Показывать для гостей ',
-	'LIVE_SEARCH_USE_EYE_BUTTON'				=> 'Использовать кнопку "глаз" для временного сокрытия панели поиска ',
-));
-
-
-$lang = array_merge($lang, array(
 	'ACP_LIVE_SEARCH'		=> 'Quick search',
-	'ACP_LIVE_SEARCH_MOD_VER'				=> 'Mod version: ',
 	'ACP_LIVE_SEARCH_SETTINGS'				=> 'Quick search settings',
-	'ACP_LIVE_SEARCH_SETTINGS_FORUMS'				=> 'Quick search forums',
-	'ACP_LIVE_SEARCH_SETTINGS_TOPICS'				=> 'Quick search topics',
-	'ACP_LIVE_SEARCH_SETTINGS_SIMILARTOPICS'				=> 'Quick search for similar topics when creating a new game',
-	//'ACP_LIVE_SEARCH_SETTINGS_TOPICS_EXPLAIN'				=> 'Быстрый(живой) поиск по названию темы, если включено, поиск осуществляется либо по всей конференции с главной страницы, либо по конкретному форуму и всем содержашимся в нём подфорумам <br /><strong>Важно: Для корректной работы настроек расширения требуется MySQL версии 4.1 или выше!</strong><br />',
-	'ACP_LIVE_SEARCH_SETTINGS_TOPICS_EXPLAIN'				=>'<strong>Important: The extension requires Mysql version 4.1 or higher!</strong><br />',
-	'ACP_LIVE_SEARCH_SETTINGS_USERS'				=> 'Quick search users',
+	'ACP_LIVE_SEARCH_SETTINGS_FORUMS'				=> 'Quick search of forums',
+	'ACP_LIVE_SEARCH_SETTINGS_TOPICS'				=> 'Quick search of topics',
+	'ACP_LIVE_SEARCH_SETTINGS_SIMILARTOPICS'				=> 'Quick search of similar topics when creating a new topic',
+	//'ACP_LIVE_SEARCH_SETTINGS_TOPICS_EXPLAIN'				=> 'Р‘С‹СЃС‚СЂС‹Р№(Р¶РёРІРѕР№) РїРѕРёСЃРє РїРѕ РЅР°Р·РІР°РЅРёСЋ С‚РµРјС‹, РµСЃР»Рё РІРєР»СЋС‡РµРЅРѕ, РїРѕРёСЃРє РѕСЃСѓС‰РµСЃС‚РІР»СЏРµС‚СЃСЏ Р»РёР±Рѕ РїРѕ РІСЃРµР№ РєРѕРЅС„РµСЂРµРЅС†РёРё СЃ РіР»Р°РІРЅРѕР№ СЃС‚СЂР°РЅРёС†С‹, Р»РёР±Рѕ РїРѕ РєРѕРЅРєСЂРµС‚РЅРѕРјСѓ С„РѕСЂСѓРјСѓ Рё РІСЃРµРј СЃРѕРґРµСЂР¶Р°С€РёРјСЃСЏ РІ РЅС‘Рј РїРѕРґС„РѕСЂСѓРјР°Рј <br /><strong>Р’Р°Р¶РЅРѕ: Р”Р»СЏ РєРѕСЂСЂРµРєС‚РЅРѕР№ СЂР°Р±РѕС‚С‹ РЅР°СЃС‚СЂРѕРµРє СЂР°СЃС€РёСЂРµРЅРёСЏ С‚СЂРµР±СѓРµС‚СЃСЏ MySQL РІРµСЂСЃРёРё 4.1 РёР»Рё РІС‹С€Рµ!</strong><br />',
+	'ACP_LIVE_SEARCH_SETTINGS_TOPICS_EXPLAIN'				=>'<strong>Important: The extension requires MySQL version 4.1 or higher!</strong><br />',
+	'ACP_LIVE_SEARCH_SETTINGS_USERS'				=> 'Quick search of users',
 
 	'LIVE_SEARCH_MIN_NUM_SYMBLOLS'				=> 'Min number of characters for search',
-	'LIVE_SEARCH_MIN_NUM_SYMBLOLS_EXPLAIN'				=> 'The search starts after the min number of characters are entered,',
+	'LIVE_SEARCH_MIN_NUM_SYMBLOLS_EXPLAIN'				=> 'The search starts after the min number of characters are entered.',
 	'LIVE_SEARCH_MAX_ITEMS_TO_SHOW'				=> 'Number of results',
 	'LIVE_SEARCH_MAX_ITEMS_TO_SHOW_EXPLAIN'				=> 'Limits the result number that is shown in the dropdown list. The recommended value is 20.',
-	'LIVE_SEARCH_EXCLUDE_FORUMS'		=> 'Forms that are exluded from the live search',
-	'LIVE_SEARCH_EXCLUDE_FORUMS_EXPLAIN'		=> 'List of comma separated forum numbers',
+	'LIVE_SEARCH_EXCLUDE_FORUMS'		=> 'Forums that are excluded from the live search',
+	'LIVE_SEARCH_EXCLUDE_FORUMS_EXPLAIN'		=> 'List of ID forums separated by a comma.',
 
-	'LIVE_SEARCH_FORUM_ON'				=> '<strong> Turn on quick forum search</strong>',
-	'LIVE_SEARCH_TOPIC_ON'				=> '<strong> Turn on quick topic search </strong>',
-	'LIVE_SEARCH_USER_ON'				=> '<strong> Turn on quick user search </strong>',
-	'LIVE_SEARCH_SIMILARTOPIC_ON'				=> '<strong> Turn on similar topics search</strong>',
-	'LIVE_SEARCH_SHOW_IN_NEW_WINDOW'				=> 'Show results in a new window ',
-	'LIVE_SEARCH_SHOW_FOR_GUEST'				=> 'Show to guests ',
+	'LIVE_SEARCH_FORUM_ON'				=> '<strong>Turn on the quick search of forums</strong>',
+	'LIVE_SEARCH_TOPIC_ON'				=> '<strong>Turn on the quick search of topics</strong>',
+	'LIVE_SEARCH_USER_ON'				=> '<strong>Turn on the quick search of users</strong>',
+	'LIVE_SEARCH_SIMILARTOPIC_ON'				=> '<strong>Turn on the quick search of similar topics</strong>',
+	'LIVE_SEARCH_SHOW_IN_NEW_WINDOW'				=> 'Show results in a new window',
+	'LIVE_SEARCH_SHOW_FOR_GUEST'				=> 'Show for guests',
 	'LIVE_SEARCH_USE_EYE_BUTTON'				=> 'Use "eye" button to temporary hide the search panel',
+	//*******version 2.0.*******
+	'LIVE_SEARCH_TOPIC_LINK_TYPE'				=> 'Displays a link to the topic in the canonical view ',
+	'LIVE_SEARCH_TOPIC_LINK_TYPE_EXPLAIN'		=> 'canonical view of a link: "forum/viewtopic.php?f=N1&t=N2", non-canonical(SEO-compatible) view:"forum/viewtopic.php?t=N2"',
+	'LIVE_SEARCH_ACP_ON'				=> '<strong> Turn on the quick search in ACP</strong>',
+	'ACP_LIVE_SEARCH_SETTINGS_ACP'				=> 'Quick search of forums, groups, users in ACP',
+	'LIVE_SEARCH_MIN_NUM_SYMBLOLS_USERS'				=> 'Min number of characters for users search',
+	'LIVE_SEARCH_MIN_NUM_SYMBLOLS_GROUPS'				=> 'Min number of characters for groups search',
+	'LIVE_SEARCH_MIN_NUM_SYMBLOLS_FORUMS'				=> 'Min number of characters for forums search',
+	//*******version 2.1.*******
+	'LIVE_SEARCH_MCP_ON'				=> '<strong> Turn on the quick search in MCP</strong>',
+	'MCP_LIVE_SEARCH_SETTINGS_MCP'				=> 'Quick search of forums, groups, users in MCP',
+	//*******version 2.2.*******
+	'LIVE_SEARCH_HIDE_AFTER_SELECT'				=> 'Hide the results search block after selected an item ',
 ));

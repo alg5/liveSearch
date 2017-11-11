@@ -41,7 +41,6 @@ if (empty($lang) || !is_array($lang))
 
 $lang = array_merge($lang, array(
 	'ACP_LIVE_SEARCH'		=> 'Recherche rapide',
-	'ACP_LIVE_SEARCH_MOD_VER'				=> 'Version de l’extension : ',
 	'ACP_LIVE_SEARCH_SETTINGS'				=> 'Paramètres',
 	'ACP_LIVE_SEARCH_SETTINGS_FORUMS'				=> 'Recherche rapide de forums',
 	'ACP_LIVE_SEARCH_SETTINGS_TOPICS'				=> 'Recherche rapide de sujets',
@@ -63,5 +62,19 @@ $lang = array_merge($lang, array(
 	'LIVE_SEARCH_SIMILARTOPIC_ON'				=> '<strong>Activer la recherche rapide de sujets similaires</strong>',
 	'LIVE_SEARCH_SHOW_IN_NEW_WINDOW'				=> 'Afficher les résultats dans une nouvelle fenêtre',
 	'LIVE_SEARCH_SHOW_FOR_GUEST'				=> 'Afficher aux invités',
-	'LIVE_SEARCH_USE_EYE_BUTTON'				=> 'Utilisez le bouton « oeil » pour masquer temporairement le panneau de la recherche',
+	'LIVE_SEARCH_USE_EYE_BUTTON'				=> 'Utiliser le bouton en forme d’œil pour masquer le panneau de la recherche rapide',
+	//*******version 2.0.*******
+	'LIVE_SEARCH_TOPIC_LINK_TYPE'				=> 'Rediriger vers l’adresse URL standard du sujet',
+	'LIVE_SEARCH_TOPIC_LINK_TYPE_EXPLAIN'		=> 'Permet de rediriger vers l’ adresse URL standard du sujet (canonique) : « ./viewtopic.php?f=N1&t=N2 ». Si désactivée, le lien sera de type non-canonique (SEO-compatible) : « ./viewtopic.php?t=N2 ».',
+	'LIVE_SEARCH_ACP_ON'				=> '<strong>Activer la recherche rapide dans le PCA (panneau d’administration)</strong>',
+	'ACP_LIVE_SEARCH_SETTINGS_ACP'				=> 'Recherche rapide de forums, groupes et utilisateurs dans le PCA',
+	'LIVE_SEARCH_MIN_NUM_SYMBLOLS_USERS'				=> 'Nombre minimum de caractères pour rechercher des utilisateurs',
+	'LIVE_SEARCH_MIN_NUM_SYMBLOLS_GROUPS'				=> 'Nombre minimum de caractères pour rechercher des groupes',
+	'LIVE_SEARCH_MIN_NUM_SYMBLOLS_FORUMS'				=> 'Nombre minimum de caractères pour rechercher des forums',
+	//*******version 2.1.*******
+	'LIVE_SEARCH_MCP_ON'				=> '<strong>Activer la recherche rapide dans le PCM (panneau de modération)</strong>',
+	'MCP_LIVE_SEARCH_SETTINGS_MCP'				=> 'Recherche rapide de forums, groupes et utilisateurs dans le PCM',
+	//*******version 2.2.*******
+	'LIVE_SEARCH_HIDE_AFTER_SELECT'				=> 'Masquer les résultats de la recherche après avoir sélectionneé un résultat',
+	'LOG_CONFIG_LIVE_SEARCH'				=> 'Paramètres de la recherche rapide modifiés',
 ));

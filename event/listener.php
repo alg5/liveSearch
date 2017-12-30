@@ -288,14 +288,15 @@ class listener implements EventSubscriberInterface
 		$live_search_show_for_guest = isset($this->config['live_search_show_for_guest']) ? (bool) $this->config['live_search_show_for_guest'] : true;
 		$live_search_hide_after_select = isset($this->config['live_search_hide_after_select']) ? (bool) $this->config['live_search_hide_after_select'] : true;
 		$live_search_topic_link_type = isset($this->config['live_search_topic_link_type']) ? (bool) $this->config['live_search_topic_link_type'] : true;
-		$is_live_search = $on_off_forum || $on_off_topic || $on_off_user;
+		//$is_live_search = $on_off_forum || $on_off_topic || $on_off_user;
+                             $is_live_search = !$this->user->data['is_bot'] && ($on_off_forum || $on_off_topic || $on_off_user);
 		if (!$live_search_show_for_guest)
 		{
 			$is_live_search = $is_live_search && $this->user->data['is_registered'];
 		}
 		//quick actions in MCP
 		$mcp_topic_move = false;
-		$is_livesearch_mcp = isset($this->config['live_search_on_off_mcp']) & $this->config['live_search_on_off_mcp'] ? true : false;
+		$is_livesearch_mcp = isset($this->config['live_search_on_off_mcp']) & (bool) $this->config['live_search_on_off_mcp'] ? true : false;
 
 		//$this->template->assign_vars(array(
 		//        'S_LIVESEARCH_MCP'	=>  $is_livesearch_mcp,

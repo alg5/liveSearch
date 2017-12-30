@@ -65,6 +65,7 @@ class acp_live_search_module
 			$config->set('live_search_on_off_acp', $live_search_on_off_acp);
 			$config->set('live_search_on_off_mcp', $live_search_on_off_mcp);
 			$config->set('live_search_show_in_new_window', $live_search_show_in_new_window);
+			$config->set('live_search_show_for_guest', $live_search_show_for_guest);
 			$config->set('live_search_hide_after_select', $live_search_hide_after_select);
 			$config->set('live_search_topic_link_type', $live_search_topic_link_type);
 			$config->set('live_search_use_eye_button', $live_search_use_eye_button);

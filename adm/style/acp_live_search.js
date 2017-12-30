@@ -16,7 +16,7 @@
             changeEnable($('#live_search_on_off_user'), 'setting_u');
             changeEnable($('#live_search_on_off_similartopic'), 'setting_st');
             changeEnable($('#live_search_on_off_acp'), 'setting_acp');
-            changeEnable($('#live_search_on_off_acp'), 'setting_mcp');
+            changeEnable($('#live_search_on_off_mcp'), 'setting_mcp');
 
             $('#live_search_on_off_forum').on('change', function () {
                 changeEnable(this, 'setting_f');

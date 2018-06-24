@@ -31,64 +31,101 @@
 <!-- ENDIF -->
 
 <!-- IF S_SHOW_TOPICS -->
-
-	<!-- IF .livesearchresults -->
-	<div class="forumbg">
-
-		<div class="inner">
-		<ul class="topiclist">
-			<li class="header">
-				<dl class="icon">
-					<dt><div class="list-inner">{L_TOPICS}</div></dt>
-					<dd class="posts">{L_REPLIES}</dd>
-					<dd class="views">{L_VIEWS}</dd>
-					<dd class="lastpost"><span>{L_LAST_POST}</span></dd>
-				</dl>
-			</li>
-		</ul>
-		<ul class="topiclist topics">
-
-		<!-- BEGIN livesearchresults -->
-			<li class="row<!-- IF livesearchresults.S_ROW_COUNT is even --> bg1<!-- ELSE --> bg2<!-- ENDIF -->">
-				<dl class="icon {livesearchresults.TOPIC_IMG_STYLE}">
-					<dt <!-- IF livesearchresults.TOPIC_ICON_IMG -->style="background-image: url({T_ICONS_PATH}{livesearchresults.TOPIC_ICON_IMG}); background-repeat: no-repeat;"<!-- ENDIF --> title="{livesearchresults.TOPIC_FOLDER_IMG_ALT}">
-						<!-- IF livesearchresults.S_UNREAD_TOPIC and not S_IS_BOT --><a href="{livesearchresults.U_NEWEST_POST}" class="icon-link"></a><!-- ENDIF -->
-						<div class="list-inner">
-
+    <!-- IF .livesearchresults -->
+        <div class="forumbg">
+            <div class="inner">
+              <ul class="topiclist">
+                    <li class="header">
+                        <dl class="row-item">
+                            <dt><div class="list-inner">{L_TOPICS}</div></dt>
+                            <dd class="posts">{L_REPLIES}</dd>
+                            <dd class="views">{L_VIEWS}</dd>
+                            <dd class="lastpost"><span>{L_LAST_POST}</span></dd>
+                        </dl>
+                    </li>
+	</ul>
+	<ul class="topiclist topics">
+                <!-- EVENT search_results_topic_before -->
+	<!-- BEGIN livesearchresults -->
+                         <li class="row<!-- IF livesearchresults.S_ROW_COUNT is even --> bg1<!-- ELSE --> bg2<!-- ENDIF -->">
+                        <dl class="row-item {livesearchresults.TOPIC_IMG_STYLE}">
+		<dt<!-- IF livesearchresults.TOPIC_ICON_IMG --> style="background-image: url({T_ICONS_PATH}{livesearchresults.TOPIC_ICON_IMG}); background-repeat: no-repeat;"<!-- ENDIF --> title="{livesearchresults.TOPIC_FOLDER_IMG_ALT}">
+       		<!-- IF livesearchresults.S_UNREAD_TOPIC and not S_IS_BOT --><a href="{livesearchresults.U_NEWEST_POST}" class="row-item-link"></a><!-- ENDIF -->
+ 						<div class="list-inner">
 							<!-- EVENT topiclist_row_prepend -->
-							<!-- IF livesearchresults.S_UNREAD_TOPIC and not S_IS_BOT --><a href="{livesearchresults.U_NEWEST_POST}">{NEWEST_POST_IMG}</a> <!-- ENDIF -->
-							<a href="{livesearchresults.U_VIEW_TOPIC}" class="topictitle">{livesearchresults.TOPIC_TITLE}</a> {livesearchresults.ATTACH_ICON_IMG}
-							<!-- IF livesearchresults.S_TOPIC_UNAPPROVED or livesearchresults.S_POSTS_UNAPPROVED --><a href="{livesearchresults.U_MCP_QUEUE}">{livesearchresults.UNAPPROVED_IMG}</a> <!-- ENDIF -->
-							<!-- IF livesearchresults.S_TOPIC_DELETED --><a href="{livesearchresults.U_MCP_QUEUE}">{DELETED_IMG}</a> <!-- ENDIF -->
-							<!-- IF livesearchresults.S_TOPIC_REPORTED --><a href="{livesearchresults.U_MCP_REPORT}">{REPORTED_IMG}</a><!-- ENDIF --><br />
+							<!-- IF livesearchresults.S_UNREAD_TOPIC and not S_IS_BOT -->
+								<a class="unread" href="{livesearchresults.U_NEWEST_POST}">
+									<i class="icon fa-file fa-fw icon-red icon-md" aria-hidden="true"></i><span class="sr-only">{L_NEW_POST}</span>
+								</a>
+							<!-- ENDIF -->
+							<a href="{livesearchresults.U_VIEW_TOPIC}" class="topictitle">{livesearchresults.TOPIC_TITLE}</a>
+							<!-- IF livesearchresults.S_TOPIC_UNAPPROVED or livesearchresults.S_POSTS_UNAPPROVED -->
+								<a href="{livesearchresults.U_MCP_QUEUE}" title="{L_TOPIC_UNAPPROVED}">
+									<i class="icon fa-question fa-fw icon-blue" aria-hidden="true"></i><span class="sr-only">{L_TOPIC_UNAPPROVED}</span>
+								</a>
+							<!-- ENDIF -->
+							<!-- IF livesearchresults.S_TOPIC_DELETED -->
+								<a href="{livesearchresults.U_MCP_QUEUE}" title="{L_TOPIC_DELETED}">
+									<i class="icon fa-recycle fa-fw icon-green" aria-hidden="true"></i><span class="sr-only">{L_TOPIC_DELETED}</span>
+								</a>
+							<!-- ENDIF -->
+							<!-- IF livesearchresults.S_TOPIC_REPORTED -->
+								<a href="{livesearchresults.U_MCP_REPORT}" title="{L_TOPIC_REPORTED}">
+									<i class="icon fa-exclamation fa-fw icon-red" aria-hidden="true"></i><span class="sr-only">{L_TOPIC_REPORTED}</span>
+								</a>
+							<!-- ENDIF -->
+							<br />
+							<!-- EVENT topiclist_row_topic_title_after -->
+
+							<!-- IF not S_IS_BOT -->
+								<div class="responsive-show" style="display: none;">
+									{L_LAST_POST} {L_POST_BY_AUTHOR} {livesearchresults.LAST_POST_AUTHOR_FULL} &laquo; <a href="{livesearchresults.U_LAST_POST}" title="{L_GOTO_LAST_POST}">{livesearchresults.LAST_POST_TIME}</a>
+									<br />{L_POSTED} {L_IN} <a href="{livesearchresults.U_VIEW_FORUM}">{livesearchresults.FORUM_TITLE}</a>
+								</div>
+							<!-- IF livesearchresults.TOPIC_REPLIES --><span class="responsive-show left-box" style="display: none;">{L_REPLIES}{L_COLON} <strong>{livesearchresults.TOPIC_REPLIES}</strong></span><!-- ENDIF -->
+							<!-- ENDIF -->
+
+							<div class="responsive-hide left-box">
+								<!-- IF livesearchresults.S_HAS_POLL --><i class="icon fa-bar-chart fa-fw" aria-hidden="true"></i><!-- ENDIF -->
+								<!-- IF livesearchresults.ATTACH_ICON_IMG --><i class="icon fa-paperclip fa-fw" aria-hidden="true"></i><!-- ENDIF -->
+								{L_POST_BY_AUTHOR} {livesearchresults.TOPIC_AUTHOR_FULL} &raquo; {livesearchresults.FIRST_POST_TIME} &raquo; {L_IN} <a href="{livesearchresults.U_VIEW_FORUM}">{livesearchresults.FORUM_TITLE}</a>
+							</div>
+
 							<!-- IF .livesearchresults.pagination -->
 							<div class="pagination">
+								<span><i class="icon fa-clone fa-fw" aria-hidden="true"></i></span>
 								<ul>
 								<!-- BEGIN pagination -->
 									<!-- IF livesearchresults.pagination.S_IS_PREV -->
-									<!-- ELSEIF livesearchresults.pagination.S_IS_CURRENT --><li class="active"><span>{livesearchresults.pagination.PAGE_NUMBER}</span></li>
+									<!-- ELSEIF livesearchresults.pagination.S_IS_CURRENT --><li class="active"><span>{searchresults.pagination.PAGE_NUMBER}</span></li>
 									<!-- ELSEIF livesearchresults.pagination.S_IS_ELLIPSIS --><li class="ellipsis"><span>{L_ELLIPSIS}</span></li>
 									<!-- ELSEIF livesearchresults.pagination.S_IS_NEXT -->
-									<!-- ELSE --><li><a href="{livesearchresults.pagination.PAGE_URL}">{livesearchresults.pagination.PAGE_NUMBER}</a></li>
+									<!-- ELSE --><li><a class="button" href="{livesearchresults.pagination.PAGE_URL}">{livesearchresults.pagination.PAGE_NUMBER}</a></li>
 									<!-- ENDIF -->
 								<!-- END pagination -->
 								</ul>
 							</div>
 							<!-- ENDIF -->
-							<!-- IF livesearchresults.S_HAS_POLL -->{POLL_IMG} <!-- ENDIF -->
-							{L_POST_BY_AUTHOR} {livesearchresults.TOPIC_AUTHOR_FULL} &raquo; {livesearchresults.FIRST_POST_TIME} &raquo; {L_IN} <a href="{livesearchresults.U_VIEW_FORUM}">{livesearchresults.FORUM_TITLE}</a>
-							<!-- EVENT topiclist_row_append -->
 
+							<!-- EVENT topiclist_row_append -->
 						</div>
-					</dt>
-					<dd class="posts">{livesearchresults.TOPIC_REPLIES}</dd>
-					<dd class="views">{livesearchresults.TOPIC_VIEWS}</dd>
-					<dd class="lastpost"><span>
-						{L_POST_BY_AUTHOR} {livesearchresults.LAST_POST_AUTHOR_FULL}
-						<!-- IF not S_IS_BOT --><a href="{livesearchresults.U_LAST_POST}" title="{L_GOTO_LAST_POST}">{LAST_POST_IMG}</a> <!-- ENDIF --><br />{livesearchresults.LAST_POST_TIME}<br /> </span>
-					</dd>
+		</dt>				</dt>
+					<dd class="posts">{livesearchresults.TOPIC_REPLIES} <dfn>{L_REPLIES}</dfn></dd>
+					<dd class="views">{livesearchresults.TOPIC_VIEWS} <dfn>{L_VIEWS}</dfn></dd>
+                                     			<dd class="lastpost">
+						<span><dfn>{L_LAST_POST} </dfn>{L_POST_BY_AUTHOR} {livesearchresults.LAST_POST_AUTHOR_FULL}
+							<!-- IF not S_IS_BOT -->
+								<a href="{searchresults.U_LAST_POST}" title="{L_GOTO_LAST_POST}">
+									<i class="icon fa-external-link-square fa-fw icon-lightgray icon-md" aria-hidden="true"></i><span class="sr-only">{VIEW_LATEST_POST}</span>
+								</a>
+							<!-- ENDIF -->
+							<br />{livesearchresults.LAST_POST_TIME}
+						</span>
+					</dd>   
+                                        
 				</dl>
 			</li>
+                        <!-- EVENT search_results_topic_after -->
 		<!-- END livesearchresults -->
 		</ul>
 

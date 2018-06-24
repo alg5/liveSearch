@@ -3,7 +3,7 @@
     "type": "phpbb-extension",
     "description": "Live Search (as in Google)",
     "homepage": "https://github.com/alg5/liveSearch/tree/dev_3.2.x",
-    "version": "3.0.2",
+    "version": "3.0.3",
     "time": "2016-05-05",
     "license": "GPL-2.0",
     "authors": [

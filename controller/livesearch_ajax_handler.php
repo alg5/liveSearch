@@ -55,6 +55,21 @@ class liveSearch_ajax_handler
 
 	/** @var array */
 	protected $thankers = array();
+	/**
+	* Constructor
+	* @param \phpbb\config\config                       $config                Config object
+	* @param \phpbb\db\driver\driver_interface     $db                    DBAL object
+	* @param \phpbb\auth\auth                           $auth                  Auth object
+	* @param \phpbb\template\template               $template              Template object
+	* @param \phpbb\user                                    $user                  User object
+	* @param \phpbb\cache\driver\driver_interface $cache                 Cache driver object
+	* @param \phpbb\request\request_interface     $request               Request object
+	* @param string                                              $phpbb_root_path       phpbb_root_path
+	* @param string                                             $php_ext               phpEx
+	* @param rxu\PostsMerging\core\helper         $helper                The extension helper object
+	* @return \rxu\ThanksForPosts\event\listener
+	* @access public
+	*/
 
 	public function __construct(\phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \phpbb\auth\auth $auth, \phpbb\template\template $template, \phpbb\user $user, \phpbb\cache\service $cache, $phpbb_root_path, $php_ext, \phpbb\request\request_interface $request, $phpbb_container, \phpbb\pagination $pagination, \phpbb\content_visibility $content_visibility, \phpbb\profilefields\manager $profilefields_manager, \phpbb\event\dispatcher_interface $dispatcher, $groups_table)
 	{
@@ -204,7 +219,7 @@ class liveSearch_ajax_handler
 	*
 	* @event alg.livesearch.sql_livesearch_topics
 	* @var	array	sql_array		The SQL array
-	* @since 3.0.2
+	* @since 2.0.4
 	*/
 	$vars = array('sql_array');
 	extract($this->dispatcher->trigger_event('alg.livesearch.sql_livesearch_topics', compact($vars)));
@@ -221,7 +236,7 @@ class liveSearch_ajax_handler
 	*
 	* @event alg.livesearch.topics_modify_rowset
 	* @var	array	rowset		Array with topics results data
-	* @since 3.0.2
+	* @since 2.0.4
 	*/
 	$vars = array(
 		'rowset',
@@ -502,7 +517,7 @@ class liveSearch_ajax_handler
 			* @var	array	sql_array		The SQL array
 			* @var	int	 total_match_count	The total number of search matches
 			* @since 1.0.0
-			* @changed 3.0.2 Added total_match_count
+			* @changed 2.0.4 Added total_match_count
 			*/
 			$vars = array('sql_array', 'total_match_count');
 			extract($this->dispatcher->trigger_event('alg.livesearch.sql_livesearch_usertopics', compact($vars)));
@@ -521,7 +536,7 @@ class liveSearch_ajax_handler
 			* @event alg.livesearch.usertopics_modify_rowset
 			* @var	array	rowset					Array with topics results data
 			* @var	int 	total_match_count					Array with topics results data
-			* @since 3.0.2
+			* @since 2.0.4
 			*/
 			$vars = array(
 				'rowset',
@@ -654,9 +669,9 @@ class liveSearch_ajax_handler
 		* @var	array	tpl_ary		Template block array with topic data
 		* @var	int start		Template block array with topic data
 		* @var	int total_count		Template block array with topic data
-		* @since 3.0.2
+		* @since 2.0.4
 		*/
-		$vars = array('tpl_ary', 'start', 'total_count');
+		$vars = array( 'tpl_ary', 'start', 'total_count');
 		extract($this->dispatcher->trigger_event('alg.livesearch.modify_tpl_ary_livesearch_usertopics_matches', compact($vars)));
 		$this->template->assign_vars($tpl_ary);
 
@@ -746,6 +761,13 @@ class liveSearch_ajax_handler
 					" AND t.topic_visibility = " . ITEM_APPROVED .
 					" AND p.post_visibility = " . ITEM_APPROVED .
 					" AND p.poster_id = " . $author_id ;
+		$sql = "SELECT count(t.topic_id) as total_count" .
+					" FROM " . POSTS_TABLE . " p LEFT JOIN  " .TOPICS_TABLE . " t ON (p.topic_id = t.topic_id) ".
+					" LEFT JOIN " . USERS_TABLE . " u ON p.poster_id = u.user_id" .
+					" WHERE  t.topic_status <> " . ITEM_MOVED .
+					" AND t.topic_visibility = " . ITEM_APPROVED .
+					" AND p.post_visibility = " . ITEM_APPROVED .
+					" AND p.poster_id = " . $author_id ;                
 		if (sizeof($ex_fid_ary))
 		{
 			$sql .= " AND " . $this->db->sql_in_set('p.forum_id', $ex_fid_ary, true);
@@ -762,16 +784,23 @@ class liveSearch_ajax_handler
 		$result = $this->db->sql_query($sql);
 		$row = $this->db->sql_fetchrow($result);
 		$total_count = (int) $row['total_count'];
-		$username = $row['username'];
-		$this->db->sql_freeresult($result);
+                             $this->db->sql_freeresult($result);
+                            if ($total_count > 0)
+                            {
+                                $sql = str_replace('count(t.topic_id) as total_count', 't.topic_title, u.username', $sql);
+                                $result = $this->db->sql_query($sql);
+                                $row = $this->db->sql_fetchrow($result);
+                                 $username = $row['username'];
+                                $this->db->sql_freeresult($result);
+                            }
 		$forum_name = '';
 		$topic_name = '';
 		$forum_has_subforums = false;
-		if ($topic_id)
+		if ($topic_id && $total_count > 0)
 		{
 			$topic_name = censor_text($row['topic_title']);
 		}
-		if ($forum_id)
+		if ($forum_id && $total_count > 0)
 		{
 			$sql = 	" SELECT forum_name, left_id, right_id FROM " . FORUMS_TABLE .  " WHERE forum_id=" . $forum_id;
 			$result = $this->db->sql_query($sql);
@@ -836,7 +865,7 @@ class liveSearch_ajax_handler
 			* @var	array	sql_array		The SQL array
 			* @var	int 	total_match_count		The total number of search matches
 			* @since 1.0.0
-			* @changed 3.0.2 Added total_match_count
+			* @changed 2.0.4 Added total_match_count
 			*/
 			$vars = array('sql_array', 'total_match_count');
 			extract($this->dispatcher->trigger_event('alg.livesearch.sql_livesearch_userposts', compact($vars)));
@@ -855,8 +884,8 @@ class liveSearch_ajax_handler
 		* @event alg.livesearch.userposts_modify_rowset
 		* @var	array	rowset					Array with the search results data
 		* @var	int 	total_match_count		The total number of search matches
-		* @since 3.0.1
-		* @changed 3.0.2 Added total_match_count
+		* @since 2.0.3
+		* @changed 2.0.4 Added total_match_count
 		*/
 			$vars = array(
 			'rowset',
@@ -880,13 +909,13 @@ class liveSearch_ajax_handler
 					$view_topic_url = append_sid("{$this->phpbb_root_path}viewtopic.$this->php_ext", $view_topic_url_params);
 					$parse_flags = ($row['bbcode_bitfield'] ? OPTION_FLAG_BBCODE : 0) | OPTION_FLAG_SMILIES;
 					$row['post_text'] = generate_text_for_display($row['post_text'], $row['bbcode_uid'], $row['bbcode_bitfield'], $parse_flags, false);
-
 						$tpl_ary = array(
 						'POST_AUTHOR_FULL'		=> get_username_string('full', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
 						'POST_AUTHOR_COLOUR'	=> get_username_string('colour', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
 						'POST_AUTHOR'			=> get_username_string('username', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
 						'U_POST_AUTHOR'			=> get_username_string('profile', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
-						'U_VIEW_POST'		=> (!empty($row['post_id'])) ?  append_sid("{$this->phpbb_root_path}viewtopic.$this->php_ext", "f=" + $row['forum_id'] + "&amp;t=" . $row['topic_id'] . '&amp;p=' . $row['post_id'] ) . '#p' . $row['post_id'] : '',
+//						'U_VIEW_POST'		=> (!empty($row['post_id'])) ?  append_sid("{$this->phpbb_root_path}viewtopic.$this->php_ext", "f=" + $row['forum_id'] + "&amp;t=" . $row['topic_id'] . '&amp;p=' . $row['post_id'] ) . '#p' . $row['post_id'] : '',
+						'U_VIEW_POST'		=> (!empty($row['post_id'])) ?  append_sid("{$this->phpbb_root_path}viewtopic.$this->php_ext", sprintf("f=%0s&amp;t=%1s&amp;p=%2s#%3s", $row['forum_id'], $row['topic_id'], $row['post_id'],  $row['post_id'])) : '',
 
 						'POST_SUBJECT'		=> $row['post_subject'],
 						'POST_DATE'			=> (!empty($row['post_time'])) ? $this->user->format_date($row['post_time']) : '',
@@ -960,7 +989,7 @@ class liveSearch_ajax_handler
 		* @event alg.livesearch.modify_tpl_ary_livesearch_userposts_matches
 		* @var	array	tpl_ary		Template block array with topic data
 		* @var	int total_count		The total number of search matches
-		* @since 3.0.2
+		* @since 2.0.4
 		*/
 		$vars = array('tpl_ary', 'total_count');
 		extract($this->dispatcher->trigger_event('alg.livesearch.modify_tpl_ary_livesearch_userposts_matches', compact($vars)));

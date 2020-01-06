@@ -20,7 +20,7 @@
     "extra": {
         "display-name": "Live Search (as in google)",
         "soft-require": {
-           "phpbb/phpbb": "3.2.*@dev"
+           "phpbb/phpbb": ">=3.2.0"
         },
         "version-check": {
             "host": "alg5.github.io",

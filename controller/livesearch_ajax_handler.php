@@ -95,10 +95,13 @@ class liveSearch_ajax_handler
 
 	public function main($action, $forum, $topic, $user)
 	{
-		// Grab data
-		$q = utf8_strtoupper($this->request->variable('q', '',true));
-
 		$this->user->add_lang_ext('alg/liveSearch', 'live_search');
+
+		// Grab data
+		$q = (string) $this->request->variable('q', '',true);
+		$action = (string) $action;
+		$forum = (int) $forum;
+		$user = (int) $user;
 
 		switch ($action)
 		{
@@ -114,7 +117,7 @@ class liveSearch_ajax_handler
 				$this->live_search_user($action, $q);
 			break;
 			case 'usertopic':
-				$this->live_search_usertopic( $forum, $topic, $user);
+				$this->live_search_usertopic($forum, $topic, $user);
 			break;
 			case 'userpost':
 				$this->live_search_userpost( $forum, $topic, $user);
@@ -433,7 +436,7 @@ class liveSearch_ajax_handler
 			" LEFT JOIN " . USERS_TABLE . " u ON t.topic_poster = u.user_id" .
 			" WHERE  t.topic_status <> " . ITEM_MOVED .
 			" AND t.topic_visibility = " . ITEM_APPROVED .
-			" AND t.topic_poster = " . $author_id . $this->build_subforums_search($forum_id) ;
+			" AND t.topic_poster = " . (int) $author_id . $this->build_subforums_search((int) $forum_id) ;
 
 		if (sizeof($ex_fid_ary))
 		{
@@ -442,7 +445,7 @@ class liveSearch_ajax_handler
 
 		if ($forum_id)
 		{
-			$sql .= $this->build_subforums_search($forum_id) ;
+			$sql .= $this->build_subforums_search((int) $forum_id) ;
 		}
 
 		$result = $this->db->sql_query($sql);
@@ -677,7 +680,7 @@ class liveSearch_ajax_handler
 		* @var	int total_count		Template block array with topic data
 		* @since 2.0.4
 		*/
-		$vars = array( 'tpl_ary', 'start', 'total_count');
+		$vars = array('tpl_ary', 'start', 'total_count');
 		extract($this->dispatcher->trigger_event('alg.livesearch.modify_tpl_ary_livesearch_usertopics_matches', compact($vars)));
 		$this->template->assign_vars($tpl_ary);
 
@@ -742,7 +745,7 @@ class liveSearch_ajax_handler
 					$ex_fid_ary = array_unique($ex_fid_ary);
 			}
 		}
-		
+
 		$not_in_fid = (sizeof($ex_fid_ary)) ? 'WHERE ' . $this->db->sql_in_set('f.forum_id', $ex_fid_ary, true) . " OR (f.forum_password <> '' AND fa.user_id <> " . (int) $this->user->data['user_id'] . ')' : "";
 
 		// find out in which forums the user is allowed to view posts
@@ -767,14 +770,14 @@ class liveSearch_ajax_handler
 			" WHERE  t.topic_status <> " . ITEM_MOVED .
 			" AND t.topic_visibility = " . ITEM_APPROVED .
 			" AND p.post_visibility = " . ITEM_APPROVED .
-			" AND p.poster_id = " . $author_id ;
+			" AND p.poster_id = " . (int) $author_id ;
 		$sql = "SELECT count(t.topic_id) as total_count" .
 			" FROM " . POSTS_TABLE . " p LEFT JOIN  " .TOPICS_TABLE . " t ON (p.topic_id = t.topic_id) ".
 			" LEFT JOIN " . USERS_TABLE . " u ON p.poster_id = u.user_id" .
 			" WHERE  t.topic_status <> " . ITEM_MOVED .
 			" AND t.topic_visibility = " . ITEM_APPROVED .
 			" AND p.post_visibility = " . ITEM_APPROVED .
-			" AND p.poster_id = " . $author_id ;                
+			" AND p.poster_id = " . (int) $author_id ;
 		if (sizeof($ex_fid_ary))
 		{
 			$sql .= " AND " . $this->db->sql_in_set('p.forum_id', $ex_fid_ary, true);
@@ -782,12 +785,12 @@ class liveSearch_ajax_handler
 
 		if ($forum_id)
 		{
-			$sql .= $this->build_subforums_search($forum_id) ;
+			$sql .= $this->build_subforums_search((int) $forum_id) ;
 		}
 
 		if ($topic_id)
 		{
-			$sql .= " AND p.topic_id = " .  $topic_id;
+			$sql .= " AND p.topic_id = " .  (int) $topic_id;
 		}
 
 		$result = $this->db->sql_query($sql);
@@ -1038,22 +1041,22 @@ class liveSearch_ajax_handler
 
 		$sql = "SELECT left_id, right_id " .
 				" FROM " . FORUMS_TABLE .
-				" WHERE forum_id = " . $forum_id ;
+				" WHERE forum_id = " . (int) $forum_id ;
 		$result = $this->db->sql_query($sql);
 		$row = $this->db->sql_fetchrow($result);
 		$this->db->sql_freeresult($result);
 
 		$sql = "SELECT forum_id " .
 				" FROM " . FORUMS_TABLE .
-				" WHERE left_id >= " . $row['left_id'] .
-				" AND right_id <= " .  $row['right_id'] .
+				" WHERE left_id >= " . (int) $row['left_id'] .
+				" AND right_id <= " .  (int) $row['right_id'] .
 				" ORDER BY  left_id" ;
 		$result = $this->db->sql_query($sql);
 
 		$subforums = ' AND t.forum_id IN (';
 		while ($row = $this->db->sql_fetchrow($result))
 		{
-			$subforums .= ( $row['forum_id'] . ',');
+			$subforums .= ((int) $row['forum_id'] . ',');
 		}
 		$subforums = substr($subforums, 0, -1) . " )";
 		return $subforums;

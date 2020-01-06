@@ -138,15 +138,16 @@ class liveSearch_ajax_handler
 		$topic_visibility = $phpbb_content_visibility->get_visibility_sql('topic', $forum_id, 't.');
 		$sql = "SELECT  f.forum_id, f.forum_name, pf.forum_name as forum_parent_name  " .
 				" FROM " . FORUMS_TABLE . " f LEFT JOIN " . FORUMS_TABLE . " pf on f.parent_id = pf.forum_id " .
-				" WHERE UPPER(f.forum_name) " . $this->db->sql_like_expression($this->db->get_any_char()  . $this->db->sql_escape($q) . $this->db->get_any_char() ) .
+				" WHERE UPPER(f.forum_name) " . $this->db->sql_like_expression($this->db->get_any_char()  . $this->db->sql_escape(utf8_strtoupper($q)) . $this->db->get_any_char() ) .
 				" ORDER BY f.forum_name";
 		$result = $this->db->sql_query($sql);
 		$arr_res = $arr_priority1 = $arr_priority2 = array();
+
 		while ($row = $this->db->sql_fetchrow($result))
 		{
 			if ($this->auth->acl_get('f_read', $row['forum_id']) )
 			{
-				$pos = strpos(utf8_strtoupper($row['forum_name']), $q);
+				$pos = strpos(utf8_strtoupper($row['forum_name']), utf8_strtoupper($q));
 				if ($pos !== false )
 				{
 					$row['pos'] = $pos;
@@ -162,8 +163,8 @@ class liveSearch_ajax_handler
 			}
 		}
 		$this->db->sql_freeresult($result);
-
 		$arr_res = array_merge((array) $arr_priority1, (array) $arr_priority2);
+
 		$message = '';
 		foreach ($arr_res as $forum_info)
 		{
@@ -195,7 +196,7 @@ class liveSearch_ajax_handler
 		}
 		$where = "t.topic_status <> " . ITEM_MOVED .
 						" AND t.topic_visibility = " . ITEM_APPROVED .
-						"  AND UPPER(t.topic_title) " . $this->db->sql_like_expression($this->db->get_any_char() .  $this->db->sql_escape($q) . $this->db->get_any_char());
+						"  AND UPPER(t.topic_title) " . $this->db->sql_like_expression($this->db->get_any_char() .  $this->db->sql_escape(utf8_strtoupper($q)) . $this->db->get_any_char());
 		if (sizeof($ex_fid_ary))
 		{
 			$where .= " AND " . $this->db->sql_in_set('f.forum_id', $ex_fid_ary, true);
@@ -251,7 +252,7 @@ class liveSearch_ajax_handler
 		{
 			if (isset($row['topic_title']) && strlen($row['topic_title']) >0)
 			{
-				$pos = strpos(utf8_strtoupper($row['topic_title']), $q);
+				$pos = strpos(utf8_strtoupper($row['topic_title']), utf8_strtoupper($q));
 				if ($pos !== false && $this->auth->acl_get('f_read', $row['forum_id']) )
 				{
 					$row['pos'] = $pos;
@@ -292,7 +293,7 @@ class liveSearch_ajax_handler
 		while ($row = $this->db->sql_fetchrow($result))
 		{
 			$key = $row['group_type'] == GROUP_SPECIAL ?  $this->user->lang['G_' . $row['group_name']] : $row['group_name']	;
-			if (strpos(utf8_strtoupper($key), $q) == 0)
+			if (strpos(utf8_strtoupper($key), utf8_strtoupper($q)) == 0)
 			{
 				$group_id=$row['group_id'];
 				$message .= $key . "|$group_id\n";
@@ -647,9 +648,10 @@ class liveSearch_ajax_handler
 		if ($forum_id)
 		{
 			$res_txt = sprintf($this->user->lang['LIVESEARCH_USERTOPIC_RESULT_IN_FORUM'], $username, $forum_name);
+
 			if ($forum_has_subforums)
 			{
-					$res_txt .= $this->user->lang['LIVESEARCH_USERTOPIC_RESULT_IN_SUBFORUMS'];
+				$res_txt .= $this->user->lang['LIVESEARCH_USERTOPIC_RESULT_IN_SUBFORUMS'];
 			}
 		}
 		else
@@ -937,7 +939,6 @@ class liveSearch_ajax_handler
 						'POST_AUTHOR_COLOUR'	=> get_username_string('colour', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
 						'POST_AUTHOR'			=> get_username_string('username', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
 						'U_POST_AUTHOR'			=> get_username_string('profile', $row['poster_id'], $row['username'], $row['user_colour'], $row['post_username']),
-//						'U_VIEW_POST'		=> (!empty($row['post_id'])) ?  append_sid("{$this->phpbb_root_path}viewtopic.$this->php_ext", "f=" + $row['forum_id'] + "&amp;t=" . $row['topic_id'] . '&amp;p=' . $row['post_id'] ) . '#p' . $row['post_id'] : '',
 						'U_VIEW_POST'		=> (!empty($row['post_id'])) ?  append_sid("{$this->phpbb_root_path}viewtopic.$this->php_ext", sprintf("f=%0s&amp;t=%1s&amp;p=%2s#%3s", $row['forum_id'], $row['topic_id'], $row['post_id'],  $row['post_id'])) : '',
 
 						'POST_SUBJECT'		=> $row['post_subject'],
@@ -1004,8 +1005,8 @@ class liveSearch_ajax_handler
 			'TOTAL_MATCHES'		=> $total_count,
 			'REPORTED_IMG'		=> $this->user->img('icon_topic_reported', 'TOPIC_REPORTED'),
 			'UNAPPROVED_IMG'	=> $this->user->img('icon_topic_unapproved', 'TOPIC_UNAPPROVED'),
-			'DELETED_IMG'			 => $this->user->img('icon_topic_deleted', 'TOPIC_DELETED'),
-			'POLL_IMG'				 => $this->user->img('icon_topic_poll', 'TOPIC_POLL'),
+			'DELETED_IMG'		=> $this->user->img('icon_topic_deleted', 'TOPIC_DELETED'),
+			'POLL_IMG'			=> $this->user->img('icon_topic_poll', 'TOPIC_POLL'),
 			'LAST_POST_IMG'		=> $this->user->img('icon_topic_latest', 'VIEW_LATEST_POST'),
 		);
 
@@ -1040,17 +1041,17 @@ class liveSearch_ajax_handler
 		}
 
 		$sql = "SELECT left_id, right_id " .
-				" FROM " . FORUMS_TABLE .
-				" WHERE forum_id = " . (int) $forum_id ;
+			" FROM " . FORUMS_TABLE .
+			" WHERE forum_id = " . (int) $forum_id ;
 		$result = $this->db->sql_query($sql);
 		$row = $this->db->sql_fetchrow($result);
 		$this->db->sql_freeresult($result);
 
 		$sql = "SELECT forum_id " .
-				" FROM " . FORUMS_TABLE .
-				" WHERE left_id >= " . (int) $row['left_id'] .
-				" AND right_id <= " .  (int) $row['right_id'] .
-				" ORDER BY  left_id" ;
+			" FROM " . FORUMS_TABLE .
+			" WHERE left_id >= " . (int) $row['left_id'] .
+			" AND right_id <= " .  (int) $row['right_id'] .
+			" ORDER BY  left_id" ;
 		$result = $this->db->sql_query($sql);
 
 		$subforums = ' AND t.forum_id IN (';

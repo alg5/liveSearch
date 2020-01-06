@@ -57,15 +57,15 @@ class liveSearch_ajax_handler
 	protected $thankers = array();
 	/**
 	* Constructor
-	* @param \phpbb\config\config                       $config                Config object
-	* @param \phpbb\db\driver\driver_interface     $db                    DBAL object
-	* @param \phpbb\auth\auth                           $auth                  Auth object
-	* @param \phpbb\template\template               $template              Template object
-	* @param \phpbb\user                                    $user                  User object
+	* @param \phpbb\config\config                 $config                Config object
+	* @param \phpbb\db\driver\driver_interface    $db                    DBAL object
+	* @param \phpbb\auth\auth                     $auth                  Auth object
+	* @param \phpbb\template\template             $template              Template object
+	* @param \phpbb\user                          $user                  User object
 	* @param \phpbb\cache\driver\driver_interface $cache                 Cache driver object
 	* @param \phpbb\request\request_interface     $request               Request object
-	* @param string                                              $phpbb_root_path       phpbb_root_path
-	* @param string                                             $php_ext               phpEx
+	* @param string                               $phpbb_root_path       phpbb_root_path
+	* @param string                               $php_ext               phpEx
 	* @param rxu\PostsMerging\core\helper         $helper                The extension helper object
 	* @return \rxu\ThanksForPosts\event\listener
 	* @access public
@@ -85,20 +85,18 @@ class liveSearch_ajax_handler
 		$this->phpbb_container = $phpbb_container;
 		$this->pagination =  $pagination;
 		$this->content_visibility = $content_visibility;
-		//$this->table_prefix = $table_prefix;
 		$this->profilefields_manager = $profilefields_manager;
 		$this->dispatcher = $dispatcher;
 		$this->groups_table = $groups_table;
 
 		$this->return = array(); // save returned data in here
 		$this->error = array(); // save errors in here
-
 	}
 
 	public function main($action, $forum, $topic, $user)
 	{
 		// Grab data
-		$q = utf8_strtoupper(utf8_normalize_nfc($this->request->variable('q', '',true)));
+		$q = utf8_strtoupper($this->request->variable('q', '',true));
 
 		$this->user->add_lang_ext('alg/liveSearch', 'live_search');
 
@@ -128,7 +126,6 @@ class liveSearch_ajax_handler
 				$this->error[] = array('error' => $this->user->lang['INCORRECT_SEARCH']);
 
 		}
-
 	}
 
 	private function live_search_forum($action, $forum_id, $q)
@@ -202,85 +199,87 @@ class liveSearch_ajax_handler
 		}
 
 		$sql_array = array(
-		'SELECT'	=> 't.topic_id, t.topic_title, t.topic_status, t.topic_moved_id, t.forum_id, f.forum_name',
-		'FROM'		=> array(TOPICS_TABLE => 't'),
-		'LEFT_JOIN'	=> array(
-			array(
-				'FROM'	=> array(FORUMS_TABLE => 'f'),
-				'ON'	=> 'f.forum_id = t.forum_id',
-			),
+			'SELECT'	=> 't.topic_id, t.topic_title, t.topic_status, t.topic_moved_id, t.forum_id, f.forum_name',
+			'FROM'		=> array(TOPICS_TABLE => 't'),
+			'LEFT_JOIN'	=> array(
+				array(
+					'FROM'	=> array(FORUMS_TABLE => 'f'),
+					'ON'	=> 'f.forum_id = t.forum_id',
+				),
 
-			),
-		'WHERE'		=> $where ,
-		'ORDER_BY'	=> 'topic_title',
-	);
-	/**
-	* Event to modify the SQL query before the topics data is retrieved
-	*
-	* @event alg.livesearch.sql_livesearch_topics
-	* @var	array	sql_array		The SQL array
-	* @since 2.0.4
-	*/
-	$vars = array('sql_array');
-	extract($this->dispatcher->trigger_event('alg.livesearch.sql_livesearch_topics', compact($vars)));
-	$sql = $this->db->sql_build_query('SELECT', $sql_array);
-	$result = $this->db->sql_query($sql);
-	$rowset = array();
-	while ($row = $this->db->sql_fetchrow($result))
-	{
+				),
+			'WHERE'		=> $where ,
+			'ORDER_BY'	=> 'topic_title',
+		);
+		/**
+		* Event to modify the SQL query before the topics data is retrieved
+		*
+		* @event alg.livesearch.sql_livesearch_topics
+		* @var	array	sql_array		The SQL array
+		* @since 2.0.4
+		*/
+		$vars = array('sql_array');
+		extract($this->dispatcher->trigger_event('alg.livesearch.sql_livesearch_topics', compact($vars)));
+		$sql = $this->db->sql_build_query('SELECT', $sql_array);
+		$result = $this->db->sql_query($sql);
+		$rowset = array();
+		while ($row = $this->db->sql_fetchrow($result))
+		{
 			$topic_id = (int) $row['topic_id'];
 			$rowset[$topic_id] = $row;
-	}
-	/**
-	* Modify the rowset data
-	*
-	* @event alg.livesearch.topics_modify_rowset
-	* @var	array	rowset		Array with topics results data
-	* @since 2.0.4
-	*/
-	$vars = array(
-		'rowset',
-	);
-	extract($this->dispatcher->trigger_event('alg.livesearch.topics_modify_rowset', compact($vars)));
+		}
 
-	$topic_list = array();
-	$arr_res = $arr_priority1 = $arr_priority2 = array();
-	foreach ($rowset as $key => $row)
-	{
-		if (isset($row['topic_title']) && strlen($row['topic_title']) >0)
+		/**
+		* Modify the rowset data
+		*
+		* @event alg.livesearch.topics_modify_rowset
+		* @var	array	rowset		Array with topics results data
+		* @since 2.0.4
+		*/
+		$vars = array(
+			'rowset',
+		);
+		extract($this->dispatcher->trigger_event('alg.livesearch.topics_modify_rowset', compact($vars)));
+
+		$topic_list = array();
+		$arr_res = $arr_priority1 = $arr_priority2 = array();
+
+		foreach ($rowset as $key => $row)
 		{
-			$pos = strpos(utf8_strtoupper($row['topic_title']), $q);
-			if ($pos !== false && $this->auth->acl_get('f_read', $row['forum_id']) )
+			if (isset($row['topic_title']) && strlen($row['topic_title']) >0)
 			{
-				$row['pos'] = $pos;
-				if ($pos == 0)
+				$pos = strpos(utf8_strtoupper($row['topic_title']), $q);
+				if ($pos !== false && $this->auth->acl_get('f_read', $row['forum_id']) )
 				{
-					$arr_priority1[] = $row;
-				}
-				else
-				{
-					$arr_priority2[] = $row;
+					$row['pos'] = $pos;
+					if ($pos == 0)
+					{
+						$arr_priority1[] = $row;
+					}
+					else
+					{
+						$arr_priority2[] = $row;
+					}
 				}
 			}
 		}
-	}
-	$this->db->sql_freeresult($result);
+		$this->db->sql_freeresult($result);
 
-	$arr_res = array_merge((array) $arr_priority1, (array) $arr_priority2);
-	$message = '';
-	foreach ($arr_res as $topic_info)
-	{
-		$forum_id = $topic_info['forum_id'];
-		$topic_id = ($topic_info['topic_status'] == 2) ? (int) $topic_info['topic_moved_id'] : (int) $topic_info['topic_id'];
-		$topic_info['topic_title'] = str_replace('|', ' ', $topic_info['topic_title']);
-		$key = censor_text($topic_info['topic_title']	);
-		$forum_name =  ' (' . $topic_info['forum_name'] . ')'  ;
-		$message .= $key . "|$topic_id|$forum_id|$forum_name\n";
+		$arr_res = array_merge((array) $arr_priority1, (array) $arr_priority2);
+		$message = '';
+		foreach ($arr_res as $topic_info)
+		{
+			$forum_id = $topic_info['forum_id'];
+			$topic_id = ($topic_info['topic_status'] == 2) ? (int) $topic_info['topic_moved_id'] : (int) $topic_info['topic_id'];
+			$topic_info['topic_title'] = str_replace('|', ' ', $topic_info['topic_title']);
+			$key = censor_text($topic_info['topic_title']	);
+			$forum_name =  ' (' . $topic_info['forum_name'] . ')'  ;
+			$message .= $key . "|$topic_id|$forum_id|$forum_name\n";
+		}
+		$json_response = new \phpbb\json_response;
+		$json_response->send($message);
 	}
-	$json_response = new \phpbb\json_response;
-	$json_response->send($message);
 
-	}
 	private function live_search_group($action, $q)
 	{
 		$sql = "SELECT group_id, group_name, group_type  FROM " . $this->groups_table .
@@ -298,7 +297,6 @@ class liveSearch_ajax_handler
 		}
 		$json_response = new \phpbb\json_response;
 		$json_response->send($message);
-
 	}
 
 	private function live_search_user($action, $q)
@@ -315,10 +313,10 @@ class liveSearch_ajax_handler
 		$this->db->sql_freeresult($result);
 
 		$sql = "SELECT u.user_id, u.username, user_allow_pm, user_allow_viewemail, user_type, user_inactive_reason, user_jabber, user_email " . $fields_list . " FROM " . USERS_TABLE .
-					" u LEFT JOIN " . PROFILE_FIELDS_DATA_TABLE . " pf on u.user_id = pf.user_id" .
-					" WHERE (user_type = " . USER_NORMAL . " OR user_type = " . USER_FOUNDER . ")" .
-					" AND username_clean " . $this->db->sql_like_expression(utf8_clean_string( $this->db->sql_escape($q)) . $this->db->get_any_char());
-					" ORDER BY username";
+			" u LEFT JOIN " . PROFILE_FIELDS_DATA_TABLE . " pf on u.user_id = pf.user_id" .
+			" WHERE (user_type = " . USER_NORMAL . " OR user_type = " . USER_FOUNDER . ")" .
+			" AND username_clean " . $this->db->sql_like_expression(utf8_clean_string( $this->db->sql_escape($q)) . $this->db->get_any_char());
+			" ORDER BY username";
 
 		$result = $this->db->sql_query($sql);
 		$user_info = array();
@@ -366,12 +364,10 @@ class liveSearch_ajax_handler
 
 			}
 			$message .= "\n";
-
 		}
 		$this->db->sql_freeresult($result);
 		$json_response = new \phpbb\json_response;
-			$json_response->send($message);
-
+		$json_response->send($message);
 	}
 
 	private function live_search_usertopic($forum, $topic, $user)
@@ -433,19 +429,22 @@ class liveSearch_ajax_handler
 		sort($author_id_ary);
 
 		$sql = "SELECT count(t.topic_id) as total_count, u.username" .
-					" FROM " .TOPICS_TABLE . " t LEFT JOIN " . FORUMS_TABLE . " f ON (f.forum_id = t.forum_id)" .
-					" LEFT JOIN " . USERS_TABLE . " u ON t.topic_poster = u.user_id" .
-					" WHERE  t.topic_status <> " . ITEM_MOVED .
-					" AND t.topic_visibility = " . ITEM_APPROVED .
-					" AND t.topic_poster = " . $author_id . $this->build_subforums_search($forum_id) ;
+			" FROM " .TOPICS_TABLE . " t LEFT JOIN " . FORUMS_TABLE . " f ON (f.forum_id = t.forum_id)" .
+			" LEFT JOIN " . USERS_TABLE . " u ON t.topic_poster = u.user_id" .
+			" WHERE  t.topic_status <> " . ITEM_MOVED .
+			" AND t.topic_visibility = " . ITEM_APPROVED .
+			" AND t.topic_poster = " . $author_id . $this->build_subforums_search($forum_id) ;
+
 		if (sizeof($ex_fid_ary))
 		{
 			$sql .= " AND " . $this->db->sql_in_set('f.forum_id', $ex_fid_ary, true);
 		}
+
 		if ($forum_id)
 		{
 			$sql .= $this->build_subforums_search($forum_id) ;
 		}
+
 		$result = $this->db->sql_query($sql);
 		$row = $this->db->sql_fetchrow($result);
 		$total_count = (int) $row['total_count'];
@@ -453,6 +452,7 @@ class liveSearch_ajax_handler
 		$this->db->sql_freeresult($result);
 		$forum_name = '';
 		$forum_has_subforums = false;
+
 		if ($forum_id)
 		{
 			$sql = 	" SELECT forum_name, left_id, right_id FROM " . FORUMS_TABLE .  " WHERE forum_id=" . $forum_id;
@@ -498,9 +498,11 @@ class liveSearch_ajax_handler
 				'WHERE'		=> $where ,
 				'ORDER_BY'	=> 't.topic_last_post_time DESC',
 			);
+
 			$total_match_count =$total_count;
 			// Set limit for the $total_match_count to reduce server load
 			$total_matches_limit = 1000;
+
 			if ($total_match_count)
 			{
 				// Limit the number to $total_matches_limit for pre-made searches
@@ -524,6 +526,7 @@ class liveSearch_ajax_handler
 			$result = $this->db->sql_query_limit($this->db->sql_build_query('SELECT', $sql_array),  $per_page, $start);
 			$row_count = 0;
 			$rowset = array();
+
 			while ($row = $this->db->sql_fetchrow($result))
 			{
 					$topic_id = (int) $row['topic_id'];
@@ -547,6 +550,7 @@ class liveSearch_ajax_handler
 			{
 				$ls_forum_id = (int) $row['forum_id'];
 				$ls_topic_id = (int) $row['topic_id'];
+
 				if ($this->auth->acl_get('f_read',$ls_forum_id))
 				{
 					$row_count++;
@@ -635,32 +639,34 @@ class liveSearch_ajax_handler
 			}
 			$this->pagination->generate_template_pagination($u_search, 'pagination', 'start', $total_count, $per_page, $start);
 
-			}
-			if ($forum_id)
+		}
+
+		if ($forum_id)
+		{
+			$res_txt = sprintf($this->user->lang['LIVESEARCH_USERTOPIC_RESULT_IN_FORUM'], $username, $forum_name);
+			if ($forum_has_subforums)
 			{
-				$res_txt = sprintf($this->user->lang['LIVESEARCH_USERTOPIC_RESULT_IN_FORUM'], $username, $forum_name);
-				if ($forum_has_subforums)
-				{
-						$res_txt .= $this->user->lang['LIVESEARCH_USERTOPIC_RESULT_IN_SUBFORUMS'];
-				}
+					$res_txt .= $this->user->lang['LIVESEARCH_USERTOPIC_RESULT_IN_SUBFORUMS'];
 			}
-			else
-			{
-				$res_txt = sprintf($this->user->lang['LIVESEARCH_USERTOPIC_RESULT'], $username);
-			}
-			$l_search_matches =  $this->user->lang('FOUND_SEARCH_MATCHES', $total_count) ;
-				$tpl_ary = array(
-				'S_SHOW_TOPICS'		=> 1,
-				'SEARCH_MATCHES'	=>  $total_count == 0 ? '' : $this->user->lang('FOUND_SEARCH_MATCHES', $total_count) ,
-				'SEARCH_MATCHES_TXT'	=>	$res_txt,
-				'PAGE_NUMBER'		=> $total_count == 0 ?  0 : $this->pagination->on_page($total_count, $this->config['topics_per_page'], $start),
-				'TOTAL_MATCHES'		=> $total_count,
-				'REPORTED_IMG'		=> $this->user->img('icon_topic_reported', 'TOPIC_REPORTED'),
-				'UNAPPROVED_IMG'	=> $this->user->img('icon_topic_unapproved', 'TOPIC_UNAPPROVED'),
-				'DELETED_IMG'			 => $this->user->img('icon_topic_deleted', 'TOPIC_DELETED'),
-				'POLL_IMG'				 => $this->user->img('icon_topic_poll', 'TOPIC_POLL'),
-				'LAST_POST_IMG'		=> $this->user->img('icon_topic_latest', 'VIEW_LATEST_POST'),
-			);
+		}
+		else
+		{
+			$res_txt = sprintf($this->user->lang['LIVESEARCH_USERTOPIC_RESULT'], $username);
+		}
+
+		$l_search_matches =  $this->user->lang('FOUND_SEARCH_MATCHES', $total_count) ;
+			$tpl_ary = array(
+			'S_SHOW_TOPICS'		=> 1,
+			'SEARCH_MATCHES'	=>  $total_count == 0 ? '' : $this->user->lang('FOUND_SEARCH_MATCHES', $total_count) ,
+			'SEARCH_MATCHES_TXT'	=>	$res_txt,
+			'PAGE_NUMBER'		=> $total_count == 0 ?  0 : $this->pagination->on_page($total_count, $this->config['topics_per_page'], $start),
+			'TOTAL_MATCHES'		=> $total_count,
+			'REPORTED_IMG'		=> $this->user->img('icon_topic_reported', 'TOPIC_REPORTED'),
+			'UNAPPROVED_IMG'	=> $this->user->img('icon_topic_unapproved', 'TOPIC_UNAPPROVED'),
+			'DELETED_IMG'			 => $this->user->img('icon_topic_deleted', 'TOPIC_DELETED'),
+			'POLL_IMG'				 => $this->user->img('icon_topic_poll', 'TOPIC_POLL'),
+			'LAST_POST_IMG'		=> $this->user->img('icon_topic_latest', 'VIEW_LATEST_POST'),
+		);
 
 		/**
 		* Modify the topic matches data before it is assigned to the template
@@ -682,8 +688,8 @@ class liveSearch_ajax_handler
 
 		make_jumpbox(append_sid("{$this->phpbb_root_path}viewforum.$this->php_ext"));
 		page_footer();
-		return new Response($this->template->return_display('body'), 200);
 
+		return new Response($this->template->return_display('body'), 200);
 	}
 
 	private function live_search_userpost($forum, $topic, $user)
@@ -736,7 +742,8 @@ class liveSearch_ajax_handler
 					$ex_fid_ary = array_unique($ex_fid_ary);
 			}
 		}
-			$not_in_fid = (sizeof($ex_fid_ary)) ? 'WHERE ' . $this->db->sql_in_set('f.forum_id', $ex_fid_ary, true) . " OR (f.forum_password <> '' AND fa.user_id <> " . (int) $this->user->data['user_id'] . ')' : "";
+		
+		$not_in_fid = (sizeof($ex_fid_ary)) ? 'WHERE ' . $this->db->sql_in_set('f.forum_id', $ex_fid_ary, true) . " OR (f.forum_password <> '' AND fa.user_id <> " . (int) $this->user->data['user_id'] . ')' : "";
 
 		// find out in which forums the user is allowed to view posts
 		$m_approve_posts_fid_sql = $this->content_visibility->get_global_visibility_sql('post', $ex_fid_ary, 'p.');
@@ -755,27 +762,29 @@ class liveSearch_ajax_handler
 
 		//$l_search_title = $this->user->lang['SEARCH_ACTIVE_TOPICS'];
 		$sql = "SELECT count(t.topic_id) as total_count, t.topic_title, u.username" .
-					" FROM " . POSTS_TABLE . " p LEFT JOIN  " .TOPICS_TABLE . " t ON (p.topic_id = t.topic_id) ".
-					" LEFT JOIN " . USERS_TABLE . " u ON p.poster_id = u.user_id" .
-					" WHERE  t.topic_status <> " . ITEM_MOVED .
-					" AND t.topic_visibility = " . ITEM_APPROVED .
-					" AND p.post_visibility = " . ITEM_APPROVED .
-					" AND p.poster_id = " . $author_id ;
+			" FROM " . POSTS_TABLE . " p LEFT JOIN  " .TOPICS_TABLE . " t ON (p.topic_id = t.topic_id) ".
+			" LEFT JOIN " . USERS_TABLE . " u ON p.poster_id = u.user_id" .
+			" WHERE  t.topic_status <> " . ITEM_MOVED .
+			" AND t.topic_visibility = " . ITEM_APPROVED .
+			" AND p.post_visibility = " . ITEM_APPROVED .
+			" AND p.poster_id = " . $author_id ;
 		$sql = "SELECT count(t.topic_id) as total_count" .
-					" FROM " . POSTS_TABLE . " p LEFT JOIN  " .TOPICS_TABLE . " t ON (p.topic_id = t.topic_id) ".
-					" LEFT JOIN " . USERS_TABLE . " u ON p.poster_id = u.user_id" .
-					" WHERE  t.topic_status <> " . ITEM_MOVED .
-					" AND t.topic_visibility = " . ITEM_APPROVED .
-					" AND p.post_visibility = " . ITEM_APPROVED .
-					" AND p.poster_id = " . $author_id ;                
+			" FROM " . POSTS_TABLE . " p LEFT JOIN  " .TOPICS_TABLE . " t ON (p.topic_id = t.topic_id) ".
+			" LEFT JOIN " . USERS_TABLE . " u ON p.poster_id = u.user_id" .
+			" WHERE  t.topic_status <> " . ITEM_MOVED .
+			" AND t.topic_visibility = " . ITEM_APPROVED .
+			" AND p.post_visibility = " . ITEM_APPROVED .
+			" AND p.poster_id = " . $author_id ;                
 		if (sizeof($ex_fid_ary))
 		{
 			$sql .= " AND " . $this->db->sql_in_set('p.forum_id', $ex_fid_ary, true);
 		}
+
 		if ($forum_id)
 		{
 			$sql .= $this->build_subforums_search($forum_id) ;
 		}
+
 		if ($topic_id)
 		{
 			$sql .= " AND p.topic_id = " .  $topic_id;
@@ -784,22 +793,26 @@ class liveSearch_ajax_handler
 		$result = $this->db->sql_query($sql);
 		$row = $this->db->sql_fetchrow($result);
 		$total_count = (int) $row['total_count'];
-                             $this->db->sql_freeresult($result);
-                            if ($total_count > 0)
-                            {
-                                $sql = str_replace('count(t.topic_id) as total_count', 't.topic_title, u.username', $sql);
-                                $result = $this->db->sql_query($sql);
-                                $row = $this->db->sql_fetchrow($result);
-                                 $username = $row['username'];
-                                $this->db->sql_freeresult($result);
-                            }
+		$this->db->sql_freeresult($result);
+
+		if ($total_count > 0)
+		{
+			$sql = str_replace('count(t.topic_id) as total_count', 't.topic_title, u.username', $sql);
+			$result = $this->db->sql_query($sql);
+			$row = $this->db->sql_fetchrow($result);
+			 $username = $row['username'];
+			$this->db->sql_freeresult($result);
+		}
+
 		$forum_name = '';
 		$topic_name = '';
 		$forum_has_subforums = false;
+
 		if ($topic_id && $total_count > 0)
 		{
 			$topic_name = censor_text($row['topic_title']);
 		}
+
 		if ($forum_id && $total_count > 0)
 		{
 			$sql = 	" SELECT forum_name, left_id, right_id FROM " . FORUMS_TABLE .  " WHERE forum_id=" . $forum_id;
@@ -812,20 +825,23 @@ class liveSearch_ajax_handler
 
 		if ($total_count)
 		{//1
-				$where =	  ' topic_status <> ' . ITEM_MOVED  . '  AND t.topic_visibility = ' .  ITEM_APPROVED  . '  AND p.poster_id = ' . $author_id  ;
-				if (sizeof($ex_fid_ary))
-				{
-					$where .= ' AND ' . $this->db->sql_in_set('f.forum_id', $ex_fid_ary, true);
-				}
-				if ($forum_id)
-				{
-					$where .= $this->build_subforums_search($forum_id) ;
-				}
-				if ($topic_id)
-				{
-					$where .= ' AND t.topic_id = ' . $topic_id ;
-				}
-				$sql_array = array(
+			$where =  ' topic_status <> ' . ITEM_MOVED  . '  AND t.topic_visibility = ' .  ITEM_APPROVED  . '  AND p.poster_id = ' . $author_id  ;
+			if (sizeof($ex_fid_ary))
+			{
+				$where .= ' AND ' . $this->db->sql_in_set('f.forum_id', $ex_fid_ary, true);
+			}
+
+			if ($forum_id)
+			{
+				$where .= $this->build_subforums_search($forum_id) ;
+			}
+
+			if ($topic_id)
+			{
+				$where .= ' AND t.topic_id = ' . $topic_id ;
+			}
+
+			$sql_array = array(
 				'SELECT'	=> 'p.*, f.forum_id, f.forum_name, t.*, u.username, u.username_clean, u.user_sig, u.user_sig_bbcode_uid, u.user_colour ',
 				'FROM'		=> array(POSTS_TABLE => 'p'),
 				'LEFT_JOIN'	=> array(
@@ -838,17 +854,19 @@ class liveSearch_ajax_handler
 						'ON'	=> 'f.forum_id = p.forum_id',
 					),
 
-						array(
-								'FROM'	=> array(USERS_TABLE => 'u'),
-								'ON'	=> 'p.poster_id = u.user_id',
-						),
+					array(
+							'FROM'	=> array(USERS_TABLE => 'u'),
+							'ON'	=> 'p.poster_id = u.user_id',
 					),
+				),
 				'WHERE'		=> $where ,
 				'ORDER_BY'	=> ' p.post_time DESC  ',
 			);
+
 			$total_match_count =$total_count;
 			// Set limit for the $total_match_count to reduce server load
 			$total_matches_limit = 1000;
+
 			if ($total_match_count)
 			{
 				// Limit the number to $total_matches_limit for pre-made searches
@@ -858,6 +876,7 @@ class liveSearch_ajax_handler
 					$total_match_count = $total_matches_limit;
 				}
 			}
+
 			/**
 			* Event to modify the SQL query before the topics data is retrieved
 			*
@@ -878,21 +897,22 @@ class liveSearch_ajax_handler
 			{
 				$rowset[] = $row;
 			}
-		/**
-		* Modify the rowset of posts data
-		*
-		* @event alg.livesearch.userposts_modify_rowset
-		* @var	array	rowset					Array with the search results data
-		* @var	int 	total_match_count		The total number of search matches
-		* @since 2.0.3
-		* @changed 2.0.4 Added total_match_count
-		*/
-			$vars = array(
-			'rowset',
-			'total_match_count',
-		);
-		extract($this->dispatcher->trigger_event('alg.livesearch.userposts_modify_rowset', compact($vars)));
-			//while ($row = $this->db->sql_fetchrow($result))
+
+			/**
+			* Modify the rowset of posts data
+			*
+			* @event alg.livesearch.userposts_modify_rowset
+			* @var	array	rowset					Array with the search results data
+			* @var	int 	total_match_count		The total number of search matches
+			* @since 2.0.3
+			* @changed 2.0.4 Added total_match_count
+			*/
+				$vars = array(
+				'rowset',
+				'total_match_count',
+			);
+			extract($this->dispatcher->trigger_event('alg.livesearch.userposts_modify_rowset', compact($vars)));
+
 			foreach ($rowset as $row)
 			{//2
 				$ls_forum_id = (int) $row['forum_id'];
@@ -930,8 +950,8 @@ class liveSearch_ajax_handler
 						'LAST_POST_TIME'			=> $this->user->format_date($row['topic_last_post_time']),
 						'U_VIEW_TOPIC'		=> $view_topic_url,
 						'U_VIEW_FORUM'		=> append_sid("{$this->phpbb_root_path}viewforum.$this->php_ext", 'f=' . $row['forum_id']),
-//						'U_LAST_POST'			=> append_sid("{$this->phpbb_root_path}viewtopic.$this->php_ext", $view_topic_url_params . '&amp;p=' . $row['topic_last_post_id']) . '#p' . $row['topic_last_post_id'],
 					);
+
 					/**
 					* Modify the topic data before it is assigned to the template
 					*
@@ -941,13 +961,14 @@ class liveSearch_ajax_handler
 					* @since 1.0.0
 					*/
 					$vars = array('row', 'tpl_ary');
-				extract($this->dispatcher->trigger_event('alg.livesearch.modify_tpl_ary_livesearch_userposts', compact($vars)));
+					extract($this->dispatcher->trigger_event('alg.livesearch.modify_tpl_ary_livesearch_userposts', compact($vars)));
 
-				$this->template->assign_block_vars('livesearchresults', $tpl_ary);
+					$this->template->assign_block_vars('livesearchresults', $tpl_ary);
 				}//3
 			}//2 while
-				$this->pagination->generate_template_pagination($u_search, 'pagination', 'start', $total_count, $per_page, $start);
+			$this->pagination->generate_template_pagination($u_search, 'pagination', 'start', $total_count, $per_page, $start);
 		}//1
+
 		if ($topic_id)
 		{
 			$res_txt =  sprintf($this->user->lang['LIVESEARCH_USERPOST_RESULT_IN_TOPIC'], $username, $topic_name, $forum_name);
@@ -957,9 +978,10 @@ class liveSearch_ajax_handler
 			if ($forum_id)
 			{
 				$res_txt = sprintf($this->user->lang['LIVESEARCH_USERPOST_RESULT_IN_FORUM'], $username, $forum_name);
+
 				if ($forum_has_subforums)
 				{
-				$res_txt .= $this->user->lang['LIVESEARCH_USERTOPIC_RESULT_IN_SUBFORUMS'];
+					$res_txt .= $this->user->lang['LIVESEARCH_USERTOPIC_RESULT_IN_SUBFORUMS'];
 				}
 			}
 			else
@@ -967,8 +989,8 @@ class liveSearch_ajax_handler
 				$res_txt = sprintf($this->user->lang['LIVESEARCH_USERPOST_RESULT'], $username);
 			}
 		}
+
 		$l_search_matches =  $this->user->lang('FOUND_SEARCH_MATCHES', $total_count) ;
-		//$this->template->assign_vars(array(
 
 		//));
 		$tpl_ary = array(
@@ -983,6 +1005,7 @@ class liveSearch_ajax_handler
 			'POLL_IMG'				 => $this->user->img('icon_topic_poll', 'TOPIC_POLL'),
 			'LAST_POST_IMG'		=> $this->user->img('icon_topic_latest', 'VIEW_LATEST_POST'),
 		);
+
 		/**
 		* Modify the topic matches data before it is assigned to the template
 		*
@@ -997,7 +1020,8 @@ class liveSearch_ajax_handler
 		page_header($page_title);
 
 		$this->template->set_filenames(array(
-			'body' => $template_html));
+			'body' => $template_html)
+		);
 
 		make_jumpbox(append_sid("{$this->phpbb_root_path}viewforum.$this->php_ext"));
 		page_footer();
@@ -1011,6 +1035,7 @@ class liveSearch_ajax_handler
 		{
 			return '';
 		}
+
 		$sql = "SELECT left_id, right_id " .
 				" FROM " . FORUMS_TABLE .
 				" WHERE forum_id = " . $forum_id ;
@@ -1072,16 +1097,16 @@ class liveSearch_ajax_handler
 
 			// They must allow users to contact via PM
 			(($this->auth->acl_gets('a_', 'm_') || $this->auth->acl_getf_global('m_')) || $seeking_user['user_allow_pm'])
-	);
+		);
 
-	$u_pm = '';
+		$u_pm = '';
 
-	if ($this->config['allow_privmsg'] && $this->auth->acl_get('u_sendpm') && $can_receive_pm)
-	{
-		$u_pm = append_sid("{$this->phpbb_root_path}ucp.$this->php_ext", 'i=pm&amp;mode=compose&amp;u' . $seeking_user['user_id']);
-	}
-	return $u_pm;
+		if ($this->config['allow_privmsg'] && $this->auth->acl_get('u_sendpm') && $can_receive_pm)
+		{
+			$u_pm = append_sid("{$this->phpbb_root_path}ucp.$this->php_ext", 'i=pm&amp;mode=compose&amp;u' . $seeking_user['user_id']);
+		}
 
+		return $u_pm;
 	}
 
 	private function get_url_email($seeking_user)

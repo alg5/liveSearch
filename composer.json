@@ -17,9 +17,6 @@
     "require": {
         "php": ">=5.4.2"
     },
-      "require-dev": {
-      "phpbb/epv": "dev-master"
-   },
     "extra": {
         "display-name": "Live Search (as in google)",
         "soft-require": {

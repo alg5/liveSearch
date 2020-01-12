@@ -4,30 +4,30 @@ services:
     alg.liveSearch.listener:
         class: alg\liveSearch\event\listener
         arguments:
-            - @config
-            - @template
-            - @user
-            - %core.root_path%
-            - %core.php_ext%
-            - @auth
-            - @request
+            - '@config'
+            - '@template'
+            - '@user'
+            - '%core.root_path%'
+            - '%core.php_ext%'
+            - '@auth'
+            - '@request'
         tags:
             - { name: event.listener }
     alg.liveSearch.liveSearch_ajax_handler:
         class: alg\liveSearch\controller\livesearch_ajax_handler
         arguments:
-            - @config
-            - @dbal.conn
-            - @auth
-            - @template
-            - @user
-            - @cache
-            - %core.root_path%
-            - %core.php_ext%
-            - @request
-            - @service_container
-            - @pagination
-            - @content.visibility
-            - @profilefields.manager
-            - @dispatcher
-            - %tables.groups%
+            - '@config'
+            - '@dbal.conn'
+            - '@auth'
+            - '@template'
+            - '@user'
+            - '@cache'
+            - '%core.root_path%'
+            - '%core.php_ext%'
+            - '@request'
+            - '@service_container'
+            - '@pagination'
+            - '@content.visibility'
+            - '@profilefields.manager'
+            - '@dispatcher'
+            - '%tables.groups%'

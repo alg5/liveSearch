@@ -75,6 +75,6 @@ $lang = array_merge($lang, array(
 	//*******version 2.0.*******
 	'LIVE_SEARCH_GROUP'		=> 'Groupe',
 	'LIVE_SEARCH_GROUP_TXT'		=> 'Nom du groupe…',
-	'LIVESEARCH_GROUP_T'	=> 'Pour effectuer une recherche rapide, saisir le nom du groupe',
-
+	'LIVE_SEARCH_GROUP_T'	=> 'Pour effectuer une recherche rapide, saisir le nom du groupe',
+	'LIVE_SEARCH_YOU_SELECTED_TOPIC'	=> 'Vous avez sélectionné le numéro de sujet ',
 ));

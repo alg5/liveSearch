@@ -129,12 +129,12 @@ class acp_live_search_module
 		}
 
 		$template->assign_vars(array(
-			'CHECKED_FORUM'	=>  isset($config['live_search_on_off_forum']) && $config['live_search_on_off_forum'] ? 'checked' : '',
-			'CHECKED_TOPIC'	=>  isset($config['live_search_on_off_topic']) && $config['live_search_on_off_topic'] ? 'checked' : '',
-			'CHECKED_USER'	=>  isset($config['live_search_on_off_user']) && $config['live_search_on_off_user'] ? 'checked' : '',
+			'CHECKED_FORUM'	=>			isset($config['live_search_on_off_forum']) && $config['live_search_on_off_forum'] ? 'checked' : '',
+			'CHECKED_TOPIC'	=>			isset($config['live_search_on_off_topic']) && $config['live_search_on_off_topic'] ? 'checked' : '',
+			'CHECKED_USER'			=>  isset($config['live_search_on_off_user']) && $config['live_search_on_off_user'] ? 'checked' : '',
 			'CHECKED_SIMILARTOPIC'	=>  isset($config['live_search_on_off_similartopic']) && $config['live_search_on_off_similartopic'] ? 'checked' : '',
-			'CHECKED_ACP'	=>  isset($config['live_search_on_off_acp']) && $config['live_search_on_off_acp'] ? 'checked' : '',
-			'CHECKED_MCP'	=>  isset($config['live_search_on_off_mcp']) && $config['live_search_on_off_mcp'] ? 'checked' : '',
+			'CHECKED_ACP'			=>  isset($config['live_search_on_off_acp']) && $config['live_search_on_off_acp'] ? 'checked' : '',
+			'CHECKED_MCP'			=>  isset($config['live_search_on_off_mcp']) && $config['live_search_on_off_mcp'] ? 'checked' : '',
 
 			'LIVE_SEARCH_MIN_NUM_SYMBLOLS_FORUM'	=>  isset($config['live_search_min_num_symblols_forum']) ? $config['live_search_min_num_symblols_forum'] : 0,
 			'LIVE_SEARCH_MAX_ITEMS_TO_SHOW_FORUM'	=>  isset($config['live_search_max_items_to_show_forum']) ? $config['live_search_max_items_to_show_forum'] : 0,

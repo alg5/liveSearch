@@ -1,6 +1,6 @@
-<!-- IF S_EMAIL -->
-    <div style="text-align: left; display:inline-block;">
-        <lable for="usersearch_ls">{L_LIVE_SEARCH_CAPTION}{L_COLON}</lable>
-        <input id="usersearch_ls" class="inputbox search " type='search'   placeholder="{L_LIVESEARCH_USER_TXT}"  title="{L_LIVESEARCH_USER_T}" autocomplete="off" />
-    </div>
-    <!-- ENDIF -->
+{% if S_EMAIL %}
+	<div style="text-align: left; display:inline-block;">
+		<label for="usersearch_ls">{{ lang('LIVE_SEARCH_CAPTION') }}{{ lang('COLON') }}</label>
+		<input id="usersearch_ls" class="inputbox search " type='search'   placeholder="{{ lang('LIVESEARCH_USER_TXT') }}"  title="{{ lang('LIVESEARCH_USER_T') }}" autocomplete="off" />
+	</div>
+{% endif %}

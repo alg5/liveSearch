@@ -1,5 +1,5 @@
-<!-- IF S_LIVESEARCH_ACP -->
-    <!-- INCLUDECSS jquery.autocomplete.css -->
-    <!-- INCLUDECSS @alg_liveSearch/css/acp_livesearch.css -->
-<!-- ENDIF -->
+{% if S_LIVESEARCH_ACP %}
+	{% INCLUDECSS '@alg_liveSearch/css/jquery.autocomplete.css' %}
+	{% INCLUDECSS '@alg_liveSearch/css/acp_livesearch.css' %}
+{% endif %}
 

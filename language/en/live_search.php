@@ -70,6 +70,6 @@ $lang = array_merge($lang, array(
 	//*******version 2.0.*******
 	'LIVE_SEARCH_GROUP'		=> 'Group',
 	'LIVE_SEARCH_GROUP_TXT'		=> 'Group name...',
-	'LIVE_SEARCH_GROUP_T'	=> 'For quick search start typing the group name',
-	'LIVE_SEARCH_YOU_SELECTED_TOPIC'	=> 'You have selected topic number ',
+	'LIVESEARCH_GROUP_T'	=> 'For quick search start typing the group name',
+
 ));

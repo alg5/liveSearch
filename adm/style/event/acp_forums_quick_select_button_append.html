@@ -1,6 +1,6 @@
-<!-- IF S_FORUM_MANAGE -->
-    <div style="text-align:center; margin-left: 333px;">
-        <lable for="forumsearch_ls">{L_LIVE_SEARCH_CAPTION}{L_COLON}</lable>
-        <input id="forumsearch_ls" class="inputbox search ls-forumsearch" type='search'   placeholder="{L_LIVE_SEARCH_FORUM_TXT}"  title="{L_LIVE_SEARCH_FORUM_T}" autocomplete="off" />
-    </div>
-    <!-- ENDIF -->
+{% if S_FORUM_MANAGE %}
+<div style="text-align:center; margin-left: 333px;">
+	<label for="forumsearch_ls">{{ lang('LIVE_SEARCH_CAPTION') }}{{ lang('COLON') }}</label>
+	<input id="forumsearch_ls" class="inputbox search ls-forumsearch" type='search'   placeholder="{{ lang('LIVE_SEARCH_FORUM_TXT') }}"  title="{{ lang('LIVE_SEARCH_FORUM_T') }}" autocomplete="off" />
+</div>
+{% endif %}

@@ -1,6 +1,6 @@
-<!-- IF S_FORUM_PERMISSIONS_COPY -->
-    <div>
-        <lable for="forumsearch_ls_from">{L_LIVE_SEARCH_CAPTION}{L_COLON}</lable>
-        <input id="forumsearch_ls_to" class="ls-acp-search inputbox search ls-forumsearch" type='search'   placeholder="{L_LIVE_SEARCH_FORUM_TXT}"  title="{L_LIVE_SEARCH_FORUM_TXT}" autocomplete="off" style="width: 80%;" />
-    </div>
-<!-- ENDIF -->
+{% if S_FORUM_PERMISSIONS_COPY %}
+<div>
+	<label for="forumsearch_ls_from">{{ lang('LIVE_SEARCH_CAPTION') }}{{ lang('COLON') }}</label>
+	<input id="forumsearch_ls_to" class="ls-acp-search inputbox search ls-forumsearch" type='search'   placeholder="{{ lang('LIVE_SEARCH_FORUM_TXT') }}"  title="{{ lang('LIVE_SEARCH_FORUM_TXT') }}" autocomplete="off" style="width: 80%;" />
+</div>
+{% endif %}

@@ -36,6 +36,7 @@ if (empty($lang) || !is_array($lang))
 
 $lang = array_merge($lang, array(
 	'ACP_LIVE_SEARCH'		=> 'Быстрый (живой) поиск',
+	//'ACP_LIVE_SEARCH_MOD_VER'				=> 'Версия МОДа: ',
 	'ACP_LIVE_SEARCH_SETTINGS'				=> 'Настройки быстрого поиска',
 	'ACP_LIVE_SEARCH_SETTINGS_FORUMS'				=> 'Быстрый поиск по форумам',
 	'ACP_LIVE_SEARCH_SETTINGS_TOPICS'				=> 'Быстрый поиск по темам',
@@ -71,5 +72,4 @@ $lang = array_merge($lang, array(
 	'MCP_LIVE_SEARCH_SETTINGS_MCP'				=> 'Быстрый поиск форумов, пользователей, групп в панели модератора',
 	//*******version 2.0.2.*******
 	'LIVE_SEARCH_HIDE_AFTER_SELECT'				=> 'Скрывать блок результатов поиска после выборки ',
-	'LOG_CONFIG_LIVE_SEARCH'				=> 'Quick search settings updated',
 ));

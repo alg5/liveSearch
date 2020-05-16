@@ -72,9 +72,4 @@ $lang = array_merge($lang, array(
 	'LIVESEARCH_USERPOST_RESULT_IN_TOPIC'	=> 'Messages de l’utilisateur « %1$s » dans le sujet « %2$s » du forum « %3$s »',
 	'LIVE_SEARCH_EYE_BUTTON_OPEN_T'	=> 'Afficher le panneau de la recherche',
 	'LIVE_SEARCH_EYE_BUTTON_CLOSE_T'	=> 'Masquer le panneau de la recherche',
-	//*******version 2.0.*******
-	'LIVE_SEARCH_GROUP'		=> 'Groupe',
-	'LIVE_SEARCH_GROUP_TXT'		=> 'Nom du groupe…',
-	'LIVE_SEARCH_GROUP_T'	=> 'Pour effectuer une recherche rapide, saisir le nom du groupe',
-	'LIVE_SEARCH_YOU_SELECTED_TOPIC'	=> 'Vous avez sélectionné le numéro de sujet ',
 ));

@@ -1,6 +1,6 @@
-<!-- IF S_GROUP_POSITION -->
-    <div style="text-align: center;">
-            <lable for="groupsearch_ls_special">{L_LIVE_SEARCH_CAPTION}{L_COLON}</lable>
-            <input id="groupsearch_ls_special" class="inputbox search ls-groupsearch" type='search'   placeholder="{L_LIVE_SEARCH_GROUP_TXT}"  title="{L_LIVE_SEARCH_GROUP_T}" autocomplete="off" />
-    </div>
-    <!-- ENDIF -->
+{% if S_GROUP_POSITION %}
+<div style="text-align: center;">
+	<label for="groupsearch_ls_special">{{ lang('LIVE_SEARCH_CAPTION') }}{{ lang('COLON') }}</label>
+	<input id="groupsearch_ls_special" class="inputbox search ls-groupsearch" type='search'   placeholder="{{ lang('LIVE_SEARCH_GROUP_TXT') }}"  title="{{ lang('LIVE_SEARCH_GROUP_T') }}" autocomplete="off" />
+</div>
+{% endif %}

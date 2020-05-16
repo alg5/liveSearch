@@ -1,10 +1,18 @@
 .eye_btn 
 {
+    background-image: url("../jquery.eye/images/show-hide.png");
 	cursor: pointer; 
 	position: fixed; 
 	top: 24px; 
-	font-size:18px;
+	width:14px; 
+	height:14px; 
 	z-index :12;
+}
+.eye_btn_open {
+    background-position:  0 14px;
+}
+.eye_btn_close {
+    background-position:  0 0;
 }
 @media 
 only screen and (max-width: 760px),
@@ -12,4 +20,3 @@ only screen and (max-width: 760px),
 {
         .eye_btn {right:2px;}
 }
-

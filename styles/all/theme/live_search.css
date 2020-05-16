@@ -1,19 +1,19 @@
 /* Live Search Desing */
 
-.leave_search_contact-icon {
+.live_search_contact-icon {
 	background-repeat: no-repeat;
 	display: block;
 	height: 16px;
 	width: 16px;
-	font-size:16px;
 }
 .ls_search_user_pm
 {
     position:absolute;
 }
-
-#leavesearch,
-#leavesearch_btn {
+/* #leavesearch,
+#leavesearch_btn, */
+.livesearch,
+.livesearch-btn {
 	border-radius: 0px 0px 10px 10px;
 	box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.2);
 	top: 0;
@@ -24,8 +24,12 @@
 	background-color: white;
 	position: fixed;
 	line-height:normal;
+	
+	cursor:pointer;
+	font-weight: bold;
+	height: 16px;
 }
-#leavesearch {
+.livesearch {
 	/*line-height: 25px;*/
 	background-color: white;
 	/*width: 680px;*/
@@ -34,55 +38,75 @@
 	display:none;
 	padding: 3px 10px;
 }
-#leavesearch_btn {
-	padding: 0 15px;
-	cursor:pointer;
-	font-weight: bold;
-	height: 16px;
-	/*display: none;*/
-}
 
-
-#leavesearch_btn_close 
+.livesearch-btn-close 
 {
     float:right; 
     padding:2px 3px; 
     cursor:pointer ;
 }
 
-#forum_live_search {
+.forum-live-search {
 	width: 120px;
 }
-#topic_live_search {
+.topic-live-search {
 	width: 115px;
 }
-#user_live_search{
+.user-live-search{
 	width: 140px;
 }
 
-#user_handle .pointer 
+.user-handle .pointer 
 {
     left: auto; 
     right: 10px;
+}
+
+.phpbb_vk-icon {
+	
+  background: url("./images/vk.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+  cursor: pointer;
+  height: 16px;
+  position: relative;
+  width: 16px;
+
 }
 
 .livesearch-disable {
 	opacity:0.3;
     filter:alpha(opacity=30); 
 }
-
+.ls-contacts
+{
+	border-bottom-color: White;
+}
+.ls-contact-menu
+{
+	margin-left: 0px; 
+	left: 0px; 
+	max-width: 1281px; 
+}
+/*@media only screen and (max-width: 700px)
+, only screen and (max-device-width: 700px) 
+{
+    #leavesearch_btn
+	{
+		display:none;
+    }
+}*/
 @media 
 only screen and (max-width: 760px),
 (min-device-width: 768px) and (max-device-width: 1024px)  
-{   #leavesearch
+{   .livesearch
     {
         height:auto;
+        /*background-color:Green;*/
     }
-    #leavesearch lable 
+    .livesearch label 
     {
 	    display:block;
     }
-    #leavesearch input 
+    .livesearch input 
     {
 	    width:140px;
     }

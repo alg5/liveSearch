@@ -59,17 +59,16 @@ $lang = array_merge($lang, array(
 	'LIVE_SEARCH_SHOW_FOR_GUEST'				=> 'Show for guests',
 	'LIVE_SEARCH_USE_EYE_BUTTON'				=> 'Use "eye" button to temporary hide the search panel',
 	//*******version 2.0.*******
-	'LIVE_SEARCH_TOPIC_LINK_TYPE'				=> 'Redirect to the canonical link of the topic',
-	'LIVE_SEARCH_TOPIC_LINK_TYPE_EXPLAIN'		=> 'Allows to choose between canonical link, like: "forum/viewtopic.php?f=N1&t=N2", or non-canonical (SEO-compatible) link, like:"forum/viewtopic.php?t=N2".',
-	'LIVE_SEARCH_ACP_ON'				=> '<strong>Turn on the quick search in ACP</strong>',
+	'LIVE_SEARCH_TOPIC_LINK_TYPE'				=> 'Displays a link to the topic in the canonical view ',
+	'LIVE_SEARCH_TOPIC_LINK_TYPE_EXPLAIN'		=> 'canonical view of a link: "forum/viewtopic.php?f=N1&t=N2", non-canonical(SEO-compatible) view:"forum/viewtopic.php?t=N2"',
+	'LIVE_SEARCH_ACP_ON'				=> '<strong> Turn on the quick search in ACP</strong>',
 	'ACP_LIVE_SEARCH_SETTINGS_ACP'				=> 'Quick search of forums, groups, users in ACP',
 	'LIVE_SEARCH_MIN_NUM_SYMBLOLS_USERS'				=> 'Min number of characters for users search',
 	'LIVE_SEARCH_MIN_NUM_SYMBLOLS_GROUPS'				=> 'Min number of characters for groups search',
 	'LIVE_SEARCH_MIN_NUM_SYMBLOLS_FORUMS'				=> 'Min number of characters for forums search',
 	//*******version 2.1.*******
-	'LIVE_SEARCH_MCP_ON'				=> '<strong>Turn on the quick search in MCP</strong>',
+	'LIVE_SEARCH_MCP_ON'				=> '<strong> Turn on the quick search in MCP</strong>',
 	'MCP_LIVE_SEARCH_SETTINGS_MCP'				=> 'Quick search of forums, groups, users in MCP',
 	//*******version 2.2.*******
-	'LIVE_SEARCH_HIDE_AFTER_SELECT'				=> 'Hide the results search block after selected an item',
-	'LOG_CONFIG_LIVE_SEARCH'				=> 'Quick search settings updated',
+	'LIVE_SEARCH_HIDE_AFTER_SELECT'				=> 'Hide the results search block after selected an item ',
 ));

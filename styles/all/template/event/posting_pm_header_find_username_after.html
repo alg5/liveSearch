@@ -1,9 +1,8 @@
- <!-- IF S_LIVE_SEARCH  || true--> 
+ {% if LIVE_SEARCH_ON_OFF_USER %} 
  <br />
- {L_LIVE_SEARCH_CAPTION}{L_COLON} 
-    <div id='leavesearch_pm' style='display:inline-block' >
-    <input  class="inputbox search tiny" id="user_live_search_pm" type='search' placeholder="{L_LIVESEARCH_USER_TXT}"  title="{L_LIVESEARCH_USER_T}" autocomplete="off"/> 
-        
-    </div>
- <!-- ENDIF  -->
+ {{ lang('LIVE_SEARCH_CAPTION') }}{{ lang('COLON') }} 
+<div id='livesearch_pm' class='livesearch_pm' style='display:inline-block' >
+    <input  class="inputbox search tiny user_live_search_pm" id="user_live_search_pm" type='search' placeholder="{{ lang('LIVESEARCH_USER_TXT') }}"  title="{{ lang('LIVESEARCH_USER_T') }}" autocomplete="off"/> 
+</div>
+ {% endif %}
 

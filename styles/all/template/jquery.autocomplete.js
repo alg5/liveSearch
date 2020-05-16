@@ -4,7 +4,6 @@
  * Copyright (c) Dylan Verheul <dylan.verheul@gmail.com>
  */
 (function ($) {
-
     /**
     * Autocompleter Object
     * @param {jQuery} $elem jQuery object with one input tag
@@ -104,6 +103,10 @@
         if (isNaN(this.options.width) || this.options.width < 1) {
             this.options.width = 125;
         }
+        this.options.zIndex = parseInt(this.options.zIndex);
+        if (isNaN(this.options.zIndex) ) {
+            this.options.zIndex = 6;
+        }
         this.options.maxItemsToShow = parseInt(this.options.maxItemsToShow);
         if (isNaN(this.options.maxItemsToShow)) {
             this.options.maxItemsToShow = 0;
@@ -128,6 +131,9 @@
         if (this.options.resultsClass) {
             this.dom.$results.addClass(this.options.resultsClass);
         }
+        $(this.dom.$results).css("z-index", this.options.zIndex);
+        //document.getElementById(this.options.resultsClass).style.zIndex = this.options.zIndex;
+        console.log(this.dom.$results);
 
         var pos = this.options.fixedPos ? 'fixed' : 'absolute';
         this.dom.$results.css({
@@ -692,7 +698,8 @@
         onFinish: false,
         onNoMatch: false,
         fixedPos: true,
-        hideAfterSelect:true
+        hideAfterSelect:true,
+        zIndex:6
     };
 
 })(jQuery);

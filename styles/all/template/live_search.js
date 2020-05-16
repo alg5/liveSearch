@@ -6,45 +6,43 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
             name: 'ls_eye',
             title_open:LIVE_SEARCH_EYE_BUTTON_OPEN_T,
             title_close:LIVE_SEARCH_EYE_BUTTON_CLOSE_T,
-            id: ['leavesearch_btn', 'leavesearch'],
+            id: ['livesearch_btn', 'livesearch'],
 	    });
 }
     //****show-hide button update*****
     
     $().ready(function () {
-
-       // showHideleaveSearch();
-        $("#leavesearch_btn").hoverIntent(function ()
+       // showHideliveSearch();
+        $(".livesearch-btn").hoverIntent(function ()
         {
-             $('#leavesearch_btn').fadeOut("slow");
-            $('#leavesearch').fadeIn("slow");
-       } );
+            $('.livesearch-btn').fadeOut("slow");
+            $('.livesearch').fadeIn("slow");
+        });
 
-        $('#leavesearch_btn_close').on('click', function (e) {
-            $('#forum_live_search').val("");
-            $('#topic_live_search').val("");
-            $('#user_live_search').val("");
-            $('#leavesearch_btn').fadeIn("slow");
-            $('#leavesearch').fadeOut("slow");
+        $('.livesearch-btn-close').on('click', function (e) {
+            $('.forum-live-search').val("");
+            $('.topic-live-search').val("");
+            $('.user-live-search').val("");
+            $('.livesearch-btn').fadeIn("slow");
+            $('.livesearch').fadeOut("slow");
             $('.acResults').fadeOut("slow");
         });
 
         $(document).click(function (event) {
-            if ($(event.target).closest("#user_handle").length || $(event.target).closest(".acResults").length || $(event.target).closest("#user_live_search").length || $(event.target).closest("#leavesearch").length ) return;
-            $("#user_handle").hide("slow");
+            if ($(event.target).closest(".user-handle").length || $(event.target).closest(".acResults").length || $(event.target).closest(".user-live-search").length || $(event.target).closest("#livesearch").length ) return;
+            $(".user-handle").hide("slow");
             $(".acResults").hide("slow");
             event.stopPropagation();
         });
 
 
-        $("#user_live_search").on('keyup', function (e) {
-            $('#user_handle').hide();
+        $(".user-live-search").on('keyup', function (e) {
+            $('.user-handle').hide();
         });
         
         //live search forum
-        $("#forum_live_search").autocomplete_ls(
+        $(".forum-live-search").autocomplete_ls(
 		    {
-		        //url: topic_path,
 		        url: U_FORUM_LS_PATH,
 		        sortResults: false,
 		        width: 600,
@@ -54,7 +52,7 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
                 hideAfterSelect:LIVE_SEARCH_HIDE_AFTER_SELECT,
 
 		        showResult: function (value, data) {
-		            return '<span style="">' + hilight(value, $("#forum_live_search").val()) + '</span>';
+		            return '<span style="">' + hilight(value, $(".forum-live-search").val()) + '</span>';
 		        },
 		        onItemSelect: function (item) {
 		            goto_forum(item);
@@ -63,7 +61,7 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
 		    });
 
         //live search topic
-        $("#topic_live_search").autocomplete_ls(
+        $(".topic-live-search").autocomplete_ls(
 		    {
 		        url: U_TOPIC_LS_PATH,
 		        sortResults: false,
@@ -74,7 +72,7 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
                 hideAfterSelect:LIVE_SEARCH_HIDE_AFTER_SELECT,
 
 		        showResult: function (value, data) {
-		            return '<span style="">' + hilight(value, $("#topic_live_search").val()) + data[2] + '</span>';
+		            return '<span style="">' + hilight(value, $(".topic-live-search").val()) + data[2] + '</span>';
 		        },
 		        onItemSelect: function (item) {
 		            goto_topic(item);
@@ -82,13 +80,13 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
 		    });
 
         //Leave search user
-        $("#user_live_search").autocomplete_ls({
+        $(".user-live-search").autocomplete_ls({
             url: U_USER_LS_PATH,
             selectFirst: true,
             minChars: minChars_user,
 
             showResult: function (value, data) {
-                return hilight(value, $("#user_live_search").val()) ;
+                return hilight(value, $(".user-live-search").val()) ;
             },
             onFinish: function (item) {
                 goto_user(item);
@@ -96,15 +94,13 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
         });
 
         //Leave search user pm
-        $("#user_live_search_pm").autocomplete_ls({
+        $(".user-live-search_pm").autocomplete_ls({
             url: U_USER_PM_LS_PATH,
             selectFirst: true,
             minChars: minChars_user,
-           // addClassUl: 'drg',
            fixedPos:false,
             showResult: function (value, data) {
-
-                return hilight(value, $("#user_live_search").val()) ;
+                return hilight(value, $(".user-live-search").val()) ;
           },
             onItemSelect: function (item) {
                 goto_user_pm(item);
@@ -114,9 +110,9 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
  
         if (S_SIMILARTOPIC_SHOW)
         {
-            var new_topic = $('.ls_similartopics').next().find('input[name=subject]');
+            var new_topic = $('.ls-similartopics').next().find('input[name=subject]');
             $(new_topic).attr('autocomplete', 'off').css('padding-left', '2px');
-            $('.ls_similartopics').next().find('input[name=subject]').autocomplete_ls({
+            $('.ls-similartopics').next().find('input[name=subject]').autocomplete_ls({
  		            url: U_SIMILARTOPIC_LS_PATH,
 		            sortResults: false,
 		            width: 600,
@@ -127,7 +123,7 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
                     hideAfterSelect:LIVE_SEARCH_HIDE_AFTER_SELECT,
 
 		            showResult: function (value, data) {
-		                return '<span style="">' + hilight(value, $("#topic_live_search").val()) + '</span>';
+		                return '<span style="">' + hilight(value, $(".topic-live-search").val()) + '</span>';
 		            },
 		            onItemSelect: function (item) {
 		                goto_topic(item);
@@ -153,7 +149,7 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
         var f = item.data[0];
         if (f) 
         {
-            $("#forum_live_search").val('');
+            $(".forum-live-search").val('');
             var wnd = LIVE_SEARCH_SHOW_IN_NEW_WINDOW ? '_blank' : '_parent';
             var forum_link = U_FORUM_REDIRECT.indexOf("?sid=") >-1  ? '&f=' + f : '?f=' + f;
             window.open(U_FORUM_REDIRECT + forum_link, wnd);
@@ -177,19 +173,19 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
     function goto_user(item) {
 
         if (item) {
-            var newVal = '<div class="user_drag">' + $("#user_live_search").val() + '</div>';
-            $("#user_live_search").html(newVal);
+            var newVal = '<div class="user_drag">' + $(".user-live-search").val() + '</div>';
+            $(".user-live-search").html(newVal);
 
-            var position = $("#user_live_search").position();
+            var position = $(".user-live-search").position();
             var t = (position.top + 9) + 'px';
             var l = position.left + 'px';
-            var w =  $("#user_live_search").width() + 'px'; 
-            $('#user_handle').css({ 'top': t, 'left': l});
-            $('#user_handle').show();
+            var w =  $(".user-live-search").width() + 'px'; 
+            $('.user-handle').css({ 'top': t, 'left': l});
+            $('.user-handle').show();
 
             var username = item.value;
             var user_id = item.data[0];
-             $('#ls_contacts').empty();
+             $('.ls-contacts').empty();
              var new_contact  = '';
              var len = item.data.length -1;
              var contacts_arr = item.data.clone();
@@ -202,32 +198,28 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
                 var contact_url = arr[2];
                 var REMAINDER =i % 4;
                // var new_contact  = '';
-                var class_contact;  
-                var class_img_font = '';      
+                var class_contact;        
                 //var url_contact;        
                 switch ( contact_name)
                 {
                     case 'profile':
-                        class_contact =  'leave_search_contact-icon';
+                        class_contact =  'live_search_contact-icon icon fa-user fa-fw';
                         contact_url = U_PROFILE_LS_PATH + user_id;
-                        class_img_font = 'fa-user';
                         break;
                      case 'pm':
-                       class_contact =  'leave_search_contact-icon contact-icon ' + arr[0] + '-icon';
-//                         class_contact =  'leave_search_contact-icon;
+                        class_contact =  'live_search_contact-icon contact-icon ' + arr[0] + '-icon';
                         contact_url = U_PM_LS_PATH + user_id;
                         break;
                      case 'email':
-                        class_contact =  'leave_search_contact-icon contact-icon ' + arr[0] + '-icon';
+                        class_contact =  'live_search_contact-icon contact-icon ' + arr[0] + '-icon';
                        contact_url =  arr[2];
-                        //class_img_font = 'fa-envelope';
                         break;
                      case 'jabber':
-                        class_contact =  'leave_search_contact-icon contact-icon ' + arr[0] + '-icon';
+                        class_contact =  'live_search_contact-icon contact-icon ' + arr[0] + '-icon';
                        contact_url = U_JABBER_LS_PATH + user_id;
                         break;
                    default:
-                        class_contact =  'leave_search_contact-icon contact-icon ' + arr[0] + '-icon';
+                        class_contact =  'live_search_contact-icon contact-icon ' + arr[0] + '-icon';
                        contact_url = arr[2];
                 }                
                 var S_LAST_CELL = ((REMAINDER == 3) || (i == (contacts_arr.length-1)  && contacts_arr.length < 4)) ;
@@ -255,51 +247,42 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
                 }
                 var new_contact = new_contact + '>';
                 var new_contact = new_contact + '<span class="';
-                new_contact = new_contact + class_contact + '">';
-                if(class_img_font != '')
-                {
-                    new_contact = new_contact + '<i class="fa ' + class_img_font + '" aria-hidden="true"></i>';
-                }
-                new_contact = new_contact + '</span>';
-                 new_contact = new_contact + '</a>';
+                new_contact = new_contact + class_contact + '"></span></a>';
                 if ( REMAINDER == 3 || i ==  (contacts_arr.length-1))
                 {
 					new_contact = new_contact + '</div>';
 				}
             }
-            $('#ls_contacts').append(new_contact);
+            $('.ls-contacts').append(new_contact);
    
-            $('#topics_live_search_board').on('click', function (e) {
+            $('.topics-live-search-board').on('click', function (e) {
                 e.preventDefault();
                 var usertopic_path = U_USERTOPIC_LS_PATH  + '0/0/' + user_id;
-               window.location = usertopic_path;
+                window.location = usertopic_path;
             });
  
-             $('#topics_live_search_forum').on('click', function (e) {
+            $('.topics-live-search-forum').on('click', function (e) {
                 e.preventDefault();
                 var usertopic_path = U_USERTOPIC_LS_PATH  + S_FORUM_ID + '/0/' + user_id;
-               window.location = usertopic_path;
+                window.location = usertopic_path;
             });
 
-              $('#posts_live_search_board').on('click', function (e) {
+            $('.posts-live-search-board').on('click', function (e) {
                 e.preventDefault();
                 var userpost_path = U_USERPOST_LS_PATH  +  '0/0/' + user_id  ;
                window.location = userpost_path;
             });
-             $('#posts_live_search_forum').on('click', function (e) {
+             $('.posts-live-search-forum').on('click', function (e) {
                 e.preventDefault();
                 var userpost_path = U_USERPOST_LS_PATH  + + S_FORUM_ID  + '/0/' + user_id;
                window.location = userpost_path;
             });
-             $('#posts_live_search_topic').on('click', function (e) {
+             $('.posts-live-search-topic').on('click', function (e) {
                 e.preventDefault();
                 var userpost_path = U_USERPOST_LS_PATH  + + S_FORUM_ID  + '/' + S_TOPIC_ID + '/' + user_id;
                window.location = userpost_path;
             });
-
         }
-
-
         return false;
     }
 
@@ -408,7 +391,7 @@ if (LIVE_SEARCH_USE_EYE_BUTTON)
 		        minChars: minChars_topic,
 
 		        showResult: function (value, data) {
-		            return '<span style="">' + hilight(value, $("#topic_live_search").val()) + data[2] + '</span>';
+		            return '<span style="">' + hilight(value, $(".topic-live-search").val()) + data[2] + '</span>';
 		        },
 		        onItemSelect: function (item) {
                     if(totopicElem !=null)

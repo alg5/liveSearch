@@ -3,5 +3,3 @@ alg_liveSearch_controller:
     defaults: { _controller: alg.liveSearch.livesearch_ajax_handler:main }
     requirements:
         forum: \d+
-        topic: \d+
-        user: \d+

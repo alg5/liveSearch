@@ -1,219 +1,211 @@
-<!-- INCLUDE overall_header.html -->
+{% include 'overall_header.html' %}
 
-<h2 class="searchresults-title">{SEARCH_MATCHES_TXT}</h2>
-<h3 class="searchresults-title">{SEARCH_MATCHES}</h3>
+<h2 class="searchresults-title">{{ SEARCH_MATCHES_TXT }}</h2>
+<h3 class="searchresults-title">{{ SEARCH_MATCHES }}</h3>
 
-<!-- IF .pagination or SEARCH_MATCHES or PAGE_NUMBER -->
-	<form method="post" action="{S_SEARCH_ACTION}">
-
-	<div class="action-bar top">
-
-	<!-- IF SEARCH_MATCHES -->
-		<div class="search-box">
-			<!-- IF SEARCH_IN_RESULTS -->
-				<label for="add_keywords">{L_SEARCH_IN_RESULTS}{L_COLON} <input type="search" name="add_keywords" id="add_keywords" value="" class="inputbox narrow" /></label>
-				<input class="button2" type="submit" name="submit" value="{L_SEARCH}" />
-			<!-- ENDIF -->
+{% if pagination or SEARCH_MATCHES or PAGE_NUMBER %}
+	<form method="post" action="{{ S_SEARCH_ACTION }}">
+		<div class="action-bar top">
+			{% if SEARCH_MATCHES %}
+			<div class="search-box">
+				{% if SEARCH_IN_RESULTS %}
+				<label for="add_keywords">{{ lang('SEARCH_IN_RESULTS') }}{{ lang('COLON') }} <input type="search" name="add_keywords" id="add_keywords" value="" class="inputbox narrow" /></label>
+				<input class="button2" type="submit" name="submit" value="{{ lang('SEARCH') }}" />
+				{% endif %}
+			</div>
+			{% endif %}
+			<div class="pagination">
+				{{ SEARCH_MATCHES }}
+				{% if pagination %}
+					{% include 'pagination.html' %}
+				{% else %}
+					&bull; {{ PAGE_NUMBER }}
+				{% endif %}
+			</div>
 		</div>
-	<!-- ENDIF -->
-
-		<div class="pagination">
-			{SEARCH_MATCHES}
-			<!-- IF .pagination -->
-				<!-- INCLUDE pagination.html -->
-			<!-- ELSE -->
-				 &bull; {PAGE_NUMBER}
-			<!-- ENDIF -->
-		</div>
-	</div>
-
 	</form>
-<!-- ENDIF -->
+{% endif %}
 
-<!-- IF S_SHOW_TOPICS -->
-    <!-- IF .livesearchresults -->
+{% if S_SHOW_TOPICS %}
+	{% if livesearchresults %}
         <div class="forumbg">
             <div class="inner">
-              <ul class="topiclist">
+				<ul class="topiclist">
                     <li class="header">
                         <dl class="row-item">
-                            <dt><div class="list-inner">{L_TOPICS}</div></dt>
-                            <dd class="posts">{L_REPLIES}</dd>
-                            <dd class="views">{L_VIEWS}</dd>
-                            <dd class="lastpost"><span>{L_LAST_POST}</span></dd>
+                            <dt><div class="list-inner">{{ lang('TOPICS') }}</div></dt>
+                            <dd class="posts">{{ lang('REPLIES') }}</dd>
+                            <dd class="views">{{ lang('VIEWS') }}</dd>
+                            <dd class="lastpost"><span>{{ lang('LAST_POST') }}</span></dd>
                         </dl>
                     </li>
-	</ul>
-	<ul class="topiclist topics">
-                <!-- EVENT search_results_topic_before -->
-	<!-- BEGIN livesearchresults -->
-                         <li class="row<!-- IF livesearchresults.S_ROW_COUNT is even --> bg1<!-- ELSE --> bg2<!-- ENDIF -->">
-                        <dl class="row-item {livesearchresults.TOPIC_IMG_STYLE}">
-		<dt<!-- IF livesearchresults.TOPIC_ICON_IMG --> style="background-image: url({T_ICONS_PATH}{livesearchresults.TOPIC_ICON_IMG}); background-repeat: no-repeat;"<!-- ENDIF --> title="{livesearchresults.TOPIC_FOLDER_IMG_ALT}">
-       		<!-- IF livesearchresults.S_UNREAD_TOPIC and not S_IS_BOT --><a href="{livesearchresults.U_NEWEST_POST}" class="row-item-link"></a><!-- ENDIF -->
- 						<div class="list-inner">
-							<!-- EVENT topiclist_row_prepend -->
-							<!-- IF livesearchresults.S_UNREAD_TOPIC and not S_IS_BOT -->
-								<a class="unread" href="{livesearchresults.U_NEWEST_POST}">
-									<i class="icon fa-file fa-fw icon-red icon-md" aria-hidden="true"></i><span class="sr-only">{L_NEW_POST}</span>
-								</a>
-							<!-- ENDIF -->
-							<a href="{livesearchresults.U_VIEW_TOPIC}" class="topictitle">{livesearchresults.TOPIC_TITLE}</a>
-							<!-- IF livesearchresults.S_TOPIC_UNAPPROVED or livesearchresults.S_POSTS_UNAPPROVED -->
-								<a href="{livesearchresults.U_MCP_QUEUE}" title="{L_TOPIC_UNAPPROVED}">
-									<i class="icon fa-question fa-fw icon-blue" aria-hidden="true"></i><span class="sr-only">{L_TOPIC_UNAPPROVED}</span>
-								</a>
-							<!-- ENDIF -->
-							<!-- IF livesearchresults.S_TOPIC_DELETED -->
-								<a href="{livesearchresults.U_MCP_QUEUE}" title="{L_TOPIC_DELETED}">
-									<i class="icon fa-recycle fa-fw icon-green" aria-hidden="true"></i><span class="sr-only">{L_TOPIC_DELETED}</span>
-								</a>
-							<!-- ENDIF -->
-							<!-- IF livesearchresults.S_TOPIC_REPORTED -->
-								<a href="{livesearchresults.U_MCP_REPORT}" title="{L_TOPIC_REPORTED}">
-									<i class="icon fa-exclamation fa-fw icon-red" aria-hidden="true"></i><span class="sr-only">{L_TOPIC_REPORTED}</span>
-								</a>
-							<!-- ENDIF -->
-							<br />
-							<!-- EVENT topiclist_row_topic_title_after -->
+				</ul>
+				<ul class="topiclist topics">
+				{% EVENT search_results_topic_before %}
+				{# <!-- BEGIN livesearchresults --> #}
+					{% for result in livesearchresults %}
+						<li class="row{% if result.S_ROW_COUNT is even %} bg1{% else %} bg2{% endif %}">
+							<dl class="row-item {{ result.TOPIC_IMG_STYLE }}">
+								<dt{% if result.TOPIC_ICON_IMG %} style="background-image: url({{ T_ICONS_PATH }}{{ result.TOPIC_ICON_IMG }}); background-repeat: no-repeat;"{% endif %} title="{{ result.TOPIC_FOLDER_IMG_ALT }}">
+									{% if result.S_UNREAD_TOPIC and not S_IS_BOT %}
+										<a href="{{ result.U_NEWEST_POST }}" class="row-item-link"></a>
+									{% endif %}
+									<div class="list-inner">
+										{% EVENT topiclist_row_prepend %}
+										{% if result.S_UNREAD_TOPIC and not S_IS_BOT %}
+											<a class="unread" href="{{ result.U_NEWEST_POST }}">
+												<i class="icon fa-file fa-fw icon-red icon-md" aria-hidden="true"></i><span class="sr-only">{{ lang('NEW_POST') }}</span>
+											</a>
+										{% endif %}
+										<a href="{{ result.U_VIEW_TOPIC }}" class="topictitle">{{ result.TOPIC_TITLE }}</a>
+										{% if result.S_TOPIC_UNAPPROVED or result.S_POSTS_UNAPPROVED %}
+											<a href="{{ result.U_MCP_QUEUE }}" title="{{ lang('TOPIC_UNAPPROVED') }}">
+												<i class="icon fa-question fa-fw icon-blue" aria-hidden="true"></i><span class="sr-only">{{ lang('TOPIC_UNAPPROVED') }}</span>
+											</a>
+										{% endif %}
+										{% if result.S_TOPIC_DELETED  %}
+											<a href="{{ result.U_MCP_QUEUE }}" title="{{ lang('TOPIC_DELETED') }}">
+												<i class="icon fa-recycle fa-fw icon-green" aria-hidden="true"></i><span class="sr-only">{{ lang('TOPIC_DELETED') }}</span>
+											</a>
+										{% endif %}
+										{% if result.S_TOPIC_REPORTED  %}
+											<a href="{{ result.U_MCP_REPORT }}" title="{{ lang('TOPIC_REPORTED') }}">
+												<i class="icon fa-exclamation fa-fw icon-red" aria-hidden="true"></i><span class="sr-only">{{ lang('TOPIC_REPORTED') }}</span>
+											</a>
+										{% endif %}
+										<br />
 
-							<!-- IF not S_IS_BOT -->
-								<div class="responsive-show" style="display: none;">
-									{L_LAST_POST} {L_POST_BY_AUTHOR} {livesearchresults.LAST_POST_AUTHOR_FULL} &laquo; <a href="{livesearchresults.U_LAST_POST}" title="{L_GOTO_LAST_POST}">{livesearchresults.LAST_POST_TIME}</a>
-									<br />{L_POSTED} {L_IN} <a href="{livesearchresults.U_VIEW_FORUM}">{livesearchresults.FORUM_TITLE}</a>
-								</div>
-							<!-- IF livesearchresults.TOPIC_REPLIES --><span class="responsive-show left-box" style="display: none;">{L_REPLIES}{L_COLON} <strong>{livesearchresults.TOPIC_REPLIES}</strong></span><!-- ENDIF -->
-							<!-- ENDIF -->
+										{% EVENT topiclist_row_topic_title_after %}
 
-							<div class="responsive-hide left-box">
-								<!-- IF livesearchresults.S_HAS_POLL --><i class="icon fa-bar-chart fa-fw" aria-hidden="true"></i><!-- ENDIF -->
-								<!-- IF livesearchresults.ATTACH_ICON_IMG --><i class="icon fa-paperclip fa-fw" aria-hidden="true"></i><!-- ENDIF -->
-								{L_POST_BY_AUTHOR} {livesearchresults.TOPIC_AUTHOR_FULL} &raquo; {livesearchresults.FIRST_POST_TIME} &raquo; {L_IN} <a href="{livesearchresults.U_VIEW_FORUM}">{livesearchresults.FORUM_TITLE}</a>
-							</div>
+										{% if not S_IS_BOT  %}
+											<div class="responsive-show" style="display: none;">
+												{{ lang('LAST_POST') }} {{ lang('POST_BY_AUTHOR') }} {{ result.LAST_POST_AUTHOR_FULL }} &laquo; <a href="{{ result.U_LAST_POST }}" title="{{ lang('GOTO_LAST_POST') }}">{{ result.LAST_POST_TIME }}</a>
+												<br />{{ lang('POSTED') }} {{ lang('IN') }} <a href="{{ result.U_VIEW_FORUM }}">{{ result.FORUM_TITLE }}</a>
+											</div>
+											{% if result.TOPIC_REPLIES  %}<span class="responsive-show left-box" style="display: none;">{{ lang('REPLIES') }}{{ lang('COLON') }} <strong>{{ result.TOPIC_REPLIES }}</strong></span>{% endif %}
+										{% endif %}
+										<div class="responsive-hide left-box">
+											{% if result.S_HAS_POLL  %}<i class="icon fa-bar-chart fa-fw" aria-hidden="true"></i>{% endif %}
+											{% if result.ATTACH_ICON_IMG  %}<i class="icon fa-paperclip fa-fw" aria-hidden="true"></i>{% endif %}
+											{{ lang('POST_BY_AUTHOR') }} {{ result.TOPIC_AUTHOR_FULL }} &raquo; {{ result.FIRST_POST_TIME }} &raquo; {{ lang('IN') }} <a href="{{ result.U_VIEW_FORUM }}">{{ result.FORUM_TITLE }}</a>
+										</div>
 
-							<!-- IF .livesearchresults.pagination -->
-							<div class="pagination">
-								<span><i class="icon fa-clone fa-fw" aria-hidden="true"></i></span>
-								<ul>
-								<!-- BEGIN pagination -->
-									<!-- IF livesearchresults.pagination.S_IS_PREV -->
-									<!-- ELSEIF livesearchresults.pagination.S_IS_CURRENT --><li class="active"><span>{searchresults.pagination.PAGE_NUMBER}</span></li>
-									<!-- ELSEIF livesearchresults.pagination.S_IS_ELLIPSIS --><li class="ellipsis"><span>{L_ELLIPSIS}</span></li>
-									<!-- ELSEIF livesearchresults.pagination.S_IS_NEXT -->
-									<!-- ELSE --><li><a class="button" href="{livesearchresults.pagination.PAGE_URL}">{livesearchresults.pagination.PAGE_NUMBER}</a></li>
-									<!-- ENDIF -->
-								<!-- END pagination -->
-								</ul>
-							</div>
-							<!-- ENDIF -->
-
-							<!-- EVENT topiclist_row_append -->
-						</div>
-		</dt>				</dt>
-					<dd class="posts">{livesearchresults.TOPIC_REPLIES} <dfn>{L_REPLIES}</dfn></dd>
-					<dd class="views">{livesearchresults.TOPIC_VIEWS} <dfn>{L_VIEWS}</dfn></dd>
-                                     			<dd class="lastpost">
-						<span><dfn>{L_LAST_POST} </dfn>{L_POST_BY_AUTHOR} {livesearchresults.LAST_POST_AUTHOR_FULL}
-							<!-- IF not S_IS_BOT -->
-								<a href="{searchresults.U_LAST_POST}" title="{L_GOTO_LAST_POST}">
-									<i class="icon fa-external-link-square fa-fw icon-lightgray icon-md" aria-hidden="true"></i><span class="sr-only">{VIEW_LATEST_POST}</span>
-								</a>
-							<!-- ENDIF -->
-							<br />{livesearchresults.LAST_POST_TIME}
-						</span>
-					</dd>   
-                                        
-				</dl>
-			</li>
-                        <!-- EVENT search_results_topic_after -->
-		<!-- END livesearchresults -->
-		</ul>
-
+										{% if result.pagination  %}
+										<div class="pagination">
+											<span><i class="icon fa-clone fa-fw" aria-hidden="true"></i></span>
+											<ul>
+												{% for pagination in result.pagination %}
+													{% if pagination.S_IS_PREV  %}
+													{% elseif pagination.S_IS_CURRENT  %}<li class="active"><span>{{ pagination.PAGE_NUMBER }}</span></li>
+													{% elseif pagination.S_IS_ELLIPSIS  %}<li class="ellipsis"><span>{{ lang('ELLIPSIS') }}</span></li>
+													{% elseif pagination.S_IS_NEXT  %}
+													{% else %}<li><a class="button" href="{{ result.pagination.PAGE_URL }}">{{ result.pagination.PAGE_NUMBER }}</a></li>
+													{% endif %}
+												{% endfor %}
+											</ul>
+										</div>
+										{% endif %}
+										{% EVENT topiclist_row_append %}
+									</div>
+								</dt>				
+								<dd class="posts">{{ result.TOPIC_REPLIES }} <dfn>{{ lang('REPLIES') }}</dfn></dd>
+								<dd class="views">{{ result.TOPIC_VIEWS }} <dfn>{{ lang('VIEWS') }}</dfn></dd>
+								<dd class="lastpost">
+									<span><dfn>{{ lang('LAST_POST') }} </dfn>{{ lang('POST_BY_AUTHOR') }} {{ result.LAST_POST_AUTHOR_FULL }}
+										{% if not S_IS_BOT %}
+										<a href="{{ searchresults.U_LAST_POST }}" title="{{ lang('GOTO_LAST_POST') }}">
+											<i class="icon fa-external-link-square fa-fw icon-lightgray icon-md" aria-hidden="true"></i><span class="sr-only">{{ VIEW_LATEST_POST }}</span>
+										</a>
+										{% endif %}
+										<br />{{ result.LAST_POST_TIME }}
+									</span>
+								</dd>   
+							</dl>
+						</li>
+						{% EVENT search_results_topic_after %}
+					{% endfor %}
+					{# <!-- END livesearchresults --> #}		
+				</ul>
+			</div>
 		</div>
-	</div>
-	<!-- ELSE -->
+	{% else %}
 		<div class="panel">
 			<div class="inner">
-			<strong>{L_NO_SEARCH_RESULTS}</strong>
+			<strong>{{ lang('NO_SEARCH_RESULTS') }}</strong>
 			</div>
 		</div>
-	<!-- ENDIF -->
+	{% endif %}
 
-<!-- ELSE -->
-
-	<!-- BEGIN livesearchresults -->
-		<!-- EVENT search_results_post_before -->
-		<div class="search post <!-- IF livesearchresults.S_ROW_COUNT is odd -->bg1<!-- ELSE -->bg2<!-- ENDIF --><!-- IF livesearchresults.S_POST_REPORTED --> reported<!-- ENDIF -->">
+{% else %}
+	{#  <!-- BEGIN livesearchresults --> #}
+	{% for result in livesearchresults %}
+		{% EVENT search_results_post_before %}
+		<div class="search post {% if result.S_ROW_COUNT is odd %}bg1{% else %}bg2{% endif %}{% if result.S_POST_REPORTED %} reported{% endif %}">
 			<div class="inner">
-
-	<!-- IF livesearchresults.S_IGNORE_POST -->
-		<div class="postbody">
-			{livesearchresults.L_IGNORE_POST}
-		</div>
-	<!-- ELSE -->
-		<dl class="postprofile">
-			<!-- EVENT search_results_postprofile_before -->
-			<dt class="author">{L_POST_BY_AUTHOR} {livesearchresults.POST_AUTHOR_FULL}</dt>
-			<dd class="search-result-date">{livesearchresults.POST_DATE}</dd>
-			<dd>{L_FORUM}{L_COLON} <a href="{livesearchresults.U_VIEW_FORUM}">{livesearchresults.FORUM_TITLE}</a></dd>
-			<dd>{L_TOPIC}{L_COLON} <a href="{livesearchresults.U_VIEW_TOPIC}">{livesearchresults.TOPIC_TITLE}</a></dd>
-			<dd>{L_REPLIES}{L_COLON} <strong>{livesearchresults.TOPIC_REPLIES}</strong></dd>
-			<dd>{L_VIEWS}{L_COLON} <strong>{livesearchresults.TOPIC_VIEWS}</strong></dd>
-			<!-- EVENT search_results_postprofile_after -->
-		</dl>
-
-		<div class="postbody">
-			<h3><a href="{livesearchresults.U_VIEW_POST}">{livesearchresults.POST_SUBJECT}</a></h3>
-			<div class="content">{livesearchresults.MESSAGE}</div>
-		</div>
-	<!-- ENDIF -->
-
-	<!-- IF not livesearchresults.S_IGNORE_POST -->
-		<ul class="searchresults">
-			<li ><a href="{livesearchresults.U_VIEW_POST}" class="arrow-{S_CONTENT_FLOW_END}">{L_JUMP_TO_POST}</a></li>
-		</ul>
-	<!-- ENDIF -->
-
+				{% if result.S_IGNORE_POST %}
+					<div class="postbody">
+						{{ result.L_IGNORE_POST }}
+					</div>
+				{% else %}
+					<dl class="postprofile">
+						{% EVENT search_results_postprofile_before %}
+						<dt class="author">{{ lang('POST_BY_AUTHOR') }} {{ result.POST_AUTHOR_FULL }}</dt>
+						<dd class="search-result-date">{{ result.POST_DATE }}</dd>
+						<dd>{L_FORUM}{{ lang('COLON') }} <a href="{{ result.U_VIEW_FORUM }}">{{ result.FORUM_TITLE }}</a></dd>
+						<dd>{L_TOPIC}{{ lang('COLON') }} <a href="{{ result.U_VIEW_TOPIC }}">{{ result.TOPIC_TITLE }}</a></dd>
+						<dd>{{ lang('REPLIES') }}{{ lang('COLON') }} <strong>{{ result.TOPIC_REPLIES }}</strong></dd>
+						<dd>{{ lang('VIEWS') }}{{ lang('COLON') }} <strong>{{ result.TOPIC_VIEWS }}</strong></dd>
+						{% EVENT search_results_postprofile_after %}
+					</dl>
+					<div class="postbody">
+						<h3><a href="{{ result.U_VIEW_POST }}">{{ result.POST_SUBJECT }}</a></h3>
+						<div class="content">{{ result.MESSAGE }}</div>
+					</div>
+				{% endif %}
+				{% if not result.S_IGNORE_POST %}
+					<ul class="searchresults">
+						<li ><a href="{{ result.U_VIEW_POST }}" class="arrow-{{ S_CONTENT_FLOW_END }}">{{ lang('JUMP_TO_POST') }}</a></li>
+					</ul>
+				{% endif %}
 			</div>
 		</div>
-	<!-- BEGINELSE -->
+	{# <!-- BEGINELSE --> #}
+	{% else %}
 		<div class="panel">
 			<div class="inner">
-			<strong>{L_NO_SEARCH_RESULTS}</strong>
+				<strong>{{ lang('NO_SEARCH_RESULTS') }}</strong>
 			</div>
 		</div>
-	<!-- END livesearchresults -->
-<!-- ENDIF -->
+	{% endfor %}
+	{# <!-- END livesearchresults -->#}
+{% endif %}
 
-<!-- IF .pagination or .livesearchresults or S_SELECT_SORT_KEY or S_SELECT_SORT_DAYS -->
-	<form method="post" action="{S_SEARCH_ACTION}">
-
-	<fieldset class="display-options">
-		<!-- IF S_SELECT_SORT_DAYS or S_SELECT_SORT_KEY -->
-			<label><!-- IF S_SHOW_TOPICS -->{L_DISPLAY_POSTS}<!-- ELSE -->{L_SORT_BY}</label><label><!-- ENDIF --> {S_SELECT_SORT_DAYS}<!-- IF S_SELECT_SORT_KEY --></label> <label>{S_SELECT_SORT_KEY}</label>
-			<label>{S_SELECT_SORT_DIR}<!-- ENDIF --></label>
-			<input type="submit" name="sort" value="{L_GO}" class="button2" />
-		<!-- ENDIF -->
-	</fieldset>
-
+{% if pagination or livesearchresults or S_SELECT_SORT_KEY or S_SELECT_SORT_DAYS %}
+	<form method="post" action="{{ S_SEARCH_ACTION }}">
+		<fieldset class="display-options">
+			{% if S_SELECT_SORT_KEY or S_SELECT_SORT_DAYS %}
+				<label>{% if S_SHOW_TOPICS %}{{ lang('DISPLAY_POSTS') }}{% else %}{{ lang('SORT_BY') }}</label><label>{% endif %}
+					{{ S_SELECT_SORT_DAYS }}
+					{% if S_SELECT_SORT_KEY %}</label> <label>{{ S_SELECT_SORT_KEY }}</label><label>{{ S_SELECT_SORT_DIR }}{% endif %}
+				</label>
+				<input type="submit" name="sort" value="{{ lang('GO') }}" class="button2" />
+			{% endif %}
+		</fieldset>
 	</form>
-
 	<hr />
-<!-- ENDIF -->
+{% endif %}
 
-<!-- IF .pagination or .livesearchresults or PAGE_NUMBER -->
+{% if pagination or livesearchresults or PAGE_NUMBER %}
 <div class="action-bar bottom">
 	<div class="pagination">
-		{SEARCH_MATCHES}
-		<!-- IF .pagination --> 
-			<!-- INCLUDE pagination.html -->
-		<!-- ELSE --> 
-			 &bull; {PAGE_NUMBER}
-		<!-- ENDIF -->
+		{{ SEARCH_MATCHES }}
+		{% if pagination %}
+			{% include 'pagination.html' %} 
+		{% else %} 
+			 &bull; {{ PAGE_NUMBER }}
+		{% endif %}
 	</div>
 </div>
-<!-- ENDIF -->
-
-<!-- INCLUDE jumpbox.html -->
-
-<!-- INCLUDE overall_footer.html -->
+{% endif %}
+{% include 'jumpbox.html' %}
+{% include 'overall_footer.html' %}

@@ -1,70 +1,73 @@
- <!-- IF S_LIVE_SEARCH --> 
- <div id='leavesearch_btn'>{L_LIVE_SEARCH_CAPTION}</div>
-    <div id='leavesearch' >
-      <span id='leavesearch_btn_close'   title='{L_CLOSE_WINDOW}'><i class="icon fa-times fa-fw"></i></span>
-     <!-- IF LIVE_SEARCH_ON_OFF_FORUM --> 
-        <lable for="forum_live_search">{L_LIVE_SEARCH_FORUM}{L_COLON}</lable>
-        <input  class="inputbox search tiny" id="forum_live_search" type=search placeholder="{L_LIVE_SEARCH_FORUM_TXT}"  title="{L_LIVE_SEARCH_FORUM_T}" />
-      <!-- ENDIF  -->
-      <!-- IF LIVE_SEARCH_ON_OFF_TOPIC -->
-        <lable for="topic_live_search" >{L_LIVE_SEARCH_TOPIC}{L_COLON}</lable>
-        <input class="inputbox search tiny" id="topic_live_search" type=search placeholder="{L_LIVE_SEARCH_TXT}"  title="{L_LIVE_SEARCH_T}" />
-      <!-- ENDIF  -->
+ {% if S_LIVE_SEARCH %} 
+ <div id='livesearch_btn' class='livesearch-btn'>{{ lang('LIVE_SEARCH_CAPTION') }}</div>
+    <div id='livesearch'  class='livesearch'>
+	<span  class="livesearch-btn-close"  title='{{ lang('CLOSE_WINDOW') }}'>
+		<i class="icon fa-times fa-fw"></i>
+	</span>
+	  
+	  {% if LIVE_SEARCH_ON_OFF_FORUM %} 
+        <label for="forum-live-search">{{ lang('LIVE_SEARCH_FORUM') }}{{ lang('COLON') }}</label>
+        <input  class="inputbox search tiny forum-live-search" type=search placeholder="{{ lang('LIVE_SEARCH_FORUM_TXT') }}"  title="{{ lang('LIVE_SEARCH_FORUM_T') }}" />
+      {% endif %}
+      {% if LIVE_SEARCH_ON_OFF_TOPIC %}
+        <label for="topic-live-search" >{{ lang('LIVE_SEARCH_TOPIC') }}{{ lang('COLON') }}</label>
+        <input class="inputbox search tiny topic-live-search" type=search placeholder="{{ lang('LIVE_SEARCH_TXT') }}"  title="{{ lang('LIVE_SEARCH_T') }}" />
+      {% endif %}
 
-      <!-- IF LIVE_SEARCH_ON_OFF_USER --> 
-        <lable for="user_live_search" >{L_LIVE_SEARCH_USER}{L_COLON}</lable>
-        <input class="inputbox search tiny" id="user_live_search" type=search placeholder="{L_LIVESEARCH_USER_TXT}"  title="{L_LIVESEARCH_USER_T}" autocomplete="off" /> 
-        <div id="user_handle" class="dropdown hidden" >
+      {% if LIVE_SEARCH_ON_OFF_USER %} 
+        <label for="user-live-search" >{{ lang('LIVE_SEARCH_USER') }}{{ lang('COLON') }}</label>
+        <input class="inputbox search tiny user-live-search" type=search placeholder="{{ lang('LIVESEARCH_USER_TXT') }}"  title="{{ lang('LIVESEARCH_USER_T') }}" autocomplete="off" /> 
+        <div  class="user-handle dropdown hidden" >
 		<div class="pointer">
             <div class="pointer-inner">
         </div>
     </div>
-    <div id='ls_contacts' class="dropdown-contents contact-icons" style='border-bottom-color: White; '></div>
+    <div class="dropdown-contents contact-icons ls-contacts"></div>
   
-    <ul class="dropdown-contents" role="menu" style="margin-left: 0px; left: 0px; max-width: 1281px; ">
-        <li>{L_LIVE_SEARCH_TOPICS_BY_USER}
+    <ul class="dropdown-contents ls-contact-menu" role="menu" >
+        <li>{{ lang('LIVE_SEARCH_TOPICS_BY_USER') }}
             <ul>
-                <li ><a id="topics_live_search_board" href="javascript:void(0);" role = "menuitem" title = "{L_LIVE_SEARCH_TOOLTIP_ALL}"> {L_LIVE_SEARCH_TOPICS_BY_USER_BOARD}</a></li>
-                <!-- IF S_FORUM_ID -->
+                <li ><a class="topics-live-search-board" href="javascript:void(0);" role = "menuitem" title = "{{ lang('LIVE_SEARCH_TOOLTIP_ALL') }}"> {{ lang('LIVE_SEARCH_TOPICS_BY_USER_BOARD') }}</a></li>
+                {% if S_FORUM_ID %}
                     <li >
-                        <!-- IF S_FORUM_EXCLUDE -->
-                            <span  title='{L_LIVESEARCH_USERTOPIC_DISABLED}' class='livesearch-disable'>{L_LIVE_SEARCH_TOPICS_BY_USER_FORUM}</span>
+                        {% if S_FORUM_EXCLUDE %}
+                            <span  title='{{ lang('LIVESEARCH_USERTOPIC_DISABLED') }}' class='livesearch-disable'>{{ lang('LIVE_SEARCH_TOPICS_BY_USER_FORUM') }}</span>
                         <!-- ELSE -->
-                            <a id="topics_live_search_forum" href="javascript:void(0);" role = "menuitem" title = "{L_LIVE_SEARCH_TOOLTIP_BY_FORUM} {FORUM_NAME}"> {L_LIVE_SEARCH_TOPICS_BY_USER_FORUM}</a>
-                        <!-- ENDIF -->
+                            <a class="topics-live-search-forum" href="javascript:void(0);" role = "menuitem" title = "{{ lang('LIVE_SEARCH_TOOLTIP_BY_FORUM') }} {FORUM_NAME}"> {{ lang('LIVE_SEARCH_TOPICS_BY_USER_FORUM') }}</a>
+                        {% endif %}
                     </li>
-                <!-- ENDIF -->
+                {% endif %}
             </ul>
         </li>
     </ul>
-     <ul class="dropdown-contents" role="menu" style="margin-left: 0px; left: 0px; max-width: 1281px; ">
-        <li>{L_LIVE_SEARCH_POSTS_BY_USER}
+     <ul class="dropdown-contents ls-contact-menu" role="menu" >
+        <li>{{ lang('LIVE_SEARCH_POSTS_BY_USER') }}
             <ul>
-                <li ><a id="posts_live_search_board" href="javascript:void(0);" role = "menuitem" title = "{L_LIVE_SEARCH_TOOLTIP_ALL}"> {L_LIVE_SEARCH_POSTS_BY_USER_BOARD}</a></li>
-                <!-- IF S_FORUM_ID -->
+                <li ><a class="posts-live-search-board" href="javascript:void(0);" role = "menuitem" title = "{{ lang('LIVE_SEARCH_TOOLTIP_ALL') }}"> {{ lang('LIVE_SEARCH_POSTS_BY_USER_BOARD') }}</a></li>
+                {% if S_FORUM_ID %}
                      <li >
-                        <!-- IF S_FORUM_EXCLUDE -->
-                            <span  title='{L_LIVESEARCH_USERTOPIC_DISABLED}' class='livesearch-disable'>{L_LIVE_SEARCH_TOPICS_BY_USER_FORUM}</span>
-                        <!-- ELSE -->
-                            <a id="posts_live_search_forum" href="javascript:void(0);" role = "menuitem" title = "{L_LIVE_SEARCH_TOOLTIP_BY_FORUM} {FORUM_NAME}"> {L_LIVE_SEARCH_POSTS_BY_USER_FORUM}</a>
-                        <!-- ENDIF -->
+                        {% if S_FORUM_EXCLUDE %}
+                            <span  title='{{ lang('LIVESEARCH_USERTOPIC_DISABLED') }}' class='livesearch-disable'>{{ lang('LIVE_SEARCH_TOPICS_BY_USER_FORUM') }}</span>
+                            {% else %}
+                            <a class="posts-live-search-forum" href="javascript:void(0);" role = "menuitem" title = "{{ lang('LIVE_SEARCH_TOOLTIP_BY_FORUM') }} {FORUM_NAME}"> {{ lang('LIVE_SEARCH_POSTS_BY_USER_FORUM') }}</a>
+                        {% endif %}
                     </li>
-                <!-- ENDIF -->
-                <!-- IF S_TOPIC_ID -->
+                {% endif %}
+                {% if S_TOPIC_ID %}
                       <li >
-                        <!-- IF S_FORUM_EXCLUDE -->
-                            <span  title='{L_LIVESEARCH_USERPOST_DISABLED}' class='livesearch-disable'>{L_LIVE_SEARCH_POSTS_BY_USER_TOPIC}</span>
-                        <!-- ELSE -->
-                            <a id="posts_live_search_topic" href="javascript:void(0);" role = "menuitem" title = "{L_LIVE_SEARCH_TOOLTIP_BY_TOPIC} {TOPIC_TITLE}"> {L_LIVE_SEARCH_POSTS_BY_USER_TOPIC}</a>
-                        <!-- ENDIF -->
+                        {% if S_FORUM_EXCLUDE %}
+                            <span  title='{{ lang('LIVESEARCH_USERPOST_DISABLED') }}' class='livesearch-disable'>{{ lang('LIVE_SEARCH_POSTS_BY_USER_TOPIC') }}</span>
+                        {% else %}
+                            <a class="posts-live-search-topic" href="javascript:void(0);" role = "menuitem" title = "{{ lang('LIVE_SEARCH_TOOLTIP_BY_TOPIC') }} {TOPIC_TITLE}"> {{ lang('LIVE_SEARCH_POSTS_BY_USER_TOPIC') }}</a>
+                        {% endif %}
                     </li>
-                <!-- ENDIF -->
+                {% endif %}
             </ul>
         </ul>
 	</div>
-   <!-- ENDIF  -->
+   {% endif %}
 
   
 
 </div>
-<!-- ENDIF  -->
+{% endif %}

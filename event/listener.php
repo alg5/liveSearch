@@ -288,8 +288,8 @@ class listener implements EventSubscriberInterface
 		$live_search_hide_after_select = isset($this->config['live_search_hide_after_select']) ? (bool) $this->config['live_search_hide_after_select'] : true;
 		$live_search_topic_link_type = isset($this->config['live_search_topic_link_type']) ? (bool) $this->config['live_search_topic_link_type'] : true;
 		//$is_live_search = $on_off_forum || $on_off_topic || $on_off_user;
-		$is_live_search = !$this->user->data['is_bot'] && ($on_off_forum || $on_off_topic || $on_off_user);		
-                             if (!$live_search_show_for_guest)
+		$is_live_search = !$this->user->data['is_bot'] && ($on_off_forum || $on_off_topic || $on_off_user);
+		if (!$live_search_show_for_guest)
 		{
 			$is_live_search = $is_live_search && $this->user->data['is_registered'];
 		}

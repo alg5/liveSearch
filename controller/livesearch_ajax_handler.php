@@ -767,7 +767,7 @@ class liveSearch_ajax_handler
 					" WHERE  t.topic_status <> " . ITEM_MOVED .
 					" AND t.topic_visibility = " . ITEM_APPROVED .
 					" AND p.post_visibility = " . ITEM_APPROVED .
-					" AND p.poster_id = " . $author_id ;                
+					" AND p.poster_id = " . $author_id ;
 		if (sizeof($ex_fid_ary))
 		{
 			$sql .= " AND " . $this->db->sql_in_set('p.forum_id', $ex_fid_ary, true);
@@ -783,15 +783,15 @@ class liveSearch_ajax_handler
 		$result = $this->db->sql_query($sql);
 		$row = $this->db->sql_fetchrow($result);
 		$total_count = (int) $row['total_count'];
-                             $this->db->sql_freeresult($result);
-                            if ($total_count > 0)
-                            {
-                                $sql = str_replace('count(t.topic_id) as total_count', 't.topic_title, u.username', $sql);
-                                $result = $this->db->sql_query($sql);
-                                $row = $this->db->sql_fetchrow($result);
-                                 $username = $row['username'];
-                                $this->db->sql_freeresult($result);
-                            }
+							 $this->db->sql_freeresult($result);
+							if ($total_count > 0)
+							{
+								$sql = str_replace('count(t.topic_id) as total_count', 't.topic_title, u.username', $sql);
+								$result = $this->db->sql_query($sql);
+								$row = $this->db->sql_fetchrow($result);
+								 $username = $row['username'];
+								$this->db->sql_freeresult($result);
+							}
 		$forum_name = '';
 		$topic_name = '';
 		$forum_has_subforums = false;

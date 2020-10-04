@@ -40,7 +40,6 @@ $lang = array_merge($lang, array(
 	'ACP_LIVE_SEARCH_SETTINGS_FORUMS'				=> 'Quick search of forums',
 	'ACP_LIVE_SEARCH_SETTINGS_TOPICS'				=> 'Quick search of topics',
 	'ACP_LIVE_SEARCH_SETTINGS_SIMILARTOPICS'				=> 'Quick search of similar topics when creating a new topic',
-	//'ACP_LIVE_SEARCH_SETTINGS_TOPICS_EXPLAIN'				=> 'Быстрый(живой) поиск по названию темы, если включено, поиск осуществляется либо по всей конференции с главной страницы, либо по конкретному форуму и всем содержашимся в нём подфорумам <br /><strong>Важно: Для корректной работы настроек расширения требуется MySQL версии 4.1 или выше!</strong><br />',
 	'ACP_LIVE_SEARCH_SETTINGS_TOPICS_EXPLAIN'				=>'<strong>Important: The extension requires MySQL version 4.1 or higher!</strong><br />',
 	'ACP_LIVE_SEARCH_SETTINGS_USERS'				=> 'Quick search of users',
 

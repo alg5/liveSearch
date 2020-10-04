@@ -41,12 +41,10 @@ if (empty($lang) || !is_array($lang))
 
 $lang = array_merge($lang, array(
 	'ACP_LIVE_SEARCH'		=> 'Recherche rapide',
-	'ACP_LIVE_SEARCH_MOD_VER'				=> 'Version de l’extension : ',
 	'ACP_LIVE_SEARCH_SETTINGS'				=> 'Paramètres',
 	'ACP_LIVE_SEARCH_SETTINGS_FORUMS'				=> 'Recherche rapide de forums',
 	'ACP_LIVE_SEARCH_SETTINGS_TOPICS'				=> 'Recherche rapide de sujets',
 	'ACP_LIVE_SEARCH_SETTINGS_SIMILARTOPICS'				=> 'Recherche rapide de sujets similaires',
-	//'ACP_LIVE_SEARCH_SETTINGS_TOPICS_EXPLAIN'				=> 'Быстрый(живой) поиск по названию темы, если включено, поиск осуществляется либо по всей конференции с главной страницы, либо по конкретному форуму и всем содержашимся в нём подфорумам <br /><strong>Важно: Для корректной работы настроек расширения требуется MySQL версии 4.1 или выше!</strong><br />',
 	'ACP_LIVE_SEARCH_SETTINGS_TOPICS_EXPLAIN'				=>'La recherche est effectuée dans tout le forum ou dans un forum en particulier ainsi que dans ses sous-forums.<br /><strong>Important : L’extension requiert au minimum la version 4.1 de MySQL ou une version plus récente pour fonctionner !</strong>',
 	'ACP_LIVE_SEARCH_SETTINGS_USERS'				=> 'Recherche rapide d’utilisateurs',
 
@@ -64,4 +62,17 @@ $lang = array_merge($lang, array(
 	'LIVE_SEARCH_SHOW_IN_NEW_WINDOW'				=> 'Afficher les résultats dans une nouvelle fenêtre',
 	'LIVE_SEARCH_SHOW_FOR_GUEST'				=> 'Afficher aux invités',
 	'LIVE_SEARCH_USE_EYE_BUTTON'				=> 'Utilisez le bouton « oeil » pour masquer temporairement le panneau de la recherche',
+	//*******version 2.0.*******
+	'LIVE_SEARCH_TOPIC_LINK_TYPE'				=> 'Displays a link to the topic in the canonical view ',
+	'LIVE_SEARCH_TOPIC_LINK_TYPE_EXPLAIN'		=> 'canonical view of a link: "forum/viewtopic.php?f=N1&t=N2", non-canonical(SEO-compatible) view:"forum/viewtopic.php?t=N2"',
+	'LIVE_SEARCH_ACP_ON'				=> '<strong> Turn on the quick search in ACP</strong>',
+	'ACP_LIVE_SEARCH_SETTINGS_ACP'				=> 'Quick search of forums, groups, users in ACP',
+	'LIVE_SEARCH_MIN_NUM_SYMBLOLS_USERS'				=> 'Min number of characters for users search',
+	'LIVE_SEARCH_MIN_NUM_SYMBLOLS_GROUPS'				=> 'Min number of characters for groups search',
+	'LIVE_SEARCH_MIN_NUM_SYMBLOLS_FORUMS'				=> 'Min number of characters for forums search',
+	//*******version 2.1.*******
+	'LIVE_SEARCH_MCP_ON'				=> '<strong> Turn on the quick search in MCP</strong>',
+	'MCP_LIVE_SEARCH_SETTINGS_MCP'				=> 'Quick search of forums, groups, users in MCP',
+	//*******version 2.2.*******
+	'LIVE_SEARCH_HIDE_AFTER_SELECT'				=> 'Hide the results search block after selected an item ',
 ));

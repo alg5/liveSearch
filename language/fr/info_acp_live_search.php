@@ -63,16 +63,16 @@ $lang = array_merge($lang, array(
 	'LIVE_SEARCH_SHOW_FOR_GUEST'				=> 'Afficher aux invités',
 	'LIVE_SEARCH_USE_EYE_BUTTON'				=> 'Utilisez le bouton « oeil » pour masquer temporairement le panneau de la recherche',
 	//*******version 2.0.*******
-	'LIVE_SEARCH_TOPIC_LINK_TYPE'				=> 'Displays a link to the topic in the canonical view ',
-	'LIVE_SEARCH_TOPIC_LINK_TYPE_EXPLAIN'		=> 'canonical view of a link: "forum/viewtopic.php?f=N1&t=N2", non-canonical(SEO-compatible) view:"forum/viewtopic.php?t=N2"',
-	'LIVE_SEARCH_ACP_ON'				=> '<strong> Turn on the quick search in ACP</strong>',
-	'ACP_LIVE_SEARCH_SETTINGS_ACP'				=> 'Quick search of forums, groups, users in ACP',
-	'LIVE_SEARCH_MIN_NUM_SYMBLOLS_USERS'				=> 'Min number of characters for users search',
-	'LIVE_SEARCH_MIN_NUM_SYMBLOLS_GROUPS'				=> 'Min number of characters for groups search',
-	'LIVE_SEARCH_MIN_NUM_SYMBLOLS_FORUMS'				=> 'Min number of characters for forums search',
+	'LIVE_SEARCH_TOPIC_LINK_TYPE'				=> 'Affiche un lien vers le sujet dans la vue canonique',
+	'LIVE_SEARCH_TOPIC_LINK_TYPE_EXPLAIN'		=> 'vue canonique d‘un lien : "forum/viewtopic.php?f=N1&t=N2", non-canonique (compatible SEO) view:"forum/viewtopic.php?t=N2"',
+	'LIVE_SEARCH_ACP_ON'				=> '<strong> Activez la recherche rapide dans le PCA</strong>',
+	'ACP_LIVE_SEARCH_SETTINGS_ACP'				=> 'Recherche rapide des forums, des groupes et des utilisateurs dans le PCA',
+	'LIVE_SEARCH_MIN_NUM_SYMBLOLS_USERS'				=> 'Nombre minimum de caractères pour la recherche des utilisateurs',
+	'LIVE_SEARCH_MIN_NUM_SYMBLOLS_GROUPS'				=> 'Nombre minimum de caractères pour la recherche des groupes',
+	'LIVE_SEARCH_MIN_NUM_SYMBLOLS_FORUMS'				=> 'Nombre minimum de caractères pour la recherche des forums',
 	//*******version 2.1.*******
-	'LIVE_SEARCH_MCP_ON'				=> '<strong> Turn on the quick search in MCP</strong>',
-	'MCP_LIVE_SEARCH_SETTINGS_MCP'				=> 'Quick search of forums, groups, users in MCP',
+	'LIVE_SEARCH_MCP_ON'				=> '<strong> Activez la recherche rapide dans le PCM</strong>',
+	'MCP_LIVE_SEARCH_SETTINGS_MCP'				=> 'Recherche rapide des forums, des groupes et des utilisateurs dans le PCM',
 	//*******version 2.2.*******
-	'LIVE_SEARCH_HIDE_AFTER_SELECT'				=> 'Hide the results search block after selected an item ',
+	'LIVE_SEARCH_HIDE_AFTER_SELECT'				=> 'Masquer le bloc de recherche de résultats après avoir sélectionné un élément',
 ));

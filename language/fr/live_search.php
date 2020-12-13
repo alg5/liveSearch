@@ -73,9 +73,9 @@ $lang = array_merge($lang, array(
 	'LIVE_SEARCH_EYE_BUTTON_OPEN_T'	=> 'Afficher le panneau de la recherche',
 	'LIVE_SEARCH_EYE_BUTTON_CLOSE_T'	=> 'Masquer le panneau de la recherche',
 	//*******version 2.0.*******
-	'LIVE_SEARCH_GROUP'		=> 'Group',
-	'LIVE_SEARCH_GROUP_TXT'		=> 'Group name...',
-	'LIVESEARCH_GROUP_T'	=> 'For quick search start typing the group name',
+	'LIVE_SEARCH_GROUP'		=> 'Groupe',
+	'LIVE_SEARCH_GROUP_TXT'		=> 'Nom du groupe...',
+	'LIVESEARCH_GROUP_T'	=> 'Pour une recherche rapide, commencez à saisir le nom du groupe',
 	//*******version 2.0.2.*******
-	'LIVE_SEARCH_YOU_SELECTED_TOPIC'	=> 'You are choosed topic number ',	
+	'LIVE_SEARCH_YOU_SELECTED_TOPIC'	=> 'Vous avez choisi le numéro de sujet',	
 ));
